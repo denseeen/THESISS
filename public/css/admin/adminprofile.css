@@ -1,0 +1,56 @@
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('/image/3nwow.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; */
+    margin: 0;
+}
+.container {
+    background-color: white;
+    margin-top: 2%;
+    color: black;
+    border-radius: 15px;
+    padding: 20px;
+    width: 500px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+.container h1 {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+.container h2 {
+    font-size: 24px;
+    margin-top: 0;
+}
+.admin-info {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+.admin-info p {
+    margin: 10px 0;
+}
+.admin-info .password-section {
+    display: flex;
+    align-items: center;
+}
+.admin-info .password {
+    flex: 1;
+}
+.admin-info button {
+    padding: 5px 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.admin-info button:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,94 @@
+body {
+    /* display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; */
+    margin: 0;
+    background-image: url('/image/3nwow.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+}
+.profile-container {
+    background: white;
+    margin-top: 2%;
+    margin-left: 37%;
+    border-radius: 20px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    padding: 40px;
+    width: 500px;
+    position: relative;
+}
+.profile-container h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 16px;
+}
+.profile-container .customer-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.profile-container .info {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+}
+.profile-container .info p {
+    margin: 10px 0;
+}
+.profile-container .info p span {
+    font-weight: bold;
+}
+.profile-container .change-button {
+    text-align: center;
+}
+.profile-container .change-button button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.profile-container .change-button button:hover {
+    background-color: #0056b3;
+}
+.customer-info {
+    display: flex;
+    flex-direction: column;
+}
+.customer-info div {
+    margin-bottom: 10px;
+}
+.customer-info div label {
+    font-weight: bold;
+}
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.profile-container .header {
+    width: 100%;
+    text-align: left;
+    padding: 0 10px;
+}
+.profile-container .content {
+    width: 100%;
+    padding: 0 10px;
+}
+.profile-container .content p {
+    margin: 10px 0;
+}
+.profile-container .change-button {
+    text-align: left;
+    padding: 0 10px;
+    width: 100%;
+}
+.profile-container .change-button button {
+    padding: 10px 20px;
+    font-size: 14px;
+}
