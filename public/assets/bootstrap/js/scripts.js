@@ -81,3 +81,47 @@ $('.sidebar').mCustomScrollbar({
 
 $("background_customerUI").backstretch("image/3nwow.jpg");
 
+
+
+/*customerTopNav*/
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+}
+
+// // Function to toggle the dropdown menu
+// function toggleDropdown() {
+//     var dropdownMenu = document.getElementById('dropdownMenu').classList.toggle("show");
+//     // dropdownMenu.classList.toggle('show');
+// }
+
+// // Close the dropdown menu if clicked outside of it
+// window.onclick = function(event) {
+//     if (!event.target.matches('.icon profile-icon img')) {
+//         var dropdowns = document.getElementsByClassName('dropdown-menu');
+//         var i;
+//         for (var i = 0; i < dropdowns.length; i++) {
+//             var openDropdown = dropdowns[i];
+//             if (openDropdown.classList.contains('show')) {
+//                 openDropdown.classList.remove('show');
+//             }
+//         }
+//     }
+// }
+
+
+function toggleDropdown() {
+    document.getElementById('dropdownMenu').classList.toggle('show');
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.profile-icon img')) {
+        var dropdowns = document.getElementsByClassName('dropdown-menuCusTopNav');
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+
