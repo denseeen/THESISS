@@ -19,11 +19,11 @@
  <link rel="stylesheet" href="assets/bootstrap/css/media-queries.css">
 
  <!-- Favicon and touch icons -->
- <link rel="shortcut icon" href="assets/ico/favicon.png">
+ <!-- <link rel="shortcut icon" href="assets/ico/favicon.png">
  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
  <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
- <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+ <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png"> -->
 
 
     <title>Customer</title>
@@ -75,8 +75,36 @@
 </div>
 <!-- End wrapper -->
 
-<div class="container">
-        <header>
+
+<!-- Edited -->
+    <div class="container">
+        <div class="headerCusTopnav">
+            
+            <div class="title">
+                <h1>Billn'WOW Anonas </h1>
+            </div>
+
+            <div class="icons">
+
+                 <div class="icon sun-icon" onclick="toggleDarkMode()">
+                    <img src="/image/7721593.png" alt="Sun Icon">
+                </div>
+               
+                <div class="icon profile-icon img" onclick="toggleDropdown()">   
+                     <img src="/image/4174470.png" alt="Profile Icon">
+                </div>
+
+                <div class="dropdown-menuCusTopNav" id="dropdownMenu">
+                    <a href="{{ route('about.layout') }}">Logout</a>
+                    <a href="#">Change Password</a>
+                </div>
+
+            </div>
+</div>
+    </div>
+
+
+        <!-- <header>
             <div class="title">
                 <h1>Bill n' <span class="wow">WoW</span> Anonas</h1>
             </div>
@@ -95,19 +123,19 @@
                             <a class="dropdown-item" href="{{ route('about.layout') }}">Logout</a>
                             <a class="dropdown-item" href="#">Change Password</a>
                         </div>
-                    </div>
+                    </div> -->
 
 
                     <!-- <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('about.layout') }}">Logout</a>
                         <a href="#">Change Password</a>
                     </div> -->
-                </div>
+                <!-- </div>
             </div>
-        </header>
-</div>
+        </header> -->
 
-    <script>
+
+    <!-- <script>
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
         }
@@ -127,96 +155,17 @@
                 }
             }
         }
-    </script>
+    </script> -->
 
-      <!-- <div class="card">
-        <div class="details">
-            <div>
-                <h2>Unit</h2>
-                <p>ERVS3</p>
-            </div>
-            <div>
-                <h2>Price</h2>
-                <p>₱59,800</p>
-            </div>
-            <div>
-                <h2>Installment Plan</h2>
-                <p>6 Months</p>
-            </div>
-            <div>
-                <h2>Balance</h2>
-                <p>₱38,600</p>
-            </div>
-            <div>
-                <h2>Monthly Due</h2>
-                <p>₱9,650</p>
-            </div>
-        </div>
-    </div>
-    <div class="card">
-        <table>
-            <thead>
-                <tr>
-                    <th>Monthly Due Date</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Payment Method</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>March 30 2024</td>
-                    <td>₱10,000</td>
-                    <td>Paid</td>
-                    <td>OTC</td>
-                </tr>
-                <tr>
-                    <td>April 15 2024</td>
-                    <td>₱9,650</td>
-                    <td>Paid</td>
-                    <td>Online</td>
-                </tr>
-                <tr>
-                    <td>May 15 2024</td>
-                    <td>₱9,650</td>
-                    <td>Paid</td>
-                    <td>Online</td>
-                </tr>
-                <tr>
-                    <td>June 15 2024</td>
-                    <td>₱9,650</td>
-                    <td>Paid</td>
-                    <td>Online</td>
-                </tr>
-                <tr>
-                    <td>July 15 2024</td>
-                    <td>₱9,650</td>
-                    <td>-</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>August 15 2024</td>
-                    <td>₱9,650</td>
-                    <td>-</td>
-                    <td>-</td>
-                </tr>
-                <tr>
-                    <td>September 15 2024</td>
-                    <td>₱9,650</td>
-                    <td>-</td>
-                    <td>-</td>
-                </tr>
-            </tbody>
-        </table>
-    </div> -->
+      
 
 
         <!-- Javascript -->
-        <script src="assets/js/jquery-3.3.1.min.js"></script>
-        <script src="assets/js/jquery-migrate-3.0.0.min.js"></script>
+        <!-- <script src="assets/js/jquery-3.3.1.min.js"></script> -->
+        <!-- <script src="assets/js/jquery-migrate-3.0.0.min.js"></script> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="assets/js/jquery.backstretch.min.js"></script>
+        <!-- <script src="assets/js/jquery.backstretch.min.js"></script> -->
         <script src="assets/js/wow.min.js"></script>
         <script src="assets/js/jquery.waypoints.min.js"></script>
         <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
