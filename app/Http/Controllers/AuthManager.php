@@ -13,9 +13,10 @@ class AuthManager extends Controller
         return view('welcome');
         }
 
-        public function home(){
-        return view('about.layout');
-      }
+    public function home(){
+      
+      return view('about.layout');
+    }
 
    public function Resgistration(){
 
