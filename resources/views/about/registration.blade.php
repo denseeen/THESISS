@@ -1,103 +1,85 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <title>Registration</title>
-  <link href="{!! url('css/registration.css') !!}" rel="stylesheet">
-  <link href="{!! url('css/common.css') !!}" rel="stylesheet">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ route('about.layout') }}">Home</a></li>
-                <li><a href="#branches">Branches</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact Us</a></li>
-            </ul>
-        </nav>
-    </header>  
+    <head>
+        <title>Registration</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{!! url('css/registration.css') !!}" rel="stylesheet">
+        <link href="{!! url('css/common.css') !!}" rel="stylesheet">
+    </head>
+    <body>
+        <header class="headerrr">
+            <nav>
+                <ul>
+                    <a href="{{route('about.layout') }}"><img src="/image/billnwow-logo.png" class="billnwow-logo" alt="NWOW Philippines Storefront" style="margin-top:-1.3%"></a>
+                </ul>
+            </nav>
+        </header>  
 
-<form class="application-form">
-        <h1>Online Application</h1>
-                     
-        <div class="form-row">
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input type="text" id="last_name" name="last_name">
+        <form>
+            <div class="headerr">
+                <h1>Online Application</h1>
             </div>
-            
+
             <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input type="text" id="first_name" name="first_name">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" name="lastName">
             </div>
-            
+
             <div class="form-group">
-                <label for="middle_name">Middle Name</label>
-                <input type="text" id="middle_name" name="middle_name">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" name="firstName">
             </div>
-        </div>
-        
-        <div class="form-row">
+
+            <div class="form-group">
+                <label for="middleName">Middle Name</label>
+                <input type="text" id="middleName" name="middleName">
+            </div>
+
             <div class="form-group">
                 <label for="address">Address</label>
                 <input type="text" id="address" name="address">
             </div>
-                   
-        <div class="form-row">
+
             <div class="form-group">
-                <label for="gender">Gender</label>
-                <select id="gender" name="gender">
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="others">Others</option>
-                </select>
+                <label>Date of Birth</label>
+                <input type="date" id="dob" name="dob">
             </div>
-         
-            <div class="form-group">
-                <label for="dob">Date of Birth</label>
-                <input type="date" id="dob" name="dob" class="short-input">
-            </div>
-            </div>
-	
-        <div class="form-row">
+            
             <div class="form-group">
                 <label for="age">Age</label>
-                <input type="text" id="age" name="age" style="width: 50px;">
+                <input type="numberr" id="age" name="age">
             </div>
-        </div>
-                
-        <div class="form-row">
-            <div class="form-group">
-                <label for="mobile_number">Mobile Number</label>
-                <input type="text" id="mobile_number" name="mobile_number">
-            </div>
-            
-            <div class="form-group">
-                <label for="telephone_number">Telephone Number</label>
-                <input type="text" id="telephone_number" name="telephone_number">
-            </div>
-            
-            <div class="form-group">
-                <label for="fb_account">FB Account</label>
-                <input type="text" id="fb_account" name="fb_account">
-            </div>
-            
-            <div class="form-group">
-                <label for="email_address">Email Address</label>
-                <input type="email" id="email_address" name="email_address">
-            </div>
-        </div>
-        
-        <div class="form-row">
-            <div class="form-group">
-                <button type="submit">Submit</button>
-            </div>
-        </div>
-    </form>
 
+            <div class="form-group">
+                <label for="mobileNumber">Mobile Number</label>
+                <input type="number" id="mobileNumber" name="mobileNumber">
+            </div>
 
+            <div class="form-group">
+                <label for="facebookAccount">Facebook Account</label>
+                <input type="text" id="facebookAccount" name="facebookAccount">
+            </div>
 
-</body>
+            <div class="form-group">
+                <label for="emailAddress">Email Address</label>
+                <input type="email" id="emailAddress" name="emailAddress">
+            </div>
 
+            <div class="form-group">
+                    <label>Gender</label>
+                <div class="gender-group">
+                    <input type="radio" id="male" name="gender" value="male">
+                    <label for="male">Male</label>
+
+                    <input type="radio" id="female" name="gender" value="female">
+                    <label for="female">Female</label>
+
+		            <input type="radio" id="other" name="gender" value="other">
+                    <label for="other">Other</label>
+                </div>
+            </div>
+                <input type="submit" value="Submit">    
+        </form>
+    </body>
 </html>
