@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Request</title>
+    <title>Request</title>
     
     <!-- Stylesheets -->
     <link href="{!! url('css/admin/adminrequest.css') !!}" rel="stylesheet">
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{!! url('css/common.css') !!}" rel="stylesheet">
+    <link href="{{ url('css/admin/topnav_sidenav.css') }}" rel="stylesheet">
  
     
     <!-- Font Awesome for icons (sideNav-->
@@ -61,10 +60,10 @@
 <!-- Javascript -->
 <script>
 
-// DarkMode
-function toggleDarkModeRequest() {
+// Dark Mode
+function toggleDarkModeDashboard() {
     document.body.classList.toggle('dark-mode');
-    document.querySelectorAll('.top_navbar, .sidebar').forEach(item => {
+    document.querySelectorAll('').forEach(item => {
         item.classList.toggle('dark-mode');
     });
 }

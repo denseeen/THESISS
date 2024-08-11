@@ -5,10 +5,13 @@
           padding: 0;
         }
 
+
+
         /* NAVIGATION */
         header {
             background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
             padding: 1%;
+
         }
 
         .billnwow-logo{
@@ -214,3 +217,4 @@
         .social-icons img {
           width: 30px;
           height: auto;
+

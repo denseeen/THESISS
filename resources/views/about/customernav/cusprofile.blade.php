@@ -1,128 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Customer Profile Page">
+    <title>Customer Profile</title>
     
-    <link href="{!! url('css/common.css') !!}" rel="stylesheet">
-    <link href="{!! url('css/customer/cusprofile.css') !!}" rel="stylesheet">
-    <link href="{!! url('assets/bootstrap/css/bootstrap.min.css') !!}" rel="stylesheet">
+    <link href="{{ url('css/customer/cusprofile.css') }}" rel="stylesheet">
+    <link href="{{ url('css/customer/topnav.css') }}" rel="stylesheet">
+    <link href="{{ url('responsiv/customer/customerprofile.css') }}" rel="stylesheet">
+    
 
- <!-- CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500&display=swap">
- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
- <link rel="stylesheet" href="assets/css/jquery.mCustomScrollbar.min.css">
- <link rel="stylesheet" href="assets/css/animate.css">
- <link rel="stylesheet" href="assets/bootstrap/css/style.css">
- <link rel="stylesheet" href="assets/bootstrap/css/media-queries.css">
-
- <!-- Favicon and touch icons -->
- <link rel="shortcut icon" href="assets/ico/favicon.png">
- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
- <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
- <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
- <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-
-
-    <title>Customer</title>
 </head>
-<body class= "customerUi" style="text-align: center  ml-1">
-
-<!-- Wrapper -->
-<div class="wrapper">
- 
-    <!-- Sidebar -->
-    <nav class="sidebar">
- 
-        <!-- close sidebar menu -->
-        <div class="dismiss">
-            <i class="fas fa-arrow-left"></i>
-        </div>
- 
-        <div class="logo">
-            <h3><a href="index.html">Bootstrap 4 Template with Sidebar Menu</a></h3>
-        </div>
- 
-        <ul class="list-unstyled menu-elements">
-            <li class="active">
-                <a class=" a" href="{{ route('cusprofile.show') }}"><i class="fas fa-home"></i> Profile</a>
-            </li>
-            <li>
-                <a class="b " href="{{ route('cusdasboard.show') }}"><i class="fas fa-home"></i> Dashboard</a>
-            </li>
-            <li>
-                <a class="c " href="{{ route('cuspurchasehistory.show') }}"><i class="fas fa-home"></i> Purchase History</a>
-            </li>
-            <li>
-                <a class="d " href="{{ route('about.layout') }}"><i class="fas fa-home"></i> Log Out</a>
-            </li>
-            
-        </ul>
- 
-        
- 
-    </nav>
-    <!-- End sidebar -->
- 
-    <!-- Dark overlay -->
-    <div class="overlay"></div>
- 
-    <!-- Content -->
-    <div class="content">
- 
-        <!-- open sidebar menu -->
-        <a class="btn btn-primary btn-customized open-menu" href="#" role="button">
-            <i class="fas fa-align-left"></i> <span>Menu</span>
-        </a>
- 
-        <!-- ... -->
- 
-        <!-- here is the page's content (not shown here) -->
- 
-        <!-- ... -->
- 
+<body>
+    <!-- Top Navbar -->
+    <div class="wrapper hover_collapse">
+        <nav class="top_navbar">
+            <a href="{{ route('cusdasboard.show') }}" class="TopNav-BillnWoWlogo">
+                <img src="/image/logoBillnWow3.png" alt="BillnWoWLogo">
+            </a>
+            <div class="icons">
+                <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
+                    <img src="/image/7721593.png" alt="Sun Icon">
+                </div>
+                <div class="icon profile-icon img" onclick="toggleDropdown()">   
+                    <img src="/image/4174470.png" alt="Profile Icon">
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="{{ route('cusprofile.show') }}">Profile</a>
+                        <a href="#">Change Password</a>
+                        <a href="{{ route('about.layout') }}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
     </div>
-    <!-- End content -->
- 
-</div>
-<!-- End wrapper -->
 
-    
-     <div class="topnav">
-        <h3 style="padding: 1%;text-align: center;color: aliceblue; ">CUSTOMER PROFILE </h3>
-    </div> 
-          
-    <div class="profile-container">
-        <div class="header">
-            <h2>Customer Name:</h2>
-            <div class="customer-name">Marian Naparan</div>
+    <!-- Profile Content -->
+    <div class="profile-card">
+    <div class="profile-header">
+        <div class="avatar-container">
+            <img src="/image/avatar1.jpg" alt="Avatar" class="avatar" id="current-avatar">
+            <button class="change-avatar-btn" id="change-avatar-btn"></button>
         </div>
-        <div class="content">
-            <div class="info">
-                <p><span>Email:</span> marian_naparan@gmail.com</p>
-                <p><span>Phone Number:</span> 0956946355</p>
-                <p><span>Address:</span> Quezon City Cubao</p>
-                <p><span>Password:</span> **********</p>
+        <div class="name-title">
+            <h2>Hembo Tingor</h2>
+        </div>
+    </div>
+    <div class="profile-body">
+        <div class="info">
+            <h3>Information</h3>
+            <p><strong>Gender:</strong> Male</p>
+            <p><strong>Birthday:</strong> August 12, 2024</p>
+            <hr>
+            <p><strong>Email:</strong> rntng@gmail.com</p>
+            <p><strong>Facebook:</strong> Hembo Tingor</p>
+            <hr>
+            <p><strong>Telephone:</strong> 239553655</p>
+            <p><strong>Mobile:</strong> +63 924336535</p>
+            <div class="field">
+                <p><strong>Address:</strong> Anonas, Cubao, Quezon City</p>
+                <!-- <button class="edit-button">Edit</button> -->
             </div>
         </div>
-        <div class="change-button">
-            <button>Change</button>
+        <div class="password-edit">
+            <label for="password"><strong>Password:</strong></label>
+            <input type="password" id="password" name="password" class="password-field">
+            <button class="edit-button" id="change-password-btn">Edit</button>
+        </div>
+    </div>
+</div>
+
+<!-- Avatar Modal -->
+<div id="avatarModal" class="modal">
+    <div class="modal-customercontent">
+        <span class="close" id="closeAvatarModal">&times;</span>
+        <h2>Select an Avatar</h2>
+        <div class="avatar-options">
+            <div class="avatar-option">
+                <img src="/image/avatar1.jpg" alt="Avatar 1" class="modal-avatar" data-avatar="avatar1.jpg">
+                <h5>Avatar 1</h5>
+            </div>
+            <div class="avatar-option">
+                <img src="/image/avatar2.jpg" alt="Avatar 2" class="modal-avatar" data-avatar="avatar2.jpg">
+                <h5>Avatar 2</h5>
+            </div>
+            <div class="avatar-option">
+                <img src="/image/avatar3.png" alt="Avatar 3" class="modal-avatar" data-avatar="avatar3.png">
+                <h5>Avatar 3</h5>
+            </div>
+            <div class="avatar-option">
+                <img src="/image/avatar4.png" alt="Avatar 4" class="modal-avatar" data-avatar="avatar4.png">
+                <h5>Avatar 4</h5>
+            </div>
+            <div class="avatar-option">
+                <img src="/image/avatar5.png" alt="Avatar 5" class="modal-avatar" data-avatar="avatar5.png">
+                <h5>Avatar 5</h5>
+            </div>
+            <div class="upload-avatar">
+                <span class="upload-icon">&#43;</span>
+                <input type="file" id="upload-avatar-input" accept="image/*" style="display:none;">
+                <label for="upload-avatar-input" style="cursor:pointer;">Upload</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- The Password Modal -->
+    <div id="passwordModal" class="modal">
+        <div class="modal-customercontent ">
+            <span class="close" id="closePasswordModal">&times;</span>
+            <h2>Change Password</h2>
+            <input type="password" id="old-password" class="password-field-modal" placeholder="Old Password">
+            <input type="password" id="new-password" class="password-field-modal" placeholder="New Password">
+            <input type="password" id="confirm-password" class="password-field-modal" placeholder="Confirm New Password">
+            <button class="modal-submit-button" id="submit-password-change">Save</button>
         </div>
     </div>
 
-        <!-- Javascript -->
-        <script src="assets/js/jquery-3.3.1.min.js"></script>
-        <script src="assets/js/jquery-migrate-3.0.0.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="assets/js/jquery.backstretch.min.js"></script>
-        <script src="assets/js/wow.min.js"></script>
-        <script src="assets/js/jquery.waypoints.min.js"></script>
-        <script src="assets/js/jquery.mCustomScrollbar.concat.min.js"></script>
-        <script src="assets/bootstrap/js/scripts.js"></script>
+   
+    <script src="{{ asset('js/customer/cusprofile.js') }}"></script>
 </body>
 </html>

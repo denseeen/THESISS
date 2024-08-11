@@ -1,0 +1,158 @@
+
+@media only screen and (min-width: 769px) and (max-width: 1024px) {
+    .top_navbar {
+        height: 50px;
+        padding: 10px;
+        font-size: 22px;
+    }
+    
+    .icon img {
+        width: 28px;
+        height: 28px;
+    }  
+
+    .TopNav-BillnWoWlogo img { 
+        width: 200px;
+        height: 45px;
+    }
+
+    .profile-body {
+        padding: 25px;
+    }
+
+    .profile-header {
+        padding: 25px;
+    }
+
+    .profile-card {
+        width: 70%; /* Further adjustments for tablet-sized screens */
+        margin-top: 15%;
+    }
+
+    .info {
+        margin-bottom: 20px;
+    }
+    
+    .info h3 {
+        font-size: 20px;
+    }
+    
+    .info p {
+        font-size: 18px;
+    }
+
+    .password-edit {
+        font-size: 18px;
+    }
+
+    .password-field {
+        padding: 8px;
+        width: 100%;
+    }
+}
+
+
+
+@media only screen and (max-width: 768px) {
+    .top_navbar {
+        height: 50px;
+        padding: 10px;
+        font-size: 20px;
+    }
+    
+    .icon img {
+        width: 30px;
+        height: 30px;
+    }  
+
+    .TopNav-BillnWoWlogo img { 
+        width: 200px;
+        height: 50px;
+    }
+
+    .profile-body {
+        padding: 20px;
+    }
+
+    .profile-header {
+        padding: 20px;
+    }
+
+    .profile-card {
+        width: 80%; /* Adjust width based on the screen size */
+        margin-top: 14%;
+    }
+
+    .info {
+        margin-bottom: 15px;
+    }
+    
+    .info h3 {
+        font-size: 18px;
+    }
+    
+    .info p {
+        font-size: 16px;
+    }
+
+    .password-edit {
+        font-size: 16px;
+    }
+
+    .password-field {
+        padding: 6px;
+        width: 100%;
+    }
+}
+
+
+@media only screen and (max-width: 480px) {
+    .top_navbar {
+        height: 2%;
+        padding: 5%;
+       
+    }
+
+    .icon img {
+        width: 50%;
+    }  
+
+    .TopNav-BillnWoWlogo img { 
+        width: 50%;
+       
+    }
+
+    .profile-body {
+        padding: 15px;
+    }
+
+    .profile-header {
+        padding: 15px;
+    }
+
+    .profile-card {
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    .info {
+        margin-bottom: 10px;
+    }
+    
+    .info h3 {
+        font-size: 16px;
+    }
+    
+    .info p {
+        font-size: 10px;
+    }
+
+    .password-edit {
+        font-size: 14px;
+    }
+
+    .password-field {
+        padding: 6px;
+        width: 100%;
+    }
+}
