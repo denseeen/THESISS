@@ -5,10 +5,10 @@
           padding: 0;
         }
 
-        /*Navigation*/
+        Navigation
         header {
           background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
-          /* background: linear-gradient(to right, red, blue); */
+         
           padding: 10px 0;
         }
       
@@ -256,8 +256,8 @@
     left: 0;
     width: 100%;
     height: 60px;
-    background-color: #323233;
-    box-shadow: 1px 0 2px rgba(0,0,0,0.125);
+    /* background-color: #323233; */
+    background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -291,7 +291,7 @@
 
 .TopNav-BillnWoWlogo img { 
     width: 250px;
-    height: 150px;
+    height: 50px;
 }
 
 
@@ -302,7 +302,9 @@
     left: 0;
     width: 220px;
     height: 100%;
-    background-color: #042331;
+    background-color:rgb(15, 15, 84);
+    /* background-;color: (4, 35, 49, 0.8); Transparent background */
+    /* background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%); */
     transition: width 0.5s;
     z-index: 20; /* Behind the top navbar */
 }
@@ -348,38 +350,27 @@
 /* Dark mode styles */
 body.dark-mode {
     background-color: #333;
-    color: #fff;
+    /* color: #fff; */
 }
 
-.top_navbar.dark-mode {
-    background-color: #444;
-}
+/* .top_navbar.dark-mode {
+    background-color: #333;
+} */
 
 .sidebar.dark-mode {
-    background-color: #111;
+    background-color: #333;
 }
 
 .container.dark-mode {
-    background-color: #444;
+    background-color: #333;
 }
 
 
-
-.data-table th.dark-mode {
-    background-color: #444;
-}
-
-
-.application-list table .dark-mode{
-    background-color: #444;
-}
 
 .sidebar.dark-mode ul li a {
     color: #ccc;
 }
-.table .dark-mode{
-    background-color: #444;
-}
+
 
 .sidebar.dark-mode ul li a:hover {
     background-color: #333;
@@ -434,13 +425,13 @@ body.dark-mode .dropdown-menu a:hover {
     display: none;
     position: absolute;
     top: 50px;
-    right: 0;
+    right: 2%;
     background-color: #ffffff;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 5px;
     overflow: hidden;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .dropdown-menu a {

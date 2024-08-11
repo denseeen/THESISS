@@ -1,0 +1,347 @@
+
+.body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  Navigation
+  header {
+    background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
+   
+    padding: 10px 0;
+  }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+  }
+
+  nav ul li {
+    margin: 0 15px;
+  }
+
+  nav ul li a{
+    color: white;
+    text-decoration: none;
+  }
+
+  .homebackground{ 
+  width: 100%;
+  height: 889px;
+  }
+
+  .nav-btn{
+    color: white;
+    text-decoration: none;
+  }
+
+  /* Content */
+  .hero {
+    position: relative;
+    text-align: center;
+}
+
+.hero img {
+    width: 100%;
+    height: auto;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.hero-text h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.hero-text p {
+    margin: 10px 0;
+}
+
+.hero-text ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.hero-text ul li {
+    margin: 5px 0;
+}
+
+.new-arrival, .hot-selling {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.products {
+    display: flex;
+    justify-content: center;
+}
+
+.product {
+    margin: 0 10px;
+}
+
+.product img {
+    width: 150px;
+    height: auto;
+}
+
+.product p {
+    margin-top: 10px;
+}
+
+footer {
+    background: #f0f0f0;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-icons {
+    display: flex;
+    justify-content: center;
+}
+
+.icon {
+    margin: 0 20px;
+}
+
+.icon img {
+    width: 50px;
+    height: auto;
+}
+
+.icon p {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+.contact {
+    margin-top: 20px;
+}
+
+.social-icons a {
+    margin: 0 10px;
+}
+
+.social-icons img {
+    width: 30px;
+    height: auto;
+}
+
+
+
+
+
+/* topnSide */
+.top_navbar {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 60px;
+/* background-color: #323233; */
+background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0 -20px;
+z-index: 10; /* Ensure top layer */
+}
+
+.top_navbar {
+font-size: 25px;
+font-weight: 700;
+color: white;
+letter-spacing: 2px;
+text-transform: uppercase;
+padding: 10px;
+}
+
+.top_navbar .icons {
+display: flex;
+margin-right: 2%;
+align-items: center;
+}
+
+.top_navbar .icon {
+margin-left: 10px;
+cursor: pointer;
+}
+
+.top_navbar .icon i {
+font-size: 20px;
+color: white;
+}
+
+.TopNav-BillnWoWlogo img { 
+width: 250px;
+height: 50px;
+margin-left: 15%;
+}
+
+
+/* Sidebar styles */
+.sidebar {
+position: fixed;
+top: 80px;
+left: 0;
+width: 220px;
+height: 100%;
+background-color:rgb(15, 15, 84);
+/* background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%); */
+transition: width 0.5s;
+z-index: 20; /* Behind the top navbar */
+}
+
+.sidebar_inner {
+padding-top: 20px;
+}
+
+.sidebar ul {
+padding: 0;
+}
+
+.sidebar ul li {
+margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+display: block;
+padding: 5px 5px;
+color: #fff;
+text-decoration: none;
+font-size: 18px;
+
+}
+
+.sidebar ul li a .icon {
+margin-right: 15px;
+}
+
+.sidebar ul li a:hover {
+background-color: #0e94d4;
+}
+
+/* Collapse sidebar when hovered */
+.hover_collapse .sidebar {
+width: 70px;
+}
+
+.hover_collapse .sidebar ul li a .text {
+display: none;
+}
+
+/* Dark mode styles */
+body.dark-mode {
+background-color: #333;
+/* color: #fff; */
+}
+
+/* .top_navbar.dark-mode {
+background-color: #333;
+} */
+
+.sidebar.dark-mode {
+background-color: #333;
+}
+
+.container.dark-mode {
+background-color: #333;
+}
+
+
+
+.sidebar.dark-mode ul li a {
+color: #ccc;
+}
+
+
+.sidebar.dark-mode ul li a:hover {
+background-color: #333;
+}
+
+body.dark-mode .dropdown-menu {
+background-color: #555;
+}
+
+body.dark-mode .dropdown-menu a {
+color: #fff;
+}
+
+body.dark-mode .dropdown-menu a:hover {
+background-color: #666;
+}
+
+/* top nav dropdown */
+.title h1 {
+font-size: 24px;
+margin: 0;
+color: black;
+}
+
+.title .wow {
+font-weight: bold;
+color: #000080;
+}
+
+/* .icons {
+display: flex;
+align-items: center;
+margin: 0%;
+} */
+
+.icon {
+margin-right: 10px;
+cursor: pointer;
+}
+
+.icon img {
+width: 30px;
+height: 30px;
+}
+
+.profile-text {
+font-size: 12px; /* Adjust text size as needed */
+color: white; /* Text color, adjust as needed */
+}
+
+.dropdown-menu {
+display: none;
+position: absolute;
+top: 50px;
+right: 2%;
+background-color: #ffffff;
+box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+z-index: 1;
+border-radius: 5px;
+overflow: hidden;
+font-size: 10px;
+}
+
+.dropdown-menu a {
+display: block;
+padding: 12px 16px;
+text-decoration: none;
+color: #000000;
+}
+
+.dropdown-menu a:hover {
+background-color: #f1f1f1;
+}
+
+.show {
+display: block;
+}
+

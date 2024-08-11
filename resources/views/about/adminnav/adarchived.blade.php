@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Archived</title>
     
     <!-- Stylesheets -->
     <link href="{!! url('css/admin/adminarchived.css') !!}" rel="stylesheet">
-    <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{!! url('css/common.css') !!}" rel="stylesheet">
+    <link href="{{ url('css/admin/topnav_sidenav.css') }}" rel="stylesheet">
  
     
     <!-- Font Awesome for icons (sideNav-->
@@ -17,15 +16,21 @@
 </head>
 <body>
 
-<div class="wrapper hover_collapse">
+    <!-- TopNav -->
+    
+    <div class="wrapper hover_collapse">
     <!-- Top Navbar -->
     <nav class="top_navbar">
 
-    <a href="{{ route('addashboard.show') }}" class="TopNav-BillnWoWlogo">
+    <a href="{{ route('cusdasboard.show') }}" class="TopNav-BillnWoWlogo">
+    
             <img src="/image/logoBillnWow3.png" alt="BillnWoWLogo">
+       
     </a>
-
+    <!-- <h3 class="navbar-text">Anonas</h3> -->
 <div class="icons">
+    
+</ul>
     <!-- Dark Mode -->
     <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
         <img src="/image/7721593.png" alt="Sun Icon">
@@ -35,12 +40,13 @@
         <!-- <span class="profile-text">Account Profile</span> -->
         <!-- Dropdown -->
         <div class="dropdown-menu" id="dropdownMenu">
-            <a href="{{ route('adprofile.show') }}">Profile</a>
+            <a href="{{ route('cusprofile.show') }}">Profile</a>
             <a href="#">Change Password</a>
             <a href="{{ route('about.layout') }}">Logout</a>
             
         </div>
     </div>
+    
 </div>
 </nav>
 
@@ -62,15 +68,13 @@
 <!-- Javascript -->
 <script>
 
-    // DarkMode
-
-function toggleDarkModeArchived() {
+// Dark Mode
+function toggleDarkModeDashboard() {
     document.body.classList.toggle('dark-mode');
-    document.querySelectorAll('.top_navbar, .sidebar').forEach(item => {
+    document.querySelectorAll('').forEach(item => {
         item.classList.toggle('dark-mode');
     });
 }
-
     // Dropdown
     
 function toggleDropdown() {
