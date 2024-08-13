@@ -13,6 +13,8 @@
 
 </head>
 <body>
+
+<header>
     <!-- Top Navbar -->
     <div class="wrapper hover_collapse">
         <nav class="top_navbar">
@@ -34,8 +36,10 @@
             </div>
         </nav>
     </div>
+</header>
 
     <!-- Profile Content -->
+     
     <div class="profile-card">
     <div class="profile-header">
         <div class="avatar-container">
@@ -64,7 +68,25 @@
         </div>
         <div class="password-edit">
             <label for="password"><strong>Password:</strong></label>
-            <input type="password" id="password" name="password" class="password-field">
+
+
+            <!-- Sample function for getting the data from the database -->
+            <!-- 
+            <script>
+                 function getdata() 
+             {
+                    var  employee = 
+                    // <?php 
+                    //connect to database and get employee name
+                    //  echo "'" . $row['empnm'] "'";
+                    // ?>;
+             }
+            </script>
+            -->
+
+
+            <a href="#" onclick="getdata();">*******</a>
+            <!-- <input type="password" id="password" name="password" class="password-field"> -->
             <button class="edit-button" id="change-password-btn">Edit</button>
         </div>
     </div>
