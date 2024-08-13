@@ -9,86 +9,46 @@
     <title>History</title>
 </head>
 <body>
-
-  <!-- TopNav -->
+<header>
+ <!-- Top Navbar -->
+ <div class="wrapper hover_collapse">
+        <nav class="top_navbar">
+            <a href="{{ route('cusdasboard.show') }}" class="TopNav-BillnWoWlogo">
+                <img src="/image/logoBillnWow3.png" alt="BillnWoWLogo">
+            </a>
+            <div class="icons">
     
-  <div class="wrapper hover_collapse">
-    <!-- Top Navbar -->
-    <nav class="top_navbar">
+            <!-- Navigation Links -->
+            <ul class="navigation-menu">
+                <li><a href="{{ route('cusdasboard.show') }}">Dashboard</a></li>
+                <li><a href="{{ route('cuspurchasehistory.show') }}">history</a></li>
+                <li><a href="#contact">Contact Us</a></li>
+            </ul>
 
-    <a href="{{ route('cusdasboard.show') }}" class="TopNav-BillnWoWlogo">
-    
-            <img src="/image/logoBillnWow3.png" alt="BillnWoWLogo">
-       
-    </a>
-    <!-- <h3 class="navbar-text">Anonas</h3> -->
-<div class="icons">
-    <!-- Navigation Links -->
-<ul class="navigation-menu">
-<li><a href="{{ route('cusdasboard.show') }}">Dashboard</a></li>
-<li><a href="{{ route('cuspurchasehistory.show') }}">history</a></li>
-    <li><a href="#contact">Contact Us</a></li>
-</ul>
-    <!-- Dark Mode -->
-    <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
-        <img src="/image/7721593.png" alt="Sun Icon">
+            <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
+                    <img src="/image/7721593.png" alt="Sun Icon">
+                </div>
+                <div class="icon profile-icon img" onclick="toggleDropdown()">   
+                    <img src="/image/4174470.png" alt="Profile Icon">
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="{{ route('cusprofile.show') }}">Profile</a>
+                        <a href="#">Change Password</a>
+                        <a href="{{ route('about.layout') }}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
     </div>
-    <div class="icon profile-icon img" onclick="toggleDropdown()">   
-        <img src="/image/4174470.png" alt="Profile Icon">
-        <!-- <span class="profile-text">Account Profile</span> -->
-        <!-- Dropdown -->
-        <div class="dropdown-menu" id="dropdownMenu">
-            <a href="{{ route('cusprofile.show') }}">Profile</a>
-            <a href="#">Change Password</a>
-            <a href="{{ route('about.layout') }}">Logout</a>
-            
-        </div>
-    </div>
-    
-</div>
 
-
-</nav>
+</header>
    
 
 
- <!-- Javascript -->
- <script>
-// Dark Mode
-function toggleDarkModeDashboard() {
-    document.body.classList.toggle('dark-mode');
-    document.querySelectorAll('').forEach(item => {
-        item.classList.toggle('dark-mode');
-    });
-}
-
-// Dropdown
-function toggleDropdown() {
-    document.getElementById('dropdownMenu').classList.toggle('show');
-}
-
-window.onclick = function(event) {
-    if (!event.target.closest('.profile-icon')) {
-        var dropdowns = document.getElementsByClassName('dropdown-menu');
-        for (var i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
-}
-
-
-</script>
-
- 
         
  <!-- content -->
-    
-     
 
 
+ <script src="{{ asset('js/customer/cusdashboard.js') }}"></script>
        
 </body>
 </html>

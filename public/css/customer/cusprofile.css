@@ -117,10 +117,14 @@ body {
 }
 
 .password-edit {
-    display: flex;
+   display: contents;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
+}
+
+.password-edit a{
+    display: contents;
 }
 
 .password-field {
@@ -138,6 +142,7 @@ body {
     border-radius: 5px;
     padding: 8px 15px;
     cursor: pointer;
+    float: inline-end;
 }
 
 .edit-button:hover {
