@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Customer Profile Page">
-    <title>Customer Profile</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Customer Profile Page">
+        <title>Customer Profile</title>
     
-    <link href="{{ url('css/customer/cusprofile.css') }}" rel="stylesheet">
-    <link href="{{ url('css/customer/topnav.css') }}" rel="stylesheet">
-    <link href="{{ url('responsiv/customer/customerprofile.css') }}" rel="stylesheet">
-    
-
-</head>
+        <link href="{{ url('css/customer/cusprofile.css') }}" rel="stylesheet">
+        <link href="{{ url('css/customer/topnav.css') }}" rel="stylesheet">
+        <link href="{{ url('responsiv/customer/customerprofile.css') }}" rel="stylesheet">
+    </head>
 <body>
 
 <header>
     <!-- Top Navbar -->
-    <div class="wrapper hover_collapse">
         <nav class="top_navbar">
             <a href="{{ route('cusdasboard.show') }}" class="TopNav-BillnWoWlogo">
                 <img src="/image/logoBillnWow3.png" alt="BillnWoWLogo">
             </a>
+
             <div class="icons">
                 <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
                     <img src="/image/7721593.png" alt="Sun Icon">
                 </div>
+
                 <div class="icon profile-icon img" onclick="toggleDropdown()">   
                     <img src="/image/4174470.png" alt="Profile Icon">
+
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
                         <a href="#">Change Password</a>
@@ -35,7 +35,6 @@
                 </div>
             </div>
         </nav>
-    </div>
 </header>
 
     <!-- Profile Content -->
@@ -92,56 +91,58 @@
     </div>
 </div>
 
-<!-- Avatar Modal -->
-<div id="avatarModal" class="modal">
-    <div class="modal-customercontent">
-        <span class="close" id="closeAvatarModal">&times;</span>
-        <h2>Select an Avatar</h2>
-        <div class="avatar-options">
-            <div class="avatar-option">
-                <img src="/image/avatar1.jpg" alt="Avatar 1" class="modal-avatar" data-avatar="avatar1.jpg">
-                <h5>Avatar 1</h5>
-            </div>
-            <div class="avatar-option">
-                <img src="/image/avatar2.jpg" alt="Avatar 2" class="modal-avatar" data-avatar="avatar2.jpg">
-                <h5>Avatar 2</h5>
-            </div>
-            <div class="avatar-option">
-                <img src="/image/avatar3.png" alt="Avatar 3" class="modal-avatar" data-avatar="avatar3.png">
-                <h5>Avatar 3</h5>
-            </div>
-            <div class="avatar-option">
-                <img src="/image/avatar4.png" alt="Avatar 4" class="modal-avatar" data-avatar="avatar4.png">
-                <h5>Avatar 4</h5>
-            </div>
-            <div class="avatar-option">
-                <img src="/image/avatar5.png" alt="Avatar 5" class="modal-avatar" data-avatar="avatar5.png">
-                <h5>Avatar 5</h5>
-            </div>
-            <div class="upload-avatar">
-                <span class="upload-icon">&#43;</span>
-                <input type="file" id="upload-avatar-input" accept="image/*" style="display:none;">
-                <label for="upload-avatar-input" style="cursor:pointer;">Upload</label>
+        <!-- Avatar Modal -->
+        <div id="avatarModal" class="modal">
+            <div class="modal-customercontent">
+                <span class="close" id="closeAvatarModal">&times;</span>
+                <h2>Select an Avatar</h2>
+
+                <div class="avatar-options">
+                    <div class="avatar-option">
+                        <img src="/image/avatar1.jpg" alt="Avatar 1" class="modal-avatar" data-avatar="avatar1.jpg">
+                        <h5>Avatar 1</h5>
+                    </div>
+
+                    <div class="avatar-option">
+                        <img src="/image/avatar2.jpg" alt="Avatar 2" class="modal-avatar" data-avatar="avatar2.jpg">
+                        <h5>Avatar 2</h5>
+                    </div>
+
+                    <div class="avatar-option">
+                        <img src="/image/avatar3.png" alt="Avatar 3" class="modal-avatar" data-avatar="avatar3.png">
+                        <h5>Avatar 3</h5>
+                    </div>
+
+                    <div class="avatar-option">
+                        <img src="/image/avatar4.png" alt="Avatar 4" class="modal-avatar" data-avatar="avatar4.png">
+                        <h5>Avatar 4</h5>
+                    </div>
+
+                    <div class="avatar-option">
+                        <img src="/image/avatar5.png" alt="Avatar 5" class="modal-avatar" data-avatar="avatar5.png">
+                        <h5>Avatar 5</h5>
+                    </div>
+
+                    <div class="upload-avatar">
+                        <span class="upload-icon">&#43;</span>
+                        <input type="file" id="upload-avatar-input" accept="image/*" style="display:none;">
+                        <label for="upload-avatar-input" style="cursor:pointer;">Upload</label>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
-
-
-    <!-- The Password Modal -->
-    <div id="passwordModal" class="modal">
-        <div class="modal-customercontent ">
-            <span class="close" id="closePasswordModal">&times;</span>
-            <h2>Change Password</h2>
-            <input type="password" id="old-password" class="password-field-modal" placeholder="Old Password">
-            <input type="password" id="new-password" class="password-field-modal" placeholder="New Password">
-            <input type="password" id="confirm-password" class="password-field-modal" placeholder="Confirm New Password">
-            <button class="modal-submit-button" id="submit-password-change">Save</button>
+        <!-- The Password Modal -->
+        <div id="passwordModal" class="modal">
+            <div class="modal-customercontent ">
+                <span class="close" id="closePasswordModal">&times;</span>
+                <h2>Change Password</h2>
+                <input type="password" id="old-password" class="password-field-modal" placeholder="Old Password">
+                <input type="password" id="new-password" class="password-field-modal" placeholder="New Password">
+                <input type="password" id="confirm-password" class="password-field-modal" placeholder="Confirm New Password">
+                <button class="modal-submit-button" id="submit-password-change">Save</button>
+            </div>
         </div>
-    </div>
-
-   
-    <script src="{{ asset('js/customer/cusprofile.js') }}"></script>
-</body>
+        <script src="{{ asset('js/customer/cusprofile.js') }}"></script>
+    </body>
 </html>

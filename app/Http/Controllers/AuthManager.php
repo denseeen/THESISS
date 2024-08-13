@@ -14,12 +14,10 @@ class AuthManager extends Controller
         }
 
     public function home(){
-      
       return view('about.layout');
     }
 
    public function Resgistration(){
-
         return view('about.registration');
     }
 
@@ -50,13 +48,14 @@ class AuthManager extends Controller
     public function customer_profile(){
       return view('about.customernav.cusprofile');
     }
+    
     public function customer_dashboard(){
       return view('about.customernav.cusdashboard');
     }
+    
     public function customer_perchasehistory(){
       return view('about.customernav.cuspurchasehistory');
     }
-
 
     public function Saved(Request $request){
        $request->validate([
@@ -65,6 +64,7 @@ class AuthManager extends Controller
         'password' => 'required',
         'user_roles' => 'required'
     ]);
+
     $save = User::create([ 
         'name' => $request->input('name'),
         'email' => $request->input('email'),
@@ -72,14 +72,10 @@ class AuthManager extends Controller
         'user_roles' => $request->input('user_roles')
        ]);
 
+       return view('about.registration');     
+    }
 
-       return view('about.registration');
-       
-}
-
-
-public function Login(){
-
+    public function Login(){
     return view('about.login');
     }
 
@@ -93,24 +89,22 @@ public function Login(){
         // $request->session()->regenerate();
        
         $user = Auth::getProvider()->retrieveByCredentials($credentials);
-        
+    
                 Auth::login($user);
         $userrole = $user->user_roles;
+
          if( $userrole =='1'){
             return view ('about.adminnav.addashboard');
-        }else{
+        }
+        else{
             return view ('about.customernav.cusdashboard');
-
         } 
-  
         }    
   
         return back()->withErrors([
         'email' => 'The provided credentials do not match our records.',
-       ])->onlyInput('email');
-         
+       ])->onlyInput('email');        
       }
-
 
         public function customerUI(){
           return view('about.customer');
@@ -118,10 +112,6 @@ public function Login(){
 
         public function adminUI(){
         return view('about.admin');
-        
-       
-        
-
        }
 }
 

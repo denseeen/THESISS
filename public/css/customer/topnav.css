@@ -37,24 +37,10 @@
     color: white;
 }
 
-.TopNav-BillnWoWlogo img { 
-    width: 250px;
-    height: 50px;
-    margin-left: 15%;
-}
-
-.headerCusTopnav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 80%;
-    background-color: #e0e0e0;
-    padding: 20px;
-    border: 2px solid #000080;
-    border-radius: 10px;
-    margin-top: 20px;
-    transition: background-color 0.3s, border-color 0.3s;
-    position: relative;          
+.TopNav-BillnWoWlogo{ 
+    position: absolute;
+    width: 14.85%;
+    left: 2%;
 }
 
 header.dark-mode {
@@ -70,7 +56,7 @@ header.dark-mode {
 
 .title .wow {
     font-weight: bold;
-    color: #000080; */
+    color: #000080;
 }
 
 .icons {
@@ -235,7 +221,6 @@ body.dark-mode .dropdown-menuCusTopNav a:hover {
 
 body.dark-mode {
     background-color: #333;
-    /* color: #fff; */
 }
 
 .profile-body.dark-mode {
@@ -243,72 +228,10 @@ body.dark-mode {
     color: white;
 }
 
-.info h3.dark-mode {
-    /* color: rgb(243, 44, 44); */
-}
-
-
-/* Sidebar styles */
-/* .sidebar {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    width: 220px;
-    height: 100%;
-    background-color:rgb(15, 15, 84);
-    background-;color: (4, 35, 49, 0.8);
-    background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
-    transition: width 0.5s;
-    z-index: 20; 
-}
-
-.sidebar_inner {
-    padding-top: 20px;
-}
-
-.sidebar ul {
-    padding: 0;
-}
-
-.sidebar ul li {
-    margin-bottom: 10px;
-}
-
-.sidebar ul li a {
-    display: block;
-    padding: 5px 5px;
-    color: #fff;
-    text-decoration: none;
-    font-size: 18px;
-   
-}
-
-.sidebar ul li a .icon {
-    margin-right: 15px;
-}
-
-.sidebar ul li a:hover {
-    background-color: #0e94d4;
-}
-
-=
-.hover_collapse .sidebar {
-    width: 70px;
-}
-
-.hover_collapse .sidebar ul li a .text {
-    display: none;
-} */
-
 /* Dark mode styles */
 body.dark-mode {
     background-color: #333;
-    /* color: #fff; */
 }
-
-/* .top_navbar.dark-mode {
-    background-color: #333;
-} */
 
 .sidebar.dark-mode {
     background-color: #333;
@@ -353,12 +276,6 @@ body.dark-mode .dropdown-menu a:hover {
     color: #000080;
 }
 
-/* .icons {
-    display: flex;
-    align-items: center;
-    margin: 0%;
-} */
-
 .icon {
     margin-right: 10px;
     cursor: pointer;
@@ -401,5 +318,3 @@ body.dark-mode .dropdown-menu a:hover {
 .show {
     display: block;
 }
-
-      
