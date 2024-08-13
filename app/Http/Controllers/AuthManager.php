@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthManager extends Controller
 {
-    public function Def(){
-        return view('welcome');
+    public function Def() {
+        return view('about.layout');
         }
 
     public function home(){
@@ -74,7 +74,6 @@ class AuthManager extends Controller
 
        return view('about.registration');     
     }
-
 
     public function Login(){
     return view('about.login');

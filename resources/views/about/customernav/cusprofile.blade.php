@@ -10,9 +10,10 @@
         <link href="{{ url('css/customer/topnav.css') }}" rel="stylesheet">
         <link href="{{ url('responsiv/customer/customerprofile.css') }}" rel="stylesheet">
     </head>
+<body>
 
-    <body>
-        <!-- Top Navbar -->
+<header>
+    <!-- Top Navbar -->
         <nav class="top_navbar">
             <a href="{{ route('cusdasboard.show') }}" class="TopNav-BillnWoWlogo">
                 <img src="/image/logoBillnWow3.png" alt="BillnWoWLogo">
@@ -34,45 +35,61 @@
                 </div>
             </div>
         </nav>
+</header>
 
-        <!-- Profile Content -->
-        <div class="profile-card">
-            <div class="profile-header">
-                <div class="avatar-container">
-                    <img src="/image/avatar1.jpg" alt="Avatar" class="avatar" id="current-avatar">
-                    <button class="change-avatar-btn" id="change-avatar-btn"></button>
-                </div>
-
-                <div class="name-title">
-                    <h2>Hembo Tingor</h2>
-                </div>
-            </div>
-
-            <div class="profile-body">
-                <div class="info">
-                    <h3>Information</h3>
-                    <p><strong>Gender:</strong> Male</p>
-                    <p><strong>Birthday:</strong> August 12, 2024</p>
-                    <hr>
-                    <p><strong>Email:</strong> rntng@gmail.com</p>
-                    <p><strong>Facebook:</strong> Hembo Tingor</p>
-                    <hr>
-                    <p><strong>Telephone:</strong> 239553655</p>
-                    <p><strong>Mobile:</strong> +63 924336535</p>
-
-                    <div class="field">
-                        <p><strong>Address:</strong> Anonas, Cubao, Quezon City</p>
-                        <!-- <button class="edit-button">Edit</button> -->
-                    </div>
-                </div>
-                
-                <div class="password-edit">
-                    <label for="password"><strong>Password:</strong></label>
-                    <input type="password" id="password" name="password" class="password-field">
-                    <button class="edit-button" id="change-password-btn">Edit</button>
-                </div>
+    <!-- Profile Content -->
+     
+    <div class="profile-card">
+    <div class="profile-header">
+        <div class="avatar-container">
+            <img src="/image/avatar1.jpg" alt="Avatar" class="avatar" id="current-avatar">
+            <button class="change-avatar-btn" id="change-avatar-btn"></button>
+        </div>
+        <div class="name-title">
+            <h2>Hembo Tingor</h2>
+        </div>
+    </div>
+    <div class="profile-body">
+        <div class="info">
+            <h3>Information</h3>
+            <p><strong>Gender:</strong> Male</p>
+            <p><strong>Birthday:</strong> August 12, 2024</p>
+            <hr>
+            <p><strong>Email:</strong> rntng@gmail.com</p>
+            <p><strong>Facebook:</strong> Hembo Tingor</p>
+            <hr>
+            <p><strong>Telephone:</strong> 239553655</p>
+            <p><strong>Mobile:</strong> +63 924336535</p>
+            <div class="field">
+                <p><strong>Address:</strong> Anonas, Cubao, Quezon City</p>
+                <!-- <button class="edit-button">Edit</button> -->
             </div>
         </div>
+        <div class="password-edit">
+            <label for="password"><strong>Password:</strong></label>
+
+
+            <!-- Sample function for getting the data from the database -->
+            <!-- 
+            <script>
+                 function getdata() 
+             {
+                    var  employee = 
+                    // <?php 
+                    //connect to database and get employee name
+                    //  echo "'" . $row['empnm'] "'";
+                    // ?>;
+             }
+            </script>
+            -->
+
+
+            <a href="#" onclick="getdata();">*******</a>
+            <!-- <input type="password" id="password" name="password" class="password-field"> -->
+            <button class="edit-button" id="change-password-btn">Edit</button>
+        </div>
+    </div>
+</div>
 
         <!-- Avatar Modal -->
         <div id="avatarModal" class="modal">
