@@ -7,11 +7,14 @@
         <link href="{!! url('css/registration.css') !!}" rel="stylesheet">
         <link href="{!! url('css/common.css') !!}" rel="stylesheet">
     </head>
+    
     <body>
         <header class="headerrr">
             <nav>
                 <ul>
-                    <a href="{{route('about.layout') }}"><img src="/image/billnwow-logo.png" class="billnwow-logo" alt="NWOW Philippines Storefront" style="margin-top:-1.3%"></a>
+                    <a href="{{route('about.layout') }}">
+                        <img src="/image/billnwow-logo.png" class="billnwow-logo" alt="NWOW Philippines Storefront" style="margin-top:-1.3%">
+                    </a>
                 </ul>
             </nav>
         </header>  

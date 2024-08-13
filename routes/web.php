@@ -8,7 +8,6 @@ Route::get('/welcome',[AuthManager::class, 'Def'])->name('welcome');
 
 Route::get('/Main',[AuthManager::class, 'home'])->name('about.layout');
 
-
 Route::get('/register',[AuthManager::class, 'Resgistration'])->name('about.registration'); 
 
 
