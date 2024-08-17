@@ -11,22 +11,24 @@
         <link href="{{ url('responsiv/customer/customerprofile.css') }}" rel="stylesheet">
     </head>
 <body>
-
-<header>
-    <!-- Top Navbar -->
-        <nav class="top_navbar">
-            <a href="{{ route('cusdasboard.show') }}" class="TopNav-BillnWoWlogo">
-                <img src="/image/logoBillnWow3.png" alt="BillnWoWLogo">
+     <!-- Top Navbar -->
+     <nav class="top_navbar">
+            <a href="{{ route('cusdasboard.show') }}">
+                <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
 
             <div class="icons">
+
+                <!-- Dark Mode -->
                 <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
                     <img src="/image/7721593.png" alt="Sun Icon">
                 </div>
 
                 <div class="icon profile-icon img" onclick="toggleDropdown()">   
                     <img src="/image/4174470.png" alt="Profile Icon">
+                    <!-- <span class="profile-text">Account Profile</span> -->
 
+                    <!-- Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
                         <a href="#">Change Password</a>
@@ -35,7 +37,6 @@
                 </div>
             </div>
         </nav>
-</header>
 
     <!-- Profile Content -->
      
@@ -44,48 +45,30 @@
         <div class="avatar-container">
             <img src="/image/avatar1.jpg" alt="Avatar" class="avatar" id="current-avatar">
             <button class="change-avatar-btn" id="change-avatar-btn"></button>
+           
+         <div class="name-title">
+            <h2 id="profile-name">{{ Auth::user()->name }}</h2>
         </div>
-        <div class="name-title">
-            <h2>Hembo Tingor</h2>
-        </div>
+
     </div>
     <div class="profile-body">
         <div class="info">
             <h3>Information</h3>
-            <p><strong>Gender:</strong> Male</p>
-            <p><strong>Birthday:</strong> August 12, 2024</p>
+            <p><strong>Gender:</strong> <span id="profile-gender">Male</span></p>
+            <p><strong>Birthday:</strong> <span id="profile-birthday">August 12, 2024</span></p>
             <hr>
-            <p><strong>Email:</strong> rntng@gmail.com</p>
-            <p><strong>Facebook:</strong> Hembo Tingor</p>
+            <p><strong>Email:</strong> <span id="profile-email">{{ Auth::user()->email }}</span></p>
+            <p><strong>Facebook:</strong> <span id="profile-facebook">Hembo Tingor</span></p>
             <hr>
-            <p><strong>Telephone:</strong> 239553655</p>
-            <p><strong>Mobile:</strong> +63 924336535</p>
+            <p><strong>Telephone:</strong> <span id="profile-telephone">239553655</span></p>
+            <p><strong>Mobile:</strong> <span id="profile-mobile">+63 924336535</span></p>
             <div class="field">
-                <p><strong>Address:</strong> Anonas, Cubao, Quezon City</p>
-                <!-- <button class="edit-button">Edit</button> -->
+                <p><strong>Address:</strong> <span id="profile-address">Anonas, Cubao, Quezon City</span></p>
             </div>
         </div>
         <div class="password-edit">
             <label for="password"><strong>Password:</strong></label>
-
-
-            <!-- Sample function for getting the data from the database -->
-            <!-- 
-            <script>
-                 function getdata() 
-             {
-                    var  employee = 
-                    // <?php 
-                    //connect to database and get employee name
-                    //  echo "'" . $row['empnm'] "'";
-                    // ?>;
-             }
-            </script>
-            -->
-
-
-            <a href="#" onclick="getdata();">*******</a>
-            <!-- <input type="password" id="password" name="password" class="password-field"> -->
+            <a href="#" id="password-link">*******</a>
             <button class="edit-button" id="change-password-btn">Edit</button>
         </div>
     </div>
