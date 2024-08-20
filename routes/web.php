@@ -4,11 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Auth;
 
+
 use App\Http\Controllers\FormController;
 
-Route::get('/welcome',[AuthManager::class, 'Def'])->name('welcome'); 
+// Route::get('/welcome',[AuthManager::class, 'Def'])->name('welcome'); 
 
-Route::get('/Main',[AuthManager::class, 'home'])->name('about.layout');
+Route::get('/', function () {
+    return redirect()->route('about.layout');
+});
+
+Route::get('/Main', [AuthManager::class, 'home'])->name('about.layout');
+
 
 Route::get('/register',[AuthManager::class, 'Resgistration'])->name('about.registration'); 
 
@@ -19,7 +25,17 @@ Route::get('/logins',[AuthManager::class, 'Login'])->name('about.login');
 
 Route::post('/logins',[AuthManager::class, 'LoginEntry'])->name('about.entry'); 
 
-Route::get('/customer',[AuthManager::class, 'customerUI'])->name('about.customer'); 
+
+
+// Route::get('/customer',[AuthManager::class, 'customerUI'])->name('about.customer'); 
+
+
+Route::get('/customer', [AuthManager::class, 'customerUI'])->middleware('auth')->name('about.customer');
+Route::get('/users', [YourController::class, 'index']);
+
+
+
+
 
 Route::get('/admin',[AuthManager::class, 'adminUI'])->name('about.admin');
 

@@ -7,14 +7,13 @@
     </head>
 
     <body>
-        <!-- Top Navbar -->
-        <nav class="top_navbar">
-            <a href="{{ route('cusdasboard.show') }}" class="TopNav-BillnWoWlogo">
-                <img src="/image/logoBillnWow3.png" alt="BillnWoWLogo">  
+         <!-- Top Navbar -->
+         <nav class="top_navbar">
+            <a href="{{ route('cusdasboard.show') }}">
+                <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
 
             <!-- <h3 class="navbar-text">Anonas</h3> -->
-            
             <!-- Navigation Links -->
             <div class="icons">
                 <ul class="navigation-menu">
@@ -36,9 +35,9 @@
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
                         <a href="#">Change Password</a>
-                        <a href="{{ route('about.layout') }}">Logout</a>      
+                        <a href="{{ route('about.layout') }}">Logout</a>
                     </div>
-                </div>   
+                </div>
             </div>
         </nav>
  <script src="{{ asset('js/customer/cusdashboard.js') }}"></script>   
