@@ -54,87 +54,10 @@
                 </div>
             </div>
         </div>
-<!-- content -->
-    
-     <div class="topnav">
-        <h3 style="padding: 1%;text-align: center;color: aliceblue; ">ADMIN INSTALLMENT </h3>
-    </div> 
-      
-    
-    <div class="installment-container">
-        <h2>INSTALLMENT PROCESS</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Unit</th>
-                    <th>Installment Plan</th>
-                    <th>Payment Method</th>
-                    <th>Amount</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Violation</th>
-                    <th>Comment</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><a href="#">Marian Naparan</a></td>
-                    <td>ERV3</td>
-                    <td>6 MONTHS</td>
-                    <td>OTC</td>
-                    <td>10,000</td>
-                    <td>MARCH 30 2021</td>
-                    <td>Paid</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td><a href="#" class="update-button">UPDATE</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#">Marian Naparan</a></td>
-                    <td>ERV3</td>
-                    <td>6 MONTHS</td>
-                    <td>ONLINE</td>
-                    <td>9,650</td>
-                    <td>MARCH 30 2021</td>
-                    <td>Paid</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td><a href="#" class="update-button">UPDATE</a></td>
-                </tr>
-                <tr>
-                    <td><a href="#">Marian Naparan</a></td>
-                    <td>ERV3</td>
-                    <td>6 MONTHS</td>
-                    <td>ONLINE</td>
-                    <td>9,650</td>
-                    <td>MARCH 30 2021</td>
-                    <td>Paid</td>
-                    <td>-</td>
-                    <td>-</td>
-                    <td><a href="#" class="archive-button">ARCHIVED</a></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-
-    <div class="container">
-        <div class="customer-info">
-            <h2>Customer Name:</h2>
-            <p><strong>Marian Naparan</strong></p>
-            <p>Email: marian_naparan@gmail.com</p>
-            <p>Phone Number: 0956946355</p>
-            <p>Address: Quezon City Cubao</p>
-            <a href="#" class="edit-button">Edit</a>
-        </div>
+        <!-- content -->
         
-        <div class="transaction-records">
-            <h2>Transaction Records</h2>
-            <p>Unit Price: ERVS3 59,800</p>
-            <p>Balance: 30,500</p>
-
+        <div class="installment-container">
+            <h2>INSTALLMENT PROCESS</h2>
             <table>
                 <thead>
                     <tr>
@@ -150,7 +73,6 @@
                         <th>Action</th>
                     </tr>
                 </thead>
-
                 <tbody>
                     <tr>
                         <td><a href="#">Marian Naparan</a></td>
@@ -164,7 +86,6 @@
                         <td>-</td>
                         <td><a href="#" class="update-button">UPDATE</a></td>
                     </tr>
-
                     <tr>
                         <td><a href="#">Marian Naparan</a></td>
                         <td>ERV3</td>
@@ -177,7 +98,6 @@
                         <td>-</td>
                         <td><a href="#" class="update-button">UPDATE</a></td>
                     </tr>
-
                     <tr>
                         <td><a href="#">Marian Naparan</a></td>
                         <td>ERV3</td>
@@ -194,6 +114,7 @@
             </table>
         </div>
 
+
         <div class="container">
             <div class="customer-info">
                 <h2>Customer Name:</h2>
@@ -203,35 +124,110 @@
                 <p>Address: Quezon City Cubao</p>
                 <a href="#" class="edit-button">Edit</a>
             </div>
-
+            
             <div class="transaction-records">
                 <h2>Transaction Records</h2>
                 <p>Unit Price: ERVS3 59,800</p>
                 <p>Balance: 30,500</p>
 
                 <table>
-                    <tr>
-                        <th>Date</th>
-                        <th>Amount</th>
-                    </tr>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Unit</th>
+                            <th>Installment Plan</th>
+                            <th>Payment Method</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Violation</th>
+                            <th>Comment</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
 
-                    <tr>
-                        <td>March 30 2021</td>
-                        <td>10,000</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td><a href="#">Marian Naparan</a></td>
+                            <td>ERV3</td>
+                            <td>6 MONTHS</td>
+                            <td>OTC</td>
+                            <td>10,000</td>
+                            <td>MARCH 30 2021</td>
+                            <td>Paid</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><a href="#" class="update-button">UPDATE</a></td>
+                        </tr>
 
-                    <tr>
-                        <td>April 15 2021</td>
-                        <td>9,650</td>
-                    </tr>
+                        <tr>
+                            <td><a href="#">Marian Naparan</a></td>
+                            <td>ERV3</td>
+                            <td>6 MONTHS</td>
+                            <td>ONLINE</td>
+                            <td>9,650</td>
+                            <td>MARCH 30 2021</td>
+                            <td>Paid</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><a href="#" class="update-button">UPDATE</a></td>
+                        </tr>
 
-                    <tr>
-                        <td>May 15 2021</td>
-                        <td>9,650</td>
-                    </tr>
+                        <tr>
+                            <td><a href="#">Marian Naparan</a></td>
+                            <td>ERV3</td>
+                            <td>6 MONTHS</td>
+                            <td>ONLINE</td>
+                            <td>9,650</td>
+                            <td>MARCH 30 2021</td>
+                            <td>Paid</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td><a href="#" class="archive-button">ARCHIVED</a></td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
+
+            <div class="container">
+                <div class="customer-info">
+                    <h2>Customer Name:</h2>
+                    <p><strong>Marian Naparan</strong></p>
+                    <p>Email: marian_naparan@gmail.com</p>
+                    <p>Phone Number: 0956946355</p>
+                    <p>Address: Quezon City Cubao</p>
+                    <a href="#" class="edit-button">Edit</a>
+                </div>
+
+                <div class="transaction-records">
+                    <h2>Transaction Records</h2>
+                    <p>Unit Price: ERVS3 59,800</p>
+                    <p>Balance: 30,500</p>
+
+                    <table>
+                        <tr>
+                            <th>Date</th>
+                            <th>Amount</th>
+                        </tr>
+
+                        <tr>
+                            <td>March 30 2021</td>
+                            <td>10,000</td>
+                        </tr>
+
+                        <tr>
+                            <td>April 15 2021</td>
+                            <td>9,650</td>
+                        </tr>
+
+                        <tr>
+                            <td>May 15 2021</td>
+                            <td>9,650</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
-        <script src="{{ asset('js/admin/adinstallment.js') }}"></script>
-</body>
+            <script src="{{ asset('js/admin/adinstallment.js') }}"></script>
+    </body>
 </html>
