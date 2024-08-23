@@ -41,4 +41,22 @@ class UserFactory extends Factory
             'email_verified_at' => null,
         ]);
     }
+
+
+    public function admin(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'user_roles' => 'admin',
+        ]);
+    }
+
+    public function testUserCreation()
+    {
+        $user = \App\Models\User::factory()->create();
+        $this->assertNotNull($user->id);
+    }
+
+
+
+
 }
