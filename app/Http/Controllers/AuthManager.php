@@ -59,6 +59,15 @@ class AuthManager extends Controller
           return view('about.customernav.cuspurchasehistory');
        }
 
+       public function customerUI(){
+        return view('about.customer');
+        
+        }
+
+      public function adminUI(){
+      return view('about.admin');
+        }
+
     public function Saved(Request $request){
               $request->validate([
                 'name'=> 'required',
@@ -115,21 +124,53 @@ class AuthManager extends Controller
                       'email' => 'The provided credentials do not match our records.',
                   ])->onlyInput('email');
               }
-    
-   
-              public function customerUI(){
-                return view('about.customer');
-                
-                }
 
-              public function adminUI(){
-              return view('about.admin');
-            }
+              public function showProfile()
+                    {
+                        $user = Auth::user();
+                        $maskedPassword = str_repeat('*', strlen($user->password));
+
+                        return view('profile', ['user' => $user, 'maskedPassword' => $maskedPassword]);
+                    }
+
+                    public function changePassword(Request $request)
+                        {
+                            // Validate the input
+                            $validated = $request->validate([
+                                'old_password' => 'required',
+                                'new_password' => 'required|min:8|confirmed',
+                            ]);
+
+                            $user = Auth::user();
+
+                            // Check if the old password matches
+                            if (!Hash::check($request->old_password, $user->password)) {
+                                return response()->json(['status' => 'error', 'message' => 'The old password is incorrect'], 400);
+                            }
+
+                            // Update the password
+                            $user->password = Hash::make($request->new_password);
+                            $user->save();
+
+                            return response()->json(['status' => 'success', 'message' => 'Password changed successfully!']);
+                        }
+
+                        
+                        
+                  
+                       
 
 
-      
+                        
 
-      
+
+
+
+            
+
+
+                        
+
 
 }
 

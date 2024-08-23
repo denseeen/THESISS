@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Auth;
 
-
 use App\Http\Controllers\FormController;
 
 // Route::get('/welcome',[AuthManager::class, 'Def'])->name('welcome'); 
@@ -18,22 +17,19 @@ Route::get('/Main', [AuthManager::class, 'home'])->name('about.layout');
 
 Route::get('/register',[AuthManager::class, 'Resgistration'])->name('about.registration'); 
 
-
 Route::post('/adduser',[AuthManager::class, 'Saved'])->name('about.save'); 
 
 Route::get('/logins',[AuthManager::class, 'Login'])->name('about.login'); 
 
 Route::post('/logins',[AuthManager::class, 'LoginEntry'])->name('about.entry'); 
 
-
-
 // Route::get('/customer',[AuthManager::class, 'customerUI'])->name('about.customer'); 
-
 
 Route::get('/customer', [AuthManager::class, 'customerUI'])->middleware('auth')->name('about.customer');
 Route::get('/users', [YourController::class, 'index']);
 
-
+// changepassword
+Route::post('/change-password', [AuthManager::class, 'changePassword'])->name('password.change');
 
 
 
@@ -57,3 +53,14 @@ Route::post('/submit-form', [FormController::class, 'submitForm'])->name('form.s
 Route::get('/success', function () {
     return view('about.success'); // This should be the view you want to show after successful submission
 })->name('success.page');
+
+
+
+
+
+
+
+
+
+
+
