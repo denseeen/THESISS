@@ -60,6 +60,7 @@ return new class extends Migration
             $table->boolean('twelvemonths')->nullable();
             $table->boolean('eighteenmonths')->nullable();
         });
+        
     }
 
     // Reverse the migrations.

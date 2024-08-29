@@ -17,7 +17,6 @@ Route::get('/Main', [AuthManager::class, 'home'])->name('about.layout');
 
 Route::get('/register',[AuthManager::class, 'Resgistration'])->name('about.registration'); 
 
-
 Route::post('/adduser',[AuthManager::class, 'Saved'])->name('about.save'); 
 
 Route::get('/logins',[AuthManager::class, 'Login'])->name('about.login'); 
@@ -26,7 +25,15 @@ Route::post('/logins',[AuthManager::class, 'LoginEntry'])->name('about.entry');
 
 // Route::get('/customer',[AuthManager::class, 'customerUI'])->name('about.customer'); 
 
-Route::get('/customer', [AuthManager::class, 'customerUI'])->middleware('auth')->name('about.customer');
+// Route::get('/customer', [AuthManager::class, 'customerUI'])->middleware('auth')->name('about.customer'); DI KO SURE KUNG TATANGGALIN KO TO KAYA GAGAWIN KO NALANG MUNA COMMENT
+// <<<<<<< admin-request_function
+// =======
+// Route::get('/users', [YourController::class, 'index']);
+
+// // changepassword
+// Route::post('/change-password', [AuthManager::class, 'changePassword'])->name('password.change');
+
+// >>>>>>> main HANGGANG DITO YUNG ERROR HEHE
 
 Route::get('/users', [YourController::class, 'index']);
 
@@ -50,3 +57,14 @@ Route::post('/submit-form', [FormController::class, 'submitForm'])->name('form.s
 Route::get('/success', function () {
     return view('about.success'); // This should be the view you want to show after successful submission
 })->name('success.page');
+
+
+
+
+
+
+
+
+
+
+
