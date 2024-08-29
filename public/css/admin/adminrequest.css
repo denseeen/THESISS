@@ -1,19 +1,7 @@
-.application-list, .form-container {
-    background-color: #fff;
-    margin-top: 2%;
-    margin-left: 10%;
-    color: #000;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    width: 80%;
-    max-width: 1300px;
-}
-.application-list h2 {
-    margin-top: 0;
+h2 {
     text-align: center;
 }
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -38,17 +26,12 @@ th a:hover, td a:hover {
 
 .application-form {
     background-color: #fff;
-    margin-top: 1%;
+    margin-top: 5%;
     margin-left: 25%;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 800px;
-}
-
-.application-form h1 {
-    text-align: center;
-    margin-bottom: 20px;
 }
 
 .form-row {
@@ -69,8 +52,15 @@ th a:hover, td a:hover {
     margin-bottom: 5px;
 }
 
+.form-group input[name="fname"], 
+.form-group input[type="emailad"]{
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
 .form-group input[type="text"],
-.form-group input[type="email"],
 .form-group input[type="password"],
 .form-group input[type="date"],
 .form-group input[type="number"]{
@@ -87,8 +77,22 @@ th a:hover, td a:hover {
     width: 100%;
 }
 
+.checkbox-group label {
+    display: inline-flex;
+    align-items: center;
+}
+
+.checkbox-group input[type="checkbox"] {
+    vertical-align: middle; /* Ensures checkbox is vertically centered */
+}
+
+.installment-options {
+    display: none;
+    margin-left: 15%;
+}
+
 button {
-    width: 100%;
+    width: 100;
     padding: 10px;
     background-color: #007bff;
     border: none;
@@ -96,6 +100,7 @@ button {
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+    margin-left: 90%;
 }
 
 button:hover {
