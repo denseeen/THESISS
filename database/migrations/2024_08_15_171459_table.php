@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('city', 100)->nullable();
             $table->string('phone_number', 15)->nullable();
             $table->date('date_of_birth')->nullable();
+            $table->timestamps(); // This adds `created_at` and `updated_at` columns
         });
 
         // Create orders table
@@ -62,9 +63,7 @@ return new class extends Migration
         
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    // Reverse the migrations.
     public function down(): void
     {
         Schema::dropIfExists('customer_info');

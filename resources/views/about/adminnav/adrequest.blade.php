@@ -56,31 +56,45 @@
         </div>
 
         <!-- content -->
-        <form class="application-form" action="{{ route('form.submit') }}" method="POST">
+        <form action="{{ route('form.submit') }}" method="POST" class="application-form">
             @csrf
-            <h1>Application Form</h1>
+
+            <!-- Display Validation Errors -->
+        @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- Display Success Message -->
+        @if(session('status'))
+            <div class="alert alert-success">
+                {{ session('status') }}
+            </div>
+        @endif
+
+            <h2>Information</h2>
                         
             <div class="form-row">
                 <div class="form-group">
-                    <label for="last_name">Last Name</label>
-                    <input type="text" id="last_name" name="last_name">
+                    <label for="name">Full Name</label>
+                    <input type="name" id="name" name="name">
                 </div>
-                
+
                 <div class="form-group">
-                    <label for="first_name">First Name</label>
-                    <input type="text" id="first_name" name="first_name">
+                        <label for="email">Email Address</label>
+                        <input type="emailad" id="email" name="email">
                 </div>
-                
-                <div class="form-group">
-                    <label for="middle_name">Middle Name</label>
-                    <input type="text" id="middle_name" name="middle_name">
-                </div>
-            </div>
+            </div>    
             
             <div class="form-row">
                 <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address">
+                    <label for="streetaddress">Address</label>
+                    <input type="text" id="streetaddress" name="streetaddress">
                 </div>
                     
                 <div class="form-row">
@@ -94,8 +108,8 @@
                     </div>
                 
                     <div class="form-group">
-                        <label for="dob">Date of Birth</label>
-                        <input type="date" id="dob" name="dob" class="short-input">
+                        <label for="date_of_birth">Date of Birth</label>
+                        <input type="date" id="date_of_birth" name="date_of_birth" class="short-input">
                     </div>
                 </div>
         
@@ -108,8 +122,8 @@
                     
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="mobile_number">Mobile Number</label>
-                        <input type="text" id="mobile_number" name="mobile_number">
+                        <label for="phone_number">Mobile Number</label>
+                        <input type="text" id="phone_number" name="phone_number">
                     </div>
                     
                     <div class="form-group">
@@ -121,28 +135,69 @@
                         <label for="fb_account">FB Account</label>
                         <input type="text" id="fb_account" name="fb_account">
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="email_address">Email Address</label>
-                        <input type="email" id="email_address" name="email_address">
-                    </div>
-                </div>
 
-                <div class="form-row">
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password">
                     </div>
                 </div>
-                
-                <div class="form-row">
+            </div>   
+      
+            <h2>Orders</h2>
+        
+            <div class="form-row">
                     <div class="form-group">
-                        <button type="create" style="margin-top: 50%;">Create</button>
+                        <label for="orderNumber">Order Number</label>
+                        <input type="text" id="orderNumber" name="orderNumber">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unitName">Unit Name</label>
+                        <input type="text" id="unitName" name="unitName">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="dateOrder">Date of Order</label>
+                        <input type="date" id="dateOrder" name="dateOrder" class="short-dateOrder">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="unitprice">Unit Price</label>
+                        <input type="text" id="unitprice" name="unitprice">
+                    </div>
+                    </div>
+                    <div class="form-row">
+                    <div class="form-group">
+                        <label for="unitDescription">Unit Description</label>
+                        <input type="text" id="unitDescription" name="unitDescription" style="width: 50%;">
                     </div>
                 </div>
 
+                <h2>Payment Service</h2>
+                <div class="checkbox-group">
+                    <label>Fully Paid</label>
+                        <input type="checkbox" id="fullypaid" name="fullypaid" value="1">
+
+                    <label>Installment</label>
+                        <input type="checkbox" id="installment" name="installment" value="1"><br>
+                </div>
+
+                <div id="installmentOptions" class="installment-options">
+                    <div class="checkbox-group">
+                        <label>6 Months</label>
+                        <input type="checkbox" name="sixmonths" value="1">
+
+                        <label>12 Months</label>
+                        <input type="checkbox" name="twelvemonths" value="1">
+
+                        <label>18 Months</label>
+                        <input type="checkbox" name="eighteenmonths" value="1">
+                    </div>
+                </div>
+                <input type="submit" value="Submit">
+             
                 <!-- Account Creation -->
-            <div class="account_creation">
+            <!-- <div class="account_creation">
                 <form action="{{ route('about.save') }}" method="POST" enctype="multipart/form-data"  >
                     @csrf
                     <div class="mb-3 col-md-1">
@@ -170,7 +225,7 @@
                         @endif
                     </div>
 
-                    <!-- UserRoles -->
+                     UserRoles 
                     <div class="mb-3 col-md-1">
                         <select name="user_roles" class="form-control" id="user_roles">
                             <option value="0" disabled>Select User Role</option>
@@ -180,7 +235,7 @@
                     </div>
                     <button type="submit" class="cancelbtn">Submit</button>
                 </form>    
-            </div>
+            </div> -->
         </form>             
         <script src="{{ asset('js/admin/adrequest.js') }}"></script>  
     </body>
