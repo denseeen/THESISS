@@ -57,6 +57,7 @@
 
         <!-- content -->
         <form action="{{ route('form.submit') }}" method="POST" class="application-form">
+        <form action="{{ route('about.save') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
             <!-- Display Validation Errors -->

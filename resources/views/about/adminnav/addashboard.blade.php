@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Dashboard</title>
 
         <!-- Stylesheets -->
@@ -56,66 +57,171 @@
         </div>
 
         <!-- Content -->
-        <div class="container">
-            <table class="data-table">
-                <tr>
-                    <th>Expected Income</th>
-                    <th>Payment Received</th>
-                    <th>No. of Installment Customer</th>
-                    <th>No. of Fully Paid</th>
-                    <th>No. of Sales Unit</th>
-                </tr>
 
-                <tr>
-                    <td>100,000</td>
-                    <td>62,590.1</td>
-                    <td>25</td>
-                    <td>5</td>
-                    <td>12</td>
-                </tr>
-            </table>
-        </div> 
-    
-        <div class="application-list">
-            <h2>Customer Application Form</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Payment Method</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
+            <div class="row">
+                <div class="col">
+                    <!-- Billing card 1 -->
+                    <div class="card border-start-primary">
+                        <div class="card-body">
+                            <div class="small text-muted">Expected Income</div>
+                            <div class="h3" id="current-monthly-bill">$00.00</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- Billing card 2 -->
+                    <div class="card border-start-secondary">
+                        <div class="card-body">
+                            <div class="small text-muted">Payment Received</div>
+                            <div class="h3" id="next-payment-due"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- Billing card 3 -->
+                    <div class="card border-start-third">
+                        <div class="card-body">
+                            <div class="small text-muted">No. of Installment Customer</div>
+                            <div class="d-flex align-items-center">
+                                <div id="balance">
+                                    <div class="h3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- Billing card 4 -->
+                    <div class="card border-start-forth">
+                        <div class="card-body">
+                            <div class="small text-muted">No. of Fully Paid</div>
+                            <div class="d-flex align-items-center">
+                                <div id="balance">
+                                    <div class="h3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <!-- Billing card 5 -->
+                    <div class="card border-start-fifth">
+                        <div class="card-body">
+                            <div class="small text-muted">No. of Sales Unit</div>
+                            <div class="d-flex align-items-center">
+                                <div id="balance">
+                                    <div class="h3"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <tbody>
-                    <tr>
-                        <td>Marian Naparan</td>
-                        <td>10,000</td>
-                        <td>Paid</td>
-                        <td>OTC</td>
-                        <td><button>Notify</button></td>
-                    </tr>
+            <!-- Customer List -->
+            <!-- <a href="{{ route('customer.list') }}">View Customer List</a> -->
+<div class="application-list">
+    <h2>Customer List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Status</th>
+                <th>Payment Method</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-user-id="1">
+                <td>Marian Naparan</td>
+                <td>10,000</td>
+                <td>Paid</td>
+                <td>OTC</td>
+                <td><button onclick="openModal(1, 'Marian Naparan')">Notify</button></td>
+            </tr>
+            <tr data-user-id="2">
+                <td>John Doe</td>
+                <td>11,000</td>
+                <td>Paid</td>
+                <td>Online</td>
+                <td><button onclick="openModal(2, 'John Doe')">Notify</button></td>
+            </tr>
+            <tr data-user-id="3">
+                <td>Jane Smith</td>
+                <td>12,000</td>
+                <td>-</td>
+                <td>-</td>
+                <td><button onclick="openModal(3, 'Jane Smith')">Notify</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
-                    <tr>
-                        <td>Marian Naparan</td>
-                        <td>11,000</td>
-                        <td>Paid</td>
-                        <td>Online</td>
-                        <td><button>Notify</button></td>
-                    </tr>
 
-                    <tr>
-                        <td>Marian Naparan</td>
-                        <td>12,000</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td><button>Notify</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>   
+<!-- Modal Structure -->
+<div id="notifyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Notify User</h2>
+        </div>
+        <div class="modal-body">
+            <textarea id="messageBox" rows="4" style="width: 100%; padding: 10px;" placeholder="Type your message here..."></textarea>
+        </div>
+        <div class="modal-footer">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openModal(userId, userName) {
+        document.getElementById('modalTitle').textContent = `Notify ${userName}`;
+        document.getElementById('notifyModal').style.display = 'block';
+        document.getElementById('notifyModal').setAttribute('data-user-id', userId);
+    }
+
+    function closeModal() {
+        document.getElementById('notifyModal').style.display = 'none';
+    }
+
+    function sendMessage() {
+        var message = document.getElementById('messageBox').value;
+        var userId = document.getElementById('notifyModal').getAttribute('data-user-id');
+
+        if (message.trim() === '') {
+            alert('Please enter a message.');
+            return;
+        }
+
+        // AJAX request to send the message
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/send-message', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                alert('Message sent successfully.');
+                closeModal();
+            } else {
+                alert('An error occurred. Please try again.');
+            }
+        };
+        xhr.send(JSON.stringify({
+            userId: userId,
+            message: message
+        }));
+    }
+
+    window.onclick = function(event) {
+        if (event.target === document.getElementById('notifyModal')) {
+            closeModal();
+        }
+    }
+
+    </script>
+        
 <script src="{{ asset('js/admin/addashboard.js') }}"></script>
 </body>
 </html>

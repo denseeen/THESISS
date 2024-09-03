@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 
 
 class AuthManager extends Controller
@@ -73,7 +75,7 @@ class AuthManager extends Controller
                 'name'=> 'required',
                 'email' => 'required|unique:users,email',
                 'password' => 'required',
-                'user_roles' => 'required'
+                'user_roles' => 'required|in:1,2' // Ensure only valid roles are selected
             ]);
 
               $save = User::create([ 
@@ -155,6 +157,50 @@ class AuthManager extends Controller
                             return response()->json(['status' => 'success', 'message' => 'Password changed successfully!']);
                         }
 
+                             // Validate the uploaded file
+                        public function upload(Request $request)
+                        {
+                            $request->validate([
+                                'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // 2MB max
+                            ]);
+                        
+                            if ($request->hasFile('avatar')) {
+                                // Generate a unique filename using the user's ID and the current timestamp
+                                $filename = Auth()->id().'_'.time().'.'.$request->avatar->getClientOriginalExtension();
+                                
+                                // Debugging output
+                                \Log::info('Uploading avatar for user ID: ' . Auth()->id() . ' with filename: ' . $filename);
+                        
+                                // Store the file in the 'public/images' directory
+                                $request->avatar->storeAs('images', $filename, 'public');
+                        
+                                // Debugging output
+                                \Log::info('Avatar stored successfully in public/images directory.');
+                        
+                                // Update the user's avatar in the database
+                                Auth()->user()->update(['avatar' => $filename]);
+                        
+                                // Return a JSON response with the success status and the new avatar path
+                                // return response()->json(['success' => true, 'avatarPath' => $filename]);
+                                return redirect()->back()->with('success', 'Avatar uploaded successfully.');
+                            }
+                        
+                            // Return a JSON response indicating the failure of the upload process
+                            return response()->json(['success' => false, 'message' => 'Failed to upload avatar.']);
+                        }
+
+
+                      
+
+                    
+
+                        
+                            
+
+
+        
+                            
+                            
                         
                         
                   

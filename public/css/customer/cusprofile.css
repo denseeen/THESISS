@@ -285,7 +285,10 @@ body {
     padding: 10px 20px;
     cursor: pointer;
     margin-top: 10px;
+    margin-left: 25%;
 }
+
+
 
 .modal-submit-button:hover {
     background-color: #e66b4d;
