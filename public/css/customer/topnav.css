@@ -120,6 +120,7 @@ header {
 	font-size: 15px;
     color: white;
 	left: 0%;
+    align-items: center;
 }
 
 .top_navbar .navbar-text {
@@ -275,4 +276,70 @@ body.dark-mode .dropdown-menu a:hover {
 
 .show {
     display: block;
+}
+
+
+/* notification Icon */
+.notification-container {
+    position: relative;
+    display: flex; /* Use Flexbox for alignment */
+    align-items: center; /* Vertically center content if needed */
+    margin-bottom: 2%;
+}
+
+.bell-icon {
+    font-size: 30px;
+    color: #555;
+    cursor: pointer; /* Ensure it’s clickable */
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -10px;
+    background-color: red;
+    color: white;
+    padding: 5px 8px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.dropdown-notification {
+    display: none;
+    position: absolute;
+    top: 50px;
+    right: 2%;
+    background-color: #92baee;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+    font-size: 10px;
+    max-height: 300px; /* Adjust height to fit a landscape style */
+    overflow-y: auto; /* Add a vertical scrollbar if needed */
+    width: 1000%;
+   
+}
+
+.dropdown-notification.show {
+    display: block; /* Show when 'show' class is added */
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    color: black; /* Set text color to black */
+}
+
+.notification-sender,
+.notification-message {
+    color: black; /* Ensure sender and message text color is black */
+}
+
+.delete-icon {
+    cursor: pointer;
+    color: black; /* Optional: Set color of the delete icon */
+    float: inline-end;
+    margin-bottom: 2%;
 }

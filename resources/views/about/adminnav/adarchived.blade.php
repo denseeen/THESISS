@@ -54,46 +54,8 @@
                 </div>
             </div>
         </div>
-        
-    <div class="container">
-        <h2>Archived</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Date</th>
-                    <th>Unit</th>
-                    <th>Contact</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
 
-            <tbody>
-                <tr>
-                    <td>Marian Naparan</td>
-                    <td>MARCH 30 2021</td>
-                    <td>ERV3</td>
-                    <td>0946556464</td>
-                    <td><button class="view-button">View</button></td>
-                </tr>
 
-                <tr>
-                    <td>Marian Naparan</td>
-                    <td>MARCH 30 2021</td>
-                    <td>ERV3</td>
-                    <td>0946556464</td>
-                    <td><button class="view-button">View</button></td>
-                </tr>
-
-                <tr>
-                    <td>Marian Naparan</td>
-                    <td>MARCH 30 2021</td>
-                    <td>ERV3</td>
-                    <td>0946556464</td>
-                    <td><button class="view-button">View</button></td>
-                </tr>
-            </tbody>
-        </div>
 
         <div class="form-container">
             <form>
@@ -187,6 +149,49 @@
                 <button type="submit" class="delete-button">Delete</button>
             </form>
         </div>
+
+        
+    <div class="container">
+        <h2>Archived</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Unit</th>
+                    <th>Contact</th>
+                    <th></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>Marian Naparan</td>
+                    <td>MARCH 30 2021</td>
+                    <td>ERV3</td>
+                    <td>0946556464</td>
+                    <td><button class="view-button">View</button></td>
+                </tr>
+
+                <tr>
+                    <td>Marian Naparan</td>
+                    <td>MARCH 30 2021</td>
+                    <td>ERV3</td>
+                    <td>0946556464</td>
+                    <td><button class="view-button">View</button></td>
+                </tr>
+
+                <tr>
+                    <td>Marian Naparan</td>
+                    <td>MARCH 30 2021</td>
+                    <td>ERV3</td>
+                    <td>0946556464</td>
+                    <td><button class="view-button">View</button></td>
+                </tr>
+            </tbody>
+        </div>
+
+        
         <script src="{{ asset('js/admin/adarchived.js') }}"></script>
     </body>
 </html>

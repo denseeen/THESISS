@@ -57,145 +57,79 @@
         <!-- content -->
         
         <div class="installment-container">
-            <h2>INSTALLMENT PROCESS</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Unit</th>
-                        <th>Installment Plan</th>
-                        <th>Payment Method</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Violation</th>
-                        <th>Comment</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><a href="#">Marian Naparan</a></td>
-                        <td>ERV3</td>
-                        <td>6 MONTHS</td>
-                        <td>OTC</td>
-                        <td>10,000</td>
-                        <td>MARCH 30 2021</td>
-                        <td>Paid</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td><a href="#" class="update-button">UPDATE</a></td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Marian Naparan</a></td>
-                        <td>ERV3</td>
-                        <td>6 MONTHS</td>
-                        <td>ONLINE</td>
-                        <td>9,650</td>
-                        <td>MARCH 30 2021</td>
-                        <td>Paid</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td><a href="#" class="update-button">UPDATE</a></td>
-                    </tr>
-                    <tr>
-                        <td><a href="#">Marian Naparan</a></td>
-                        <td>ERV3</td>
-                        <td>6 MONTHS</td>
-                        <td>ONLINE</td>
-                        <td>9,650</td>
-                        <td>MARCH 30 2021</td>
-                        <td>Paid</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td><a href="#" class="archive-button">ARCHIVED</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <h2>INSTALLMENT PROCESS</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Unit</th>
+                <th>Installment Plan</th>
+                <th>Payment Method</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Violation</th>
+                <th>Comment</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example Row -->
+            <tr>
+            <td><a href="#" class="customer-link" data-customer-id="1">Marian Naparan</a></td>
+                <td><input type="text" name="unit" placeholder="Enter Unit"></td>
+                <td>
+                   
+                    <select name="Installment_plan">
+                        <option value="OTC"> 6 MONTHS</option>
+                        <option value="ONLINE"> 12 MONTHS</option>
+                        <option value="ONLINE"> 18 MONTHS</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="payment_method">
+                        <option value="OTC">OTC</option>
+                        <option value="ONLINE">ONLINE</option>
+                    </select>
+                </td>
+                <td><input type="number" name="amount" placeholder="Enter Amount"></td>
+                <td><input type="date" name="date"></td>
+                <td>
+                    <select name="status">
+                        <option value="paid">Paid</option>
+                        <option value="not_paid">Not Paid</option>
+                        <option value="fully_paid">Fully Paid</option>
+                    </select>
+                </td>
+                <td><input type="text" name="violation" placeholder="Enter Violation"></td>
+                <td><input type="text" name="comment" placeholder="Enter Comment"></td>
+                <td>
+                    <select class="action-dropdown">
+                        <option value="update">Update</option>
+                        <option value="archive">Archive</option>
+                    </select>
+                </td>
+            </tr>
+            <!-- Repeat similar rows as needed -->
+        </tbody>
+    </table>
+</div>
 
 
-        <div class="container">
-            <div class="customer-info">
-                <h2>Customer Name:</h2>
-                <p><strong>Marian Naparan</strong></p>
-                <p>Email: marian_naparan@gmail.com</p>
-                <p>Phone Number: 0956946355</p>
-                <p>Address: Quezon City Cubao</p>
-                <a href="#" class="edit-button">Edit</a>
-            </div>
-            
-            <div class="transaction-records">
-                <h2>Transaction Records</h2>
-                <p>Unit Price: ERVS3 59,800</p>
-                <p>Balance: 30,500</p>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Unit</th>
-                            <th>Installment Plan</th>
-                            <th>Payment Method</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th>Status</th>
-                            <th>Violation</th>
-                            <th>Comment</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr>
-                            <td><a href="#">Marian Naparan</a></td>
-                            <td>ERV3</td>
-                            <td>6 MONTHS</td>
-                            <td>OTC</td>
-                            <td>10,000</td>
-                            <td>MARCH 30 2021</td>
-                            <td>Paid</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td><a href="#" class="update-button">UPDATE</a></td>
-                        </tr>
-
-                        <tr>
-                            <td><a href="#">Marian Naparan</a></td>
-                            <td>ERV3</td>
-                            <td>6 MONTHS</td>
-                            <td>ONLINE</td>
-                            <td>9,650</td>
-                            <td>MARCH 30 2021</td>
-                            <td>Paid</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td><a href="#" class="update-button">UPDATE</a></td>
-                        </tr>
-
-                        <tr>
-                            <td><a href="#">Marian Naparan</a></td>
-                            <td>ERV3</td>
-                            <td>6 MONTHS</td>
-                            <td>ONLINE</td>
-                            <td>9,650</td>
-                            <td>MARCH 30 2021</td>
-                            <td>Paid</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td><a href="#" class="archive-button">ARCHIVED</a></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="container">
+<!-- Modal Structure -->
+<div id="customer-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-body">
+            <!-- Flex container for customer info and transaction records -->
+            <div class="flex-columns">
                 <div class="customer-info">
                     <h2>Customer Name:</h2>
-                    <p><strong>Marian Naparan</strong></p>
-                    <p>Email: marian_naparan@gmail.com</p>
-                    <p>Phone Number: 0956946355</p>
-                    <p>Address: Quezon City Cubao</p>
+                    <p><strong id="modal-name">Marian Naparan</strong></p>
+                    <p>Email: <span id="modal-email">marian_naparan@gmail.com</span></p>
+                    <p>Phone Number: <span id="modal-phone">0956946355</span></p>
+                    <p>Address: <span id="modal-address">Quezon City Cubao</span></p>
                     <a href="#" class="edit-button">Edit</a>
                 </div>
 
@@ -203,31 +137,77 @@
                     <h2>Transaction Records</h2>
                     <p>Unit Price: ERVS3 59,800</p>
                     <p>Balance: 30,500</p>
-
-                    <table>
-                        <tr>
-                            <th>Date</th>
-                            <th>Amount</th>
-                        </tr>
-
-                        <tr>
-                            <td>March 30 2021</td>
-                            <td>10,000</td>
-                        </tr>
-
-                        <tr>
-                            <td>April 15 2021</td>
-                            <td>9,650</td>
-                        </tr>
-
-                        <tr>
-                            <td>May 15 2021</td>
-                            <td>9,650</td>
-                        </tr>
-                    </table>
                 </div>
             </div>
+
+            <!-- Table below the customer info and transaction records -->
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                    </tr>
+                    <tr>
+                        <td>March 30 2021</td>
+                        <td>10,000</td>
+                    </tr>
+                    <tr>
+                        <td>April 15 2021</td>
+                        <td>9,650</td>
+                    </tr>
+                    <tr>
+                        <td>May 15 2021</td>
+                        <td>9,650</td>
+                    </tr>
+                </table>
+            </div>
         </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const modal = document.getElementById('customer-modal');
+    const closeButton = document.querySelector('.close');
+    const customerLinks = document.querySelectorAll('.customer-link'); // Updated to .customer-link
+
+    // Open modal with customer details
+    customerLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const customerId = this.getAttribute('data-customer-id');
+
+            // Fetch customer details from the server (Example with static data)
+            // Replace with actual data fetch
+            document.getElementById('modal-name').textContent = 'Marian Naparan';
+            document.getElementById('modal-email').textContent = 'marian_naparan@gmail.com';
+            document.getElementById('modal-phone').textContent = '0956946355';
+            document.getElementById('modal-address').textContent = 'Quezon City Cubao';
+
+            modal.style.display = 'block';
+        });
+    });
+
+    // Close modal
+    closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
+
+    // Close modal if outside click
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+
+
+  </script>      
             <script src="{{ asset('js/admin/adinstallment.js') }}"></script>
     </body>
 </html>
