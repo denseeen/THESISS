@@ -27,7 +27,7 @@ th a:hover, td a:hover {
 .application-form {
     background-color: #fff;
     margin-top: 5%;
-    margin-left: 25%;
+    margin-left: 30%;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -36,7 +36,7 @@ th a:hover, td a:hover {
 
 .form-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     margin-bottom: 15px;
 }
@@ -44,7 +44,7 @@ th a:hover, td a:hover {
 .form-group {
     display: flex;
     flex-direction: column;
-    margin-right: 15px;
+    margin-right: 30px;
     flex: 1;
 }
 
@@ -52,18 +52,11 @@ th a:hover, td a:hover {
     margin-bottom: 5px;
 }
 
-.form-group input[name="fname"], 
-.form-group input[type="emailad"]{
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-}
-
 .form-group input[type="text"],
-.form-group input[type="password"],
 .form-group input[type="date"],
-.form-group input[type="number"]{
+.form-group input[type="number"],
+.form-group input[name="name"], 
+.form-group input[type="emailad"]{
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -88,7 +81,7 @@ th a:hover, td a:hover {
 
 .installment-options {
     display: none;
-    margin-left: 15%;
+    margin-left: 33%;
 }
 
 button {
@@ -107,3 +100,25 @@ button:hover {
     background-color: #0056b3;
 }
 
+.centered-row {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px; /* Adjust the gap as needed */
+    margin-bottom: 15px;
+}
+
+.centered-row .form-group {
+    flex: 1 1 200px; /* Minimum width of 200px for each field, adjust as needed */
+    max-width: 102px; /* Maximum width for better layout control */
+}
+
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group select[name="user_roles"]{
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}

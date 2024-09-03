@@ -18,7 +18,7 @@ Route::get('/register',[AuthManager::class, 'Resgistration'])->name('about.regis
 
 Route::get('/logins',[AuthManager::class, 'Login'])->name('about.login'); 
 
-Route::post('/logins',[AuthManager::class, 'LoginEntry'])->name('about.entry'); 
+Route::post('/logins',[FormController::class, 'LoginEntry'])->name('about.entry'); 
 
 Route::get('/customer',[AuthManager::class, 'customerUI'])->name('about.customer'); 
 
