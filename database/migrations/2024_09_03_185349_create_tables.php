@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Create Customer_info table
+        // Create customer_info table
         Schema::create('customer_info', function (Blueprint $table) {
             $table->id();
             $table->string('name', 244);
             $table->string('email', 255);
             $table->string('streetaddress', 255)->nullable();
-            $table->string('state', 100)->nullable();
-            $table->string('city', 100)->nullable();
-            $table->string('phone_number', 15)->nullable();
+            $table->string('phone_number')->nullable(); // Changed to string
             $table->date('date_of_birth')->nullable();
+            $table->unsignedTinyInteger('age')->nullable(); // Changed to unsignedTinyInteger
+            $table->string('facebook')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('telephone_number')->nullable(); // Changed to string
         });
 
         // Create admin_info table
@@ -29,11 +31,14 @@ return new class extends Migration
             $table->string('name', 244)->nullable(false);
             $table->string('email', 255)->nullable(false);
             $table->string('streetaddress', 255)->nullable();
-            $table->string('state', 100)->nullable();
-            $table->string('city', 100)->nullable();
-            $table->string('phone_number', 15)->nullable();
+            $table->string('phone_number')->nullable(); // Changed to string
             $table->date('date_of_birth')->nullable();
-            $table->timestamps(); // This adds `created_at` and `updated_at` columns
+            $table->unsignedTinyInteger('age')->nullable(); // Changed to unsignedTinyInteger
+            $table->string('facebook')->nullable();
+            $table->string('gender', 15)->nullable();
+            $table->string('telephone_number')->nullable(); // Changed to string
+
+            $table->timestamps(); // Adds created_at and updated_at columns
         });
 
         // Create orders table
@@ -60,13 +65,14 @@ return new class extends Migration
             $table->boolean('twelvemonths')->nullable();
             $table->boolean('eighteenmonths')->nullable();
         });
-        
     }
 
-    // Reverse the migrations.
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::dropIfExists('customer_info');
+         Schema::dropIfExists('customer_info');
         Schema::dropIfExists('admin_info');
         Schema::dropIfExists('orders');
         Schema::dropIfExists('payment_service');
