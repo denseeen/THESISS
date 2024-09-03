@@ -18,7 +18,11 @@ class CustomerInfo extends Model
         'email', 
         'streetaddress', 
         'phone_number', 
-        'date_of_birth'
+        'date_of_birth',
+        'age',
+        'facebook',
+        'gender',
+        'telephone_number'
     ];
 
     public function orders()

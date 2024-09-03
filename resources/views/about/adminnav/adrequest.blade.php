@@ -11,8 +11,7 @@
     
         
         <!-- Font Awesome for icons (sideNav-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">   
     </head>
 
     <body>
@@ -27,6 +26,7 @@
                 <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
                     <img src="/image/7721593.png" alt="Sun Icon">
                 </div>
+                
                 <div class="icon profile-icon img" onclick="toggleDropdown()">   
                     <img src="/image/4174470.png" alt="Profile Icon">
                     <!-- <span class="profile-text">Account Profile</span> -->
@@ -60,25 +60,24 @@
             @csrf
 
             <!-- Display Validation Errors -->
-        @if($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-        <!-- Display Success Message -->
-        @if(session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
+            <!-- Display Success Message -->
+            @if(session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
 
-            <h2>Information</h2>
-                        
+            <h2>Information</h2>                      
             <div class="form-row">
                 <div class="form-group">
                     <label for="name">Full Name</label>
@@ -86,17 +85,12 @@
                 </div>
 
                 <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="emailad" id="email" name="email">
-                </div>
-            </div>    
-            
-            <div class="form-row">
-                <div class="form-group">
                     <label for="streetaddress">Address</label>
                     <input type="text" id="streetaddress" name="streetaddress">
                 </div>
-                    
+            </div>   
+            
+            <div class="form-row">              
                 <div class="form-row">
                     <div class="form-group">
                         <label for="gender">Gender</label>
@@ -111,9 +105,8 @@
                         <label for="date_of_birth">Date of Birth</label>
                         <input type="date" id="date_of_birth" name="date_of_birth" class="short-input">
                     </div>
-                </div>
-        
-                <div class="form-row">
+             
+
                     <div class="form-group">
                         <label for="age">Age</label>
                         <input type="text" id="age" name="age" style="width: 50px;">
@@ -132,19 +125,13 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="fb_account">FB Account</label>
-                        <input type="text" id="fb_account" name="fb_account">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password">
+                        <label for="facebook">FB Account</label>
+                        <input type="text" id="facebook" name="facebook">
                     </div>
                 </div>
             </div>   
       
             <h2>Orders</h2>
-        
             <div class="form-row">
                     <div class="form-group">
                         <label for="orderNumber">Order Number</label>
@@ -165,21 +152,27 @@
                         <label for="unitprice">Unit Price</label>
                         <input type="text" id="unitprice" name="unitprice">
                     </div>
+
                     </div>
+
                     <div class="form-row">
-                    <div class="form-group">
-                        <label for="unitDescription">Unit Description</label>
-                        <input type="text" id="unitDescription" name="unitDescription" style="width: 50%;">
+                        <div class="form-group">
+                            <label for="unitDescription" style="margin-left: 25%">Unit Description</label>
+                            <input type="text" id="unitDescription" name="unitDescription" style="width: 50%; margin-left: 25%">
+                        </div>
                     </div>
-                </div>
 
                 <h2>Payment Service</h2>
-                <div class="checkbox-group">
-                    <label>Fully Paid</label>
-                        <input type="checkbox" id="fullypaid" name="fullypaid" value="1">
+                <div class="centered-row">
+                    <div class="form-group"> 
+                        <div class="checkbox-group">
+                            <label>Fully Paid</label>
+                                <input type="checkbox" id="fullypaid" name="fullypaid" value="1">
 
-                    <label>Installment</label>
-                        <input type="checkbox" id="installment" name="installment" value="1"><br>
+                            <label>Installment</label>
+                                <input type="checkbox" id="installment" name="installment" value="1"><br>
+                        </div>
+                    </div>
                 </div>
 
                 <div id="installmentOptions" class="installment-options">
@@ -192,6 +185,38 @@
 
                         <label>18 Months</label>
                         <input type="checkbox" name="eighteenmonths" value="1">
+                    </div>
+                </div>
+
+                <h2>Account Creation</h2>
+                <div class="centered-row">
+                    <div class="form-group">          
+                        <div class="mb-3 col-md-1">
+                            <label class="form-label">Email address</label>
+                            <input type="email" class="form-control" name="email">
+                            @if($errors->has('email'))
+                            <div class="error">{{ $errors->first('email') }}</div>
+                                @endif
+                            </div>
+                
+                            <div class="mr-1 mb-3 col-md-1">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" name="password">
+                                @if($errors->has('password'))
+                                <div class="error">{{ $errors->first('password') }}</div>
+                                    @endif
+                                </div>
+
+                                <!-- UserRoles  -->
+                                <div class="mb-3 col-md-1">
+                                    <select name="user_roles" class="form-control" id="user_roles">
+                                        <option value="0" disabled>Select User Role</option>
+                                        <option value="1" @if (old('user_roles') == "1") {{ 'selected' }} @endif>admin</option>
+                                        <option value="2" @if (old('user_roles') == "2") {{ 'selected' }} @endif>Customer</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <input type="submit" value="Submit">
