@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\CustomerInfo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\View;
@@ -61,14 +62,25 @@ class AuthManager extends Controller
           return view('about.customernav.cuspurchasehistory');
        }
 
-       public function customerUI(){
+      public function customerUI(){
         return view('about.customer');
         
         }
 
+
       public function adminUI(){
       return view('about.admin');
         }
+
+    //   public function customer_security(){
+    //   return view('about.customernav.security');
+    //           }
+
+      public function forgotpassword(){
+      return view('about.forgotpassword');
+            }
+    
+            
 
 
     public function Saved(Request $request){
@@ -93,48 +105,40 @@ class AuthManager extends Controller
           return view('about.login');
           }
 
-//           public function LoginEntry(Request $request)
-//               {
-//                   // Validate the login credentials
-//                   $credentials = $request->validate([
-//                       'email' => ['required', 'email'],
-//                       'password' => ['required'],
-//                   ]);
-              
-//                   // Attempt to authenticate the user with the provided credentials
-//                   if (Auth::attempt($credentials)) {
-//                       // Retrieve the authenticated user
-//                       $user = Auth::user();
-              
-//                       // Check user role and return the appropriate view
-//                       switch ($user->user_roles) {
-//                           case '1':
-//                               // Admin view
-//                               return view('about.adminnav.addashboard', ['user' => $user]);
-              
-//                           case '2':
-//                               // Customer view
-//                               return view('about.customernav.cusdashboard', ['user' => $user]);
-              
-//                           default:
-//                               // Handle other roles or redirect with an error if the role is unauthorized
-//                               return redirect()->route('login')->withErrors(['email' => 'Unauthorized role']);
-//                       }
-//                   }
-              
-                  // If authentication fails, return back with an error
-//                   return back()->withErrors([
-//                       'email' => 'The provided credentials do not match our records.',
-//                   ])->onlyInput('email');
-//               }
 
-              public function showProfile()
+                // for all kind of user but only for user table
+              
+              
+                public function showProfile()
                     {
                         $user = Auth::user();
                         $maskedPassword = str_repeat('*', strlen($user->password));
 
                         return view('profile', ['user' => $user, 'maskedPassword' => $maskedPassword]);
                     }
+
+
+                    
+
+            
+               
+                
+
+                    // public function user_infos()
+                    // {
+
+                    //     $infos = DB::table('customer_info')->select('id','gender','facebook','date_of_birth','telephone_number','phone_number','streetaddress')->get();
+                     
+                    //         return view('about.customernav.cusprofile')->with('infos', $infos);
+                    // }
+
+
+
+
+
+
+
+
 
                     public function changePassword(Request $request)
                         {
@@ -192,28 +196,12 @@ class AuthManager extends Controller
                         }
 
 
-                      
-
-                    
-
-                        
-                            
+    
 
 
-        
-                            
-                            
-                        
-                        
-                  
-                       
+}
 
-
-                        
-
-
-
-
+                
             
 
 

@@ -8,6 +8,10 @@ body {
     margin: 0;
 }
 
+body::-webkit-scrollbar {
+    display: none;
+  }
+
 /* Content */
 :root {
     --transition-duration: 0.3s;
@@ -20,11 +24,11 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: white;
-    width: 500px;
+    width: 1000px;
     text-align: center;
     overflow: hidden;
     position: relative;
-    margin-top: 5%;
+    margin-top: 7%;
 }
 
 .profile-header {
@@ -45,8 +49,8 @@ body {
 }
 
 .avatar {
-    width: 120px;
-    height: 120px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     border: 3px solid white;
 }
@@ -86,7 +90,7 @@ body {
 
 
 .profile-body {
-    padding: 30px;
+    padding: 50px;
     background-color: white;
     color: #333;
     text-align: left;
@@ -287,8 +291,11 @@ body {
     margin-left: 25%;
 }
 
-
-
 .modal-submit-button:hover {
     background-color: #e66b4d;
+}
+
+.dark-mode .profile-body{
+    background-color: #1e1d1d;
+    color: #ccc;
 }

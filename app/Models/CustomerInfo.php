@@ -14,6 +14,7 @@ class CustomerInfo extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'id',
         'name', 
         'email', 
         'streetaddress', 
@@ -22,8 +23,14 @@ class CustomerInfo extends Model
         'age',
         'facebook',
         'gender',
-        'telephone_number'
+        'telephone_number',
+        'user_id' // foreign, this stablish a relationship between customer_info and users
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class); // Define the relationship with User
+    }
 
     public function orders()
     {

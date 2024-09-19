@@ -2,135 +2,12 @@
 <html lang="en">
     <head>
         
-        <link href="{!! url('css/customer/cuspurchasehistory.css') !!}" rel="stylesheet">
+        <link href="{!! url('css/customer/cuspurhistory.css') !!}" rel="stylesheet">
         <link href="{{ url('css/customer/topnav.css') }}" rel="stylesheet">
         <title>History</title>
 
         <style>
-        body {
-            background: #eee;
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            margin-top:5%;
-        }
-        .panel {
-            background: #fff;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .panel-heading {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .panel-heading strong {
-            font-size: 18px;
-        }
-        .btn-group {
-            position: relative;
-        }
-        .btn-group button {
-            padding: 5px 10px;
-            font-size: 12px;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .btn-group .dropdown-menu {
-            position: absolute;
-            top: 25px;
-            right: 0;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            list-style: none;
-            padding: 10px;
-            display: none;
-        }
-        .btn-group:hover .dropdown-menu {
-            display: block;
-        }
-        .dropdown-menu li {
-            padding: 5px 0;
-        }
-        .dropdown-menu li a {
-            color: #333;
-            text-decoration: none;
-        }
-        .panel-body {
-            padding: 0;
-        }
-        .panel-footer {
-            padding: 15px;
-            background: #f5f5f5;
-            border-top: 1px solid #ddd;
-            font-size: 12px;
-            color: #555;
-        }
-        .row {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #ccc;
-        }
-        .row:last-child {
-            border-bottom: 0;
-        }
-        .col-md-1 {
-            text-align: center;
-        }
-        .col-md-1 img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-        }
-        .col-md-11 {
-            padding-left: 15px;
-            border-left: 1px solid #ccc;
-            width: calc(100% - 70px);
-        }
-        .col-md-12 {
-            padding: 7px 0;
-            font-size: 14px;
-        }
-        .label {
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 12px;
-            display: inline-block;
-        }
-        .label-danger {
-            background-color: #d9534f;
-            color: #fff;
-        }
-        .label-info {
-            background-color: #5bc0de;
-            color: #fff;
-        }
-        .label-success {
-            background-color: #5cb85c;
-            color: #fff;
-        }
-        .btn-xs {
-            font-size: 10px;
-            padding: 5px 10px;
-            margin-right: 5px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            cursor: pointer;
-            background-color: #f5f5f5;
-        }
-        .btn-xs.glyphicon {
-            margin-right: 0;
-        }
+       
     </style>
     </head>
 
@@ -229,7 +106,7 @@
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
                         <a href="{{ route('cuspurchasehistory.show') }}">Order History</a>
-                        <a href="#">Security</a>
+                        <a href="{{ route('cussecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a>
                     </div>
                 </div>
@@ -326,10 +203,47 @@
     </div>
 </div>
 
+<script>
+            // darkmode
+        function toggleDarkModeDashboard() {
+            document.body.classList.toggle('dark-mode');
+
+            let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+            // Send AJAX request to update dark mode preference in the database
+            fetch('/update-dark-mode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ dark_mode: darkModeEnabled })
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Dark mode preference updated successfully.');
+                }
+            });
+        }
+
+        // Apply saved dark mode preference from the database when the page loads
+        function applySavedDarkModePreferenceFromDB() {
+            const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Call the function when the page loads
+        applySavedDarkModePreferenceFromDB();
+
+    
+</script> 
 
 
-
- <script src="{{ asset('js/customer/cusdashboard.js') }}"></script>   
+ <script src="{{ asset('js/customer/cusdashboard.js') }}"></script> 
+ <script src="{{ asset('js/customer/topnav.js') }}"></script>  
 </body>
 
 </html>

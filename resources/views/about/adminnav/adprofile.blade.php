@@ -34,7 +34,7 @@
                     <!-- Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('adprofile.show') }}">Profile</a>
-                        <a href="#">Change Password</a>
+                        <a href="{{ route('adsecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a> 
                     </div>
                 </div>
@@ -62,17 +62,24 @@
             <div class="profile-body">
                     <div class="info">
                         <h3>Information</h3>
-                        <p><strong>Gender:</strong> <span id="profile-gender">Male</span></p>
-                        <p><strong>Birthday:</strong> <span id="profile-birthday">August 12, 2024</span></p>
+                        <hr>
+                        @if($info)
+                        <p><strong>Gender:</strong> <span id="gender">{{ $info->gender}}</span></p>
+                       
+                        <p><strong>Birthday:</strong> <span id="profile-birthday">{{ $info->date_of_birth}}</span></p>
                         <hr>
                         <p><strong>Email:</strong> <span id="profile-email">{{ Auth::user()->email }}</span></p>
-                        <p><strong>Facebook:</strong> <span id="profile-facebook">Hembo Tingor</span></p>
+                        <p><strong>Facebook:</strong> <span id="profile-facebook"></span>{{ $info->facebook}}</p>
                         <hr>
-                        <p><strong>Telephone:</strong> <span id="profile-telephone">239553655</span></p>
-                        <p><strong>Mobile:</strong> <span id="profile-mobile">+63 924336535</span></p>
-                            <div class="field">
-                                <p><strong>Address:</strong> <span id="profile-address">Anonas, Cubao, Quezon City</span></p>
-                            </div>
+                        <p><strong>Telephone:</strong> <span id="profile-telephone"></span>{{ $info->telephone_number}}</p>
+                        <p><strong>Mobile:</strong> <span id="profile-mobile"></span>{{ $info->phone_number}}</p>
+                     
+                        <p><strong>Address:</strong> <span id="profile-address"></span>{{ $info->streetaddress}}</p>
+                        <hr>  
+                         
+                            @else
+                                <p>No information available.</p>
+                            @endif
                     </div>
 
                     <div class="password-edit">
@@ -223,10 +230,46 @@
         });
     });
 
+
+
+                //darkmode
+            function toggleDarkModeDashboard() {
+                document.body.classList.toggle('dark-mode');
+
+                let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+                // Send AJAX request to update dark mode preference in the database
+                fetch('/update-dark-mode', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ dark_mode: darkModeEnabled })
+                }).then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Dark mode preference updated successfully.');
+                    }
+                });
+            }
+
+            // Apply saved dark mode preference from the database when the page loads
+            function applySavedDarkModePreferenceFromDB() {
+                const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+                if (darkMode) {
+                    document.body.classList.add('dark-mode');
+                }
+            }
+
+            // Call the function when the page loads
+            applySavedDarkModePreferenceFromDB();
     </script>
 
 
 
     <script src="{{ asset('js/admin/adprofile.js') }}"></script>
+    <script src="{{ asset('js/admin/toppsidenav.js') }}"></script>  
 </body>
 </html>

@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Installment</title>
         
         <!-- Stylesheets -->
@@ -33,7 +34,7 @@
                     <!-- Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('adprofile.show') }}">Profile</a>
-                        <a href="#">Change Password</a>
+                        <a href="{{ route('adsecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a> 
                     </div>
                 </div>
@@ -61,9 +62,9 @@
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Unit</th>
-                <th>Installment Plan</th>
+                <th style= "width:20%;">Name</th>
+                <!-- <th>Unit</th> -->
+                <!-- <th>Installment Plan</th> -->
                 <th>Payment Method</th>
                 <th>Amount</th>
                 <th>Date</th>
@@ -77,15 +78,15 @@
             <!-- Example Row -->
             <tr>
             <td><a href="#" class="customer-link" data-customer-id="1">Marian Naparan</a></td>
-                <td><input type="text" name="unit" placeholder="Enter Unit"></td>
-                <td>
+                <!-- <td><input type="text" name="unit" placeholder="Enter Unit"></td> -->
+                <!-- <td>
                    
                     <select name="Installment_plan">
                         <option value="OTC"> 6 MONTHS</option>
                         <option value="ONLINE"> 12 MONTHS</option>
                         <option value="ONLINE"> 18 MONTHS</option>
                     </select>
-                </td>
+                </td> -->
                 <td>
                     <select name="payment_method">
                         <option value="OTC">OTC</option>
@@ -207,7 +208,44 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 
 
+
+
+        //darkmode
+        function toggleDarkModeDashboard() {
+            document.body.classList.toggle('dark-mode');
+
+            let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+            // Send AJAX request to update dark mode preference in the database
+            fetch('/update-dark-mode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ dark_mode: darkModeEnabled })
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Dark mode preference updated successfully.');
+                }
+            });
+        }
+
+        // Apply saved dark mode preference from the database when the page loads
+        function applySavedDarkModePreferenceFromDB() {
+            const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Call the function when the page loads
+        applySavedDarkModePreferenceFromDB();
+
   </script>      
             <script src="{{ asset('js/admin/adinstallment.js') }}"></script>
+            <script src="{{ asset('js/admin/toppsidenav.js') }}"></script>  
     </body>
 </html>

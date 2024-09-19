@@ -2,7 +2,7 @@
 .container {
     background: #fff;
     margin-top: 10%;
-    margin: 0 10%;
+    margin-left: 10%;
     color: #000;
     border-radius: 10px;
     padding: 20px;
@@ -41,51 +41,16 @@ a {
     border-radius: 5px;
     cursor: pointer;
 }
-.form-container {
-    display: flex;
-    margin-left: 10%;
-    flex-direction: column;
-    background: #fff;
-    color: #000;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 80%;
-    margin-top: 10%;
-    margin: 0 10%;
-}
-.form-group {
-    display: flex;
-    flex-wrap: wrap;
-}
-.form-group div {
-    flex: 1 1 200px;
-    margin: 10px;
-}
-input[type="text"], input[type="date"], input[type="email"], input[type="password"] {
-    width: 100%;
-    padding: 8px;
-    margin: 5px 0;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.checkbox-group {
-    display: flex;
-    align-items: center;
-}
-.checkbox-group label {
-    margin-right: 10px;
-    display: inline-flex;
-    align-items: center;
-}
+
 .delete-button {
-    background: #e74c3c;
+    background: #ee1313;
     color: #fff;
-    padding: 10px 20px;
+    padding: 5px 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    align-self: flex-end;
-    margin-top: 20px;
 }
+
+
+
+

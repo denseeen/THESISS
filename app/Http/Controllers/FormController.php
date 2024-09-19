@@ -91,6 +91,7 @@ class FormController extends Controller
 
         // Save to the orders table
         $order = Order::create([
+            'customer_id'     => $customerInfo->id, // Assuming you need to link this
             'orderNumber'     => $validatedData['orderNumber'],
             'dateOrder'       => $validatedData['dateOrder'],
             'unitName'        => $validatedData['unitName'],
@@ -156,4 +157,7 @@ class FormController extends Controller
                       'email' => 'The provided credentials do not match our records.',
                   ])->onlyInput('email');
               }
+
+              
+
 }

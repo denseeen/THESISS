@@ -1,10 +1,92 @@
  /* Existing CSS styles */
  body {
-    margin: 20px;
-    background-color: #f2f6fc;
-    color: #69707a;
+    margin-top: 20px;
+    background-color: #ffffff;
+    color: #0a0707;
     font-family: Arial, sans-serif;
 }
+
+.viewtitle{
+    width: 20%;
+    background-color: #fafafa;
+    margin-left: 40%;
+    padding-top: 2%;
+    
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: 3.35rem;
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content:left;
+    width: 30%;
+    margin-left: 10%;
+   
+   
+}
+body .button-container{
+    position: relative;
+    top: auto;
+}
+
+/* Buttons */
+.button {
+    padding: 15px 30px;
+    margin: 0 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #1861f3;
+    color: white;
+    border-radius: 5px;
+    border-style: groove;
+    border-color: #000000;
+}
+
+.button:hover {
+    background-color: #0a348a;
+}
+
+/* The Modal (hidden by default) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    overflow: auto;
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 80%; /* Could be more or less, depending on screen size */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px; /* Optional: rounded corners */
+}
+
+/* The Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 
 .nav {
     display: flex;
@@ -26,6 +108,14 @@
     border-bottom-color: #0061f2;
 }
 
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    /* margin-top: 3%; */
+    margin-top: 0 ;
+    
+}
+
 .card {
     background-color: #fff;
     border-radius: 0.35rem;
@@ -35,7 +125,8 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    margin-top: 5%;
+    margin-top: 3%;
+    border-style: groove;
 }
 
 .card-header {
@@ -88,11 +179,7 @@
     color: #6c757d;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    margin-top: 10%;
-}
+
 
 .row {
     display: flex;
@@ -160,5 +247,35 @@
 
 .fa-cc-amex::before {
     content: "\f1f3";
+}
+
+.dark-mode .card{
+    background-color: #0b0b0b;
+    color: #fff;
+}
+
+.dark-mode .viewtitle{
+    background-color: #0b0b0b;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.dark-mode .button{
+    background-color: #0b0b0b;
+    color: #ffffff;
+    
+}
+
+.dark-mode .button:hover {
+    background-color: #1f2fdb;
+}
+.dark-mode .close:hover {
+    background-color: #1f2fdb;
+}
+
+.dark-mode .modal-content{
+    background-color: #0b0b0b;
+    color: #ffffff;
+    box-shadow: 0 4px 8px 0 rgba(223, 219, 219, 0.2), 0 6px 20px 0 rgb(255, 254, 254); /* Adding shadow */
 }
 

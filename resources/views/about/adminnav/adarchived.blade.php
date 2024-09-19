@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Archived</title>
     
         <!-- Stylesheets -->
@@ -33,7 +34,7 @@
                     <!-- Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('adprofile.show') }}">Profile</a>
-                        <a href="#">Change Password</a>
+                        <a href="{{ route('adsecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a> 
                     </div>
                 </div>
@@ -57,98 +58,7 @@
 
 
 
-        <div class="form-container">
-            <form>
-                <div class="form-group">
-                    <div>
-                        <label for="date">Date:</label>
-                        <input type="date" id="date" name="date">
-                    </div>
-
-                    <div>
-                        <label for="sales-representative">Sales Representative:</label>
-                        <input type="text" id="sales-representative" name="sales-representative">
-                    </div>
-
-                    <div>
-                        <label for="application-no">Application No:</label>
-                        <input type="text" id="application-no" name="application-no">
-                    </div>
-
-                    <div class="checkbox-group">
-                        <label for="new"><input type="checkbox" id="new" name="new"> New</label>
-                        <label for="used"><input type="checkbox" id="used" name="used"> Used</label>
-                    </div>
-
-                    <div>
-                        <label for="model-color">Model & Color:</label>
-                        <input type="text" id="model-color" name="model-color">
-                    </div>
-
-                    <div>
-                        <label for="down-payment">Down Payment:</label>
-                        <input type="text" id="down-payment" name="down-payment">
-                    </div>
-
-                    <div>
-                        <label for="purpose">Purpose:</label><br>
-                        <label for="business"><input type="checkbox" id="business" name="purpose" value="business"> Business</label>
-                        <label for="personal"><input type="checkbox" id="personal" name="purpose" value="personal"> Personal</label>
-                    </div>
-
-                    <div>
-                        <label for="last-name">Last Name:</label>
-                        <input type="text" id="last-name" name="last-name">
-                    </div>
-
-                    <div>
-                        <label for="first-name">First Name:</label>
-                        <input type="text" id="first-name" name="first-name">
-                    </div>
-
-                    <div>
-                        <label for="middle-name">Middle Name:</label>
-                        <input type="text" id="middle-name" name="middle-name">
-                    </div>
-
-                    <div>
-                        <label for="age">Age:</label>
-                        <input type="text" id="age" name="age">
-                    </div>
-
-                    <div>
-                        <label for="religion">Religion:</label>
-                        <input type="text" id="religion" name="religion">
-                    </div>
-
-                    <div>
-                        <label for="citizenship">Citizenship:</label>
-                        <input type="text" id="citizenship" name="citizenship">
-                    </div>
-
-                    <div>
-                        <label for="gender">Gender:</label>
-                        <input type="text" id="gender" name="gender">
-                    </div>
-
-                    <div>
-                        <label for="dob">Date Of Birth:</label>
-                        <input type="date" id="dob" name="dob">
-                    </div>
-
-                    <div>
-                        <label for="email">Email:</label>
-                        <input type="email" id="email" name="email">
-                    </div>
-
-                    <div>
-                        <label for="password">Password:</label>
-                        <input type="password" id="password" name="password">
-                    </div>
-                </div>
-                <button type="submit" class="delete-button">Delete</button>
-            </form>
-        </div>
+       
 
         
     <div class="container">
@@ -171,6 +81,7 @@
                     <td>ERV3</td>
                     <td>0946556464</td>
                     <td><button class="view-button">View</button></td>
+                    <td><button class="delete-button">Delete</button></td>
                 </tr>
 
                 <tr>
@@ -179,6 +90,7 @@
                     <td>ERV3</td>
                     <td>0946556464</td>
                     <td><button class="view-button">View</button></td>
+                    <td><button class="delete-button">Delete</button></td>
                 </tr>
 
                 <tr>
@@ -187,11 +99,50 @@
                     <td>ERV3</td>
                     <td>0946556464</td>
                     <td><button class="view-button">View</button></td>
+                    <td><button class="delete-button">Delete</button></td>
                 </tr>
             </tbody>
         </div>
 
+    <script>
+
+            //darkmode
+            function toggleDarkModeDashboard() {
+            document.body.classList.toggle('dark-mode');
+
+            let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+            // Send AJAX request to update dark mode preference in the database
+            fetch('/update-dark-mode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ dark_mode: darkModeEnabled })
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Dark mode preference updated successfully.');
+                }
+            });
+        }
+
+        // Apply saved dark mode preference from the database when the page loads
+        function applySavedDarkModePreferenceFromDB() {
+            const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Call the function when the page loads
+        applySavedDarkModePreferenceFromDB();
+
+    </script>
         
         <script src="{{ asset('js/admin/adarchived.js') }}"></script>
+        <script src="{{ asset('js/admin/toppsidenav.js') }}"></script>  
     </body>
 </html>
