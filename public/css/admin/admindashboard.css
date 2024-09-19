@@ -3,22 +3,32 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
+    background-color:  #c2d9f1;
     transition: background-color 0.3s, color 0.3s;
+}
+.viewtitle{
+    width: 40%;
+    background-color: #fafafa;
+    margin-left: 30%;
+    padding-top: 4%;
+    padding-left: 4.8%;
+    color: #000000;
+    border: 2px solid #000000;
+    border-radius: 3.35rem;
 }
 
 
 .row {
     display: flex;
     flex-wrap: nowrap; /* Prevent wrapping of items */
-    margin: 0; /* Remove default margins */
-    margin-top:10%
+    margin-left: 1.5%;
+    margin-top:2%;
 
 }
 
 .col {
     flex: 0 0 auto; /* Prevent columns from shrinking or growing */
-    margin-right: 20px; /* Space between columns */
+    margin-right: 40px; /* Space between columns */
 }
 
 .card {
@@ -73,6 +83,7 @@ body {
 
 
 
+
 /* customer list */
 .container {
     background-color: white;
@@ -108,14 +119,15 @@ body {
 .application-list {
     background-color: #fff;
     margin-top: 2%;
-    margin-left: 13%;
+    margin-left: 9%;
     color: #000;
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    width: 80%;
+    width: 100%;
     max-width: 1300px;
+    
 }
 
 .application-list h2 {
@@ -137,8 +149,8 @@ th, td {
     text-align: left;
 }
 
-th {
-    background-color: #f4f4f4;
+th{
+    background-color: #007bff;
 }
 
 th a, td a {
@@ -152,7 +164,7 @@ th a:hover, td a:hover {
 
 button {
     width: 100%;
-    padding: 10px;
+    padding: 5px;
     background-color: #007bff;
     border: none;
     border-radius: 55px;
@@ -162,7 +174,7 @@ button {
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #0364cb;
 }
 
 /* Modal styles */
@@ -183,7 +195,7 @@ button:hover {
     background-color: #fefefe;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
-    border: 1px solid #888;
+    border: 1px solid #ffffff;
     width: 80%; /* Could be more or less, depending on screen size */
 }
 
@@ -220,9 +232,38 @@ button:hover {
 }
 
 
+.dark-mode .viewtitle{
+    color: #ddd;
+}
+.dark-mode .card{
+    background-color:#0b0b0b  ;
+    color: #ddd;
+}
+.dark-mode .application-list{
+    background-color:#0b0b0b ;
+    color: #ddd;
+    border: #ddd;
+ }
+.dark-mode th{
+    background-color:#040c65 ;
+    color: #ddd;
+}
 
+.dark-mode button{
+    background-color:#040c65 ;
+    
+}
+.dark-mode button:hover{
+    background-color: #007bff; 
+}
 
-
+.dark-mode .viewtitle{
+    background-color: #0b0b0b;
+    border: 1px solid #ffffff;
+}
+.dark-mode hr{
+    border: 1px solid #ffffff;
+}
 
 
 

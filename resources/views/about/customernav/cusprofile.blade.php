@@ -12,15 +12,16 @@
 </head>
 <body>
     <!-- Top Navbar -->
-     <!-- Top Navbar -->
-     <nav class="top_navbar">
-            <a href="{{ route('cusdasboard.show') }}">
-                <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
-            </a>
+    <nav class="top_navbar">
+                <a href="{{ route('cusdasboard.show') }}">
+                    <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
+                </a>
             <div class="icons">
-            <ul class="navigation-menu">
-                <li><a href="{{ route('cusdasboard.show') }}">Dashboard</a></li>
-                    <li>       
+                
+                <ul class="navigation-menu">
+                    <li><a href="{{ route('cusdasboard.show') }}">Dashboard</a></li>
+                    <li>   
+                        <!-- Notification bell     -->
                          <div class="notification-container">
                             <!-- Bell Icon -->
                             <span class="bell-icon">&#128276;</span>
@@ -31,57 +32,68 @@
                             <div class="dropdown-notification">
                                 <!-- Recent Notifications -->
                                 <div class="box shadow-sm rounded bg-white mb-3">
+
                                     <div class="box-title border-bottom p-3">
                                         <h6 class="m-0" style="color:black;">Recent</h6>
                                     </div>
+
                                     <div class="box-body p-0">
                                     
                                         <div class="notification-item">
                                             <div class="notification-content">
-                                              
                                                 <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
                                                 <div class="notification-message">Income tax sops on the cards, The bias in VC funding, and other top news for you</div>
                                             </div>
                                             <span class="delete-icon">&#10060;</span>
                                         </div>
+
                                         <div class="notification-item">
                                             <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
+                                                <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
                                                 <div class="notification-message">Vivamus imperdiet venenatis est...</div>
                                             </div>
                                             <span class="delete-icon">&#10060;</span>
                                         </div>
+
                                     </div>
                                 </div>
+
                                 <!-- Earlier Notifications -->
                                 <div class="box shadow-sm rounded bg-white mb-3">
+
                                     <div class="box-title border-bottom p-3">
                                         <h6 class="m-0" style="color:black;">Earlier</h6>
                                     </div>
+
                                     <div class="box-body p-0">
+
                                         <div class="notification-item">
                                             <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
+                                                <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
                                                 <div class="notification-message">Nunc purus metus, aliquam vitae venenatis sit amet, porta non est.</div>
                                             </div>
                                             <span class="delete-icon">&#10060;</span>
                                         </div>
+
                                         <div class="notification-item">
                                             <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
+                                                <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
                                                 <div class="notification-message">Pellentesque semper ex diam, at tristique ipsum varius sed. Pellentesque non metus ullamcorper</div>
                                             </div>
                                             <span class="delete-icon">&#10060;</span>
                                         </div>
+
                                         <div class="notification-item">
                                             <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
+                                                <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
                                                 <div class="notification-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ipsum elit.</div>
                                             </div>
                                             <span class="delete-icon">&#10060;</span>
                                         </div>
+
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </li>
@@ -101,12 +113,14 @@
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
                         <a href="{{ route('cuspurchasehistory.show') }}">Order history</a>
-                        <a href="#">Security</a>
+                        <a href="{{ route('cussecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a>
                     </div>
                 </div>
             </div>
-        </nav>
+    </nav>
+
+
     <!-- Profile Content -->
     <div class="profile-card">
             <div class="profile-header">
@@ -123,23 +137,30 @@
                         <h2 id="profile-name">{{ Auth::user()->name }}</h2>
                     </div>
             </div>
-
+           
             <div class="profile-body">
                     <div class="info">
                         <h3>Information</h3>
-                        <p><strong>Gender:</strong> <span id="profile-gender">Male</span></p>
-                        <p><strong>Birthday:</strong> <span id="profile-birthday">August 12, 2024</span></p>
+                       
+                        @if($infos)
+                        <p><strong>Gender:</strong> <span id="gender">{{ $infos->gender}}</span></p>
+                       
+                        <p><strong>Birthday:</strong> <span id="profile-birthday">{{ $infos->date_of_birth}}</span></p>
                         <hr>
                         <p><strong>Email:</strong> <span id="profile-email">{{ Auth::user()->email }}</span></p>
-                        <p><strong>Facebook:</strong> <span id="profile-facebook">Hembo Tingor</span></p>
+                        <p><strong>Facebook:</strong> <span id="profile-facebook"></span>{{ $infos->facebook}}</p>
                         <hr>
-                        <p><strong>Telephone:</strong> <span id="profile-telephone">239553655</span></p>
-                        <p><strong>Mobile:</strong> <span id="profile-mobile">+63 924336535</span></p>
+                        <p><strong>Telephone:</strong> <span id="profile-telephone"></span>{{ $infos->telephone_number}}</p>
+                        <p><strong>Mobile:</strong> <span id="profile-mobile"></span>{{ $infos->phone_number}}</p>
                             <div class="field">
-                                <p><strong>Address:</strong> <span id="profile-address">Anonas, Cubao, Quezon City</span></p>
+                                <p><strong>Address:</strong> <span id="profile-address"></span>{{ $infos->streetaddress}}</p>
                             </div>
+                         
+                            @else
+                                <p>No information available.</p>
+                            @endif
                     </div>
-
+                  
                     <div class="password-edit">
                         <label for="password"><strong>Password:</strong></label>
                         <a href="#" id="password-link">{{ str_repeat('*', 8) }}</a>
@@ -168,6 +189,7 @@
             </div>
     </div>
 
+
     <!-- Password Modal -->
     <div id="passwordModal" class="modal" style="display: none;">
         <div class="modal-content">
@@ -183,7 +205,6 @@
         </div>
     </div>
 
-    <!-- Scripts -->
    <script>
     // Toggle password visibility in the modal
         function togglePasswords() {
@@ -281,8 +302,47 @@
         });
     });
 
+    // darkmode
+        function toggleDarkModeDashboard() {
+            document.body.classList.toggle('dark-mode');
+
+            let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+            // Send AJAX request to update dark mode preference in the database
+            fetch('/update-dark-mode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ dark_mode: darkModeEnabled })
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Dark mode preference updated successfully.');
+                }
+            });
+        }
+
+        // Apply saved dark mode preference from the database when the page loads
+        function applySavedDarkModePreferenceFromDB() {
+            const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Call the function when the page loads
+        applySavedDarkModePreferenceFromDB();
+
+
+
+
+
     </script>
 
-<script src="{{ asset('js/customer/cusprofile.js') }}"></script>     
+<script src="{{ asset('js/customer/cusprofile.js') }}"></script>
+<script src="{{ asset('js/customer/topnav.js') }}"></script>     
 </body>
 </html>

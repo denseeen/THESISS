@@ -94,7 +94,7 @@ display: none;
 
 /* Dark mode styles */
 body.dark-mode {
-background-color: #333;
+  background-color: #1c1b1b;
 }
 
 .sidebar.dark-mode {
@@ -114,7 +114,7 @@ background-color: #333;
 }
 
 body.dark-mode .dropdown-menu {
-background-color: #555;
+  background-color: #03143d;
 }
 
 body.dark-mode .dropdown-menu a {

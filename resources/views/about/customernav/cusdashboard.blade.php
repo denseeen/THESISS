@@ -2,11 +2,16 @@
 <html lang="en">
     <head>
         <link href="{!! url('css/customer/cusdashboard.css') !!}" rel="stylesheet">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="{{ url('css/customer/topnav.css') }}" rel="stylesheet">
         <title>Customer dashboard</title>
     </head>
 
     <body>
+
+   
+
+
         <!-- Top Navbar -->
         <nav class="top_navbar">
             <a href="{{ route('cusdasboard.show') }}">
@@ -96,15 +101,40 @@
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
                         <a href="{{ route('cuspurchasehistory.show') }}">Order history</a>
-                        <a href="#">Security</a>
+                        <a href="{{ route('cussecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a>
                     </div>
                 </div>
             </div>
         </nav>
 
+        
+        <div class ="viewtitle">
+        <h1>Dashboard</h1>
+        </div>
 
     <!-- Content -->
+
+            <div class="button-container">
+                <button id="contractBtn" class="button">Contract</button>
+                <button id="rulesBtn" class="button">Rules & Regulations</button>
+            </div>
+
+            <!-- Contract Modal -->
+            <div id="contractModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>This is your contract content!</p>
+                </div>
+            </div>
+
+            <!-- Rules & Regulations Modal -->
+            <div id="rulesModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <p>These are the rules and regulations!</p>
+                </div>
+            </div>
 
     <div class="container">
     
@@ -194,7 +224,86 @@
                 });
             })
             .catch(error => console.error('Error fetching billing data:', error));
+
+
+            
     });
+
+
+  //darkmode
+        function toggleDarkModeDashboard() {
+            document.body.classList.toggle('dark-mode');
+
+            let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+            // Send AJAX request to update dark mode preference in the database
+            fetch('/update-dark-mode', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({ dark_mode: darkModeEnabled })
+            }).then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Dark mode preference updated successfully.');
+                }
+            });
+        }
+
+        // Apply saved dark mode preference from the database when the page loads
+        function applySavedDarkModePreferenceFromDB() {
+            const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+            if (darkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+
+        // Call the function when the page loads
+        applySavedDarkModePreferenceFromDB();
+
+
+        // Get the modal elements
+        var contractModal = document.getElementById("contractModal");
+        var rulesModal = document.getElementById("rulesModal");
+
+        // Get the button elements
+        var contractBtn = document.getElementById("contractBtn");
+        var rulesBtn = document.getElementById("rulesBtn");
+
+        // Get the <span> elements that close the modals
+        var closeButtons = document.getElementsByClassName("close");
+
+        // Open the contract modal when the contract button is clicked
+        contractBtn.onclick = function() {
+            contractModal.style.display = "block";
+        }
+
+        // Open the rules modal when the rules button is clicked
+        rulesBtn.onclick = function() {
+            rulesModal.style.display = "block";
+        }
+
+        // Close the modals when the close buttons are clicked
+        for (let i = 0; i < closeButtons.length; i++) {
+            closeButtons[i].onclick = function() {
+                contractModal.style.display = "none";
+                rulesModal.style.display = "none";
+            }
+        }
+
+        // Close the modal when clicking outside of it
+        window.onclick = function(event) {
+            if (event.target == contractModal) {
+                contractModal.style.display = "none";
+            }
+            if (event.target == rulesModal) {
+                rulesModal.style.display = "none";
+            }
+        }
+
 
 
 
@@ -206,6 +315,8 @@
 
 
 <script src="{{ asset('js/customer/cusdashboard.js') }}"></script>
+<script src="{{ asset('js/customer/topnav.js') }}"></script>
+<script src="{{ asset('js/darkmode.js') }}"></script>
 </body>
 
 </html>

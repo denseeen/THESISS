@@ -175,9 +175,6 @@ body.dark-mode .dropdown-menuCusTopNav a:hover {
     background: #4f4e4e;
 }
 
-body.dark-mode {
-    background-color: #333;
-}
 
 .profile-body.dark-mode {
     background-color: rgb(84, 82, 82);
@@ -185,8 +182,9 @@ body.dark-mode {
 }
 
 /* Dark mode styles */
+
 body.dark-mode {
-    background-color: #333;
+    background-color: #1c1b1b;
 }
 
 .sidebar.dark-mode {
@@ -212,7 +210,7 @@ header.dark-mode {
 }
 
 body.dark-mode .dropdown-menu {
-    background-color: #555;
+    background-color: #03143d;
 }
 
 body.dark-mode .dropdown-menu a {
@@ -324,6 +322,9 @@ body.dark-mode .dropdown-menu a:hover {
 
 .dropdown-notification.show {
     display: block; /* Show when 'show' class is added */
+}
+.dropdown-notification::-webkit-scrollbar{
+    display: none;
 }
 
 .notification-item {

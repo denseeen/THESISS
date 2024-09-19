@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthManager;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\CustomerListController;
 use App\Http\Controllers\FormController;
+use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\SecurityQuestionController;
+use App\Http\Controllers\DarkModeController;
+
 
 // Route::get('/welcome',[AuthManager::class, 'Def'])->name('welcome'); 
 
@@ -29,8 +32,6 @@ Route::get('/customer',[AuthManager::class, 'customerUI'])->name('about.customer
 // Route for saving user creating account
 Route::post('/adduser',[AuthManager::class, 'Saved'])->name('about.save'); 
 
-// changepassword
-Route::post('/change-password', [AuthManager::class, 'changePassword'])->name('password.change');
 
 Route::get('/admin',[AuthManager::class, 'adminUI'])->name('about.admin');
 
@@ -47,6 +48,7 @@ Route::get('/customer/profile',[AuthManager::class, 'customer_profile'])->name('
 Route::get('/customer/perchasehistory',[AuthManager::class, 'customer_perchasehistory'])->name('cuspurchasehistory.show');
 Route::get('/customer/dashboard',[AuthManager::class, 'customer_dashboard'])->name('cusdasboard.show');
 
+
 // REGISTRATION
 Route::post('/submit-form', [FormController::class, 'submitForm'])->name('form.submit');
 Route::get('/success', function () {
@@ -59,6 +61,40 @@ Route::middleware('auth')->group(function () {
     Route::post('/upload-avatar', [AuthManager::class, 'upload'])->name('upload-avatar');
     Route::post('/upload-avatar-admin', [AuthManager::class, 'upload'])->name('upload-avatar-admin');
 });
+
+//display information from customer_info
+    Route::get('/customer/profile',[DisplayController::class, 'user_infos'])->name('cusprofile.show');
+//display information from customer_admin
+    Route::get('/admin/profile',[DisplayController::class, 'user_infos_admin'])->name('adprofile.show');
+
+// changepassword
+Route::post('/change-password', [AuthManager::class, 'changePassword'])->name('password.change');
+
+//customer setting questions
+Route::get('/customer/security',[SecurityQuestionController::class, 'customer_security'])->name('cussecurity.show');
+Route::post('/customer/security', [SecurityQuestionController::class, 'store'])->name('cussecurity.store');
+
+//admin setting questions
+Route::get('/admin/security',[SecurityQuestionController::class, 'admin_security'])->name('adsecurity.show');
+Route::post('/admin/security', [SecurityQuestionController::class, 'store'])->name('adsecurity.store');
+
+// Route to show the forgot password form
+Route::get('/forgotpassword', [SecurityQuestionController::class, 'forgotpassword'])->name('forgotpassword.show');
+// Route to get the security question based on the email
+Route::post('/get-security-question', [SecurityQuestionController::class, 'getSecurityQuestion'])->name('security.question');
+// Route to validate the security question answer
+Route::post('/validate-answer', [SecurityQuestionController::class, 'validateAnswer'])->name('validate.answer');
+
+// Route to handle password update
+Route::post('/update-password', [SecurityQuestionController::class, 'updatePassword'])->name('update.password');
+
+//Route for succesfully changing
+Route::get('/success-forgotpassword',[SecurityQuestionController::class, 'changeforgotpassword'])->name('changeforgotpassword.show');
+
+//Route for DarkMode
+Route::post('/update-dark-mode', [DarkModeController::class, 'updateDarkMode'])->name('update-dark-mode');
+
+
 
 
 

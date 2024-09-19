@@ -22,6 +22,7 @@ class User extends Authenticatable
         'avatar',
         'password',
         'user_roles',
+        'dark_mode',
     ];
 
     /**
@@ -46,4 +47,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // establishes a hasOne relationship with the CustomerInfo model
+    public function customerInfo()
+    {
+        return $this->hasOne(CustomerInfo::class); // Define the relationship with CustomerInfo
+    }
+
+    public function adminInfo()
+    {
+        return $this->hasOne(AdminInfo::class); // Define the relationship with AdminInfo
+    }
+
 }

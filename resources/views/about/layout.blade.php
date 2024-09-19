@@ -178,7 +178,7 @@
 
                   <div class="forgot-password" style="margin-top: 5px">
                     {{-- <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button> --}}
-                    <span class="password" style="margin-top: 5px" > <a href="#">forgot password?</a></span>
+                    <span class="password" style="margin-top: 5px" > <a href="{{ route('forgotpassword.show') }}">forgot password?</a></span>
                   </div>
               </div>
             <div>  

@@ -34,7 +34,7 @@
                     <!-- Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('adprofile.show') }}">Profile</a>
-                        <a href="#">Change Password</a>
+                        <a href="{{ route('adsecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a> 
                     </div>
                 </div>
@@ -55,9 +55,12 @@
                 </div>
             </div>
         </div>
-
+        
+        <div class ="viewtitle">
+        <h1 style="margin-left: 30%;">Dashboard</h1>
+        </div>
+    
         <!-- Content -->
-
             <div class="row">
                 <div class="col">
                     <!-- Billing card 1 -->
@@ -118,62 +121,64 @@
                 </div>
             </div>
 
-            <!-- Customer List -->
-            <!-- <a href="{{ route('customer.list') }}">View Customer List</a> -->
-<div class="application-list">
-    <h2>Customer List</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Payment Method</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr data-user-id="1">
-                <td>Marian Naparan</td>
-                <td>10,000</td>
-                <td>Paid</td>
-                <td>OTC</td>
-                <td><button onclick="openModal(1, 'Marian Naparan')">Notify</button></td>
-            </tr>
-            <tr data-user-id="2">
-                <td>John Doe</td>
-                <td>11,000</td>
-                <td>Paid</td>
-                <td>Online</td>
-                <td><button onclick="openModal(2, 'John Doe')">Notify</button></td>
-            </tr>
-            <tr data-user-id="3">
-                <td>Jane Smith</td>
-                <td>12,000</td>
-                <td>-</td>
-                <td>-</td>
-                <td><button onclick="openModal(3, 'Jane Smith')">Notify</button></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+        <!-- Customer List -->
+        <div class="application-list">
+            <h2>Customer List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Payment Method</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-user-id="1">
+                        <td>Marian Naparan</td>
+                        <td>10,000</td>
+                        <td>Paid</td>
+                        <td>OTC</td>
+                        <td><button onclick="openModal(1, 'Marian Naparan')">Notify</button></td>
+                    </tr>
+                    <tr data-user-id="2">
+                        <td>John Doe</td>
+                        <td>11,000</td>
+                        <td>Paid</td>
+                        <td>Online</td>
+                        <td><button onclick="openModal(2, 'John Doe')">Notify</button></td>
+                    </tr>
+                    <tr data-user-id="3">
+                        <td>Jane Smith</td>
+                        <td>12,000</td>
+                        <td>-</td>
+                        <td>-</td>
+                        <td><button onclick="openModal(3, 'Jane Smith')">Notify</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
 
-<!-- Modal Structure -->
-<div id="notifyModal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle">Notify User</h2>
+        <!-- Modal Structure -->
+        <div id="notifyModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close" onclick="closeModal()">&times;</span>
+                    <h2 id="modalTitle">Notify User</h2>
+                </div>
+                <div class="modal-body">
+                    <textarea id="messageBox" rows="4" style="width: 100%; padding: 10px;" placeholder="Type your message here..."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button onclick="sendMessage()">Send</button>
+                </div>
+            </div>
         </div>
-        <div class="modal-body">
-            <textarea id="messageBox" rows="4" style="width: 100%; padding: 10px;" placeholder="Type your message here..."></textarea>
-        </div>
-        <div class="modal-footer">
-            <button onclick="sendMessage()">Send</button>
-        </div>
-    </div>
-</div>
+
+
+
 
 <script>
     function openModal(userId, userName) {
@@ -220,8 +225,45 @@
         }
     }
 
+
+    //darkmode
+    function toggleDarkModeDashboard() {
+    document.body.classList.toggle('dark-mode');
+
+    let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+    // Send AJAX request to update dark mode preference in the database
+    fetch('/update-dark-mode', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ dark_mode: darkModeEnabled })
+    }).then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Dark mode preference updated successfully.');
+        }
+    });
+}
+
+// Apply saved dark mode preference from the database when the page loads
+function applySavedDarkModePreferenceFromDB() {
+    const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+    if (darkMode) {
+        document.body.classList.add('dark-mode');
+    }
+}
+
+// Call the function when the page loads
+applySavedDarkModePreferenceFromDB();
+
+
     </script>
         
 <script src="{{ asset('js/admin/addashboard.js') }}"></script>
+<script src="{{ asset('js/admin/toppsidenav.js') }}"></script>  
 </body>
 </html>
