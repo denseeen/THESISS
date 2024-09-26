@@ -16,6 +16,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    protected $table = 'users';
     protected $fillable = [
         'name',
         'email',
@@ -58,5 +59,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(AdminInfo::class); // Define the relationship with AdminInfo
     }
+
+    public function messages()
+{
+    return $this->hasMany(Message::class, 'recipient_id'); // Assuming recipient_id is the foreign key in the messages table
+}
+   
 
 }

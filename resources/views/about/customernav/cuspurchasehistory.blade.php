@@ -25,69 +25,7 @@
                     <li><a href="{{ route('cusdasboard.show') }}">Dashboard</a></li>
                     
                     <li>       
-                         <div class="notification-container">
-                            <!-- Bell Icon -->
-                            <span class="bell-icon">&#128276;</span>
-                            <!-- Notification Count -->
-                            <span class="notification-count">3</span>
-
-                            <!-- Dropdown Menu -->
-                            <div class="dropdown-notification">
-                                <!-- Recent Notifications -->
-                                <div class="box shadow-sm rounded bg-white mb-3">
-                                    <div class="box-title border-bottom p-3">
-                                        <h6 class="m-0" style="color:black;">Recent</h6>
-                                    </div>
-                                    <div class="box-body p-0">
-                                    
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                              
-                                                <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Income tax sops on the cards, The bias in VC funding, and other top news for you</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Vivamus imperdiet venenatis est...</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- Earlier Notifications -->
-                                <div class="box shadow-sm rounded bg-white mb-3">
-                                    <div class="box-title border-bottom p-3">
-                                        <h6 class="m-0" style="color:black;">Earlier</h6>
-                                    </div>
-                                    <div class="box-body p-0">
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Nunc purus metus, aliquam vitae venenatis sit amet, porta non est.</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Pellentesque semper ex diam, at tristique ipsum varius sed. Pellentesque non metus ullamcorper</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ipsum elit.</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </li>
                     
                     

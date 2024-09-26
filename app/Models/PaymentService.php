@@ -15,6 +15,13 @@ class PaymentService extends Model
     
     protected $fillable = [
         'installment', 
-        'fullypaid'
+        'fullypaid',
+        'customer_id'
     ];
+
+
+    public function customer()
+    {
+        return $this->belongsTo(CustomerInfo::class, 'customer_id');
+    }
 }

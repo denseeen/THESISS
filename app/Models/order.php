@@ -20,4 +20,8 @@ class order extends Model
         'unitprice', 
         'unitDescription'
     ];
+
+    public function customer() {
+        return $this->belongsTo(CustomerInfo::class, 'customer_id');
+    }
 }

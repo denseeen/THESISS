@@ -32,4 +32,9 @@ class AdminInfo extends Model
     {
         return $this->belongsTo(User::class); // Define the relationship with User
     }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'recipient_id'); // Assuming recipient_id is the foreign key in the messages table
+    }
 }
