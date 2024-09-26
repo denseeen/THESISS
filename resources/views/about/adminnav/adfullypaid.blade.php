@@ -63,8 +63,7 @@
                     <thead>
                         <tr>
                             <th style= "width:20%;">Name</th>
-                            <!-- <th>Unit</th> -->
-                            <!-- <th>Installment Plan</th> -->
+                            
                             <th>Payment Method</th>
                             <th>Amount</th>
                             <th>Date</th>
@@ -75,49 +74,41 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Example Row -->
-                        <tr>
-                        <td><a href="#" class="customer-link" data-customer-id="1">Marian Naparan</a></td>
-                            <!-- <td><input type="text" name="unit" placeholder="Enter Unit"></td> -->
-                            <!-- <td>
-                            
-                                <select name="Installment_plan">
-                                    <option value="OTC"> 6 MONTHS</option>
-                                    <option value="ONLINE"> 12 MONTHS</option>
-                                    <option value="ONLINE"> 18 MONTHS</option>
-                                </select>
-                            </td> -->
-                            <td>
-                                <select name="payment_method">
-                                    <option value="OTC">OTC</option>
-                                    <option value="ONLINE">ONLINE</option>
-                                </select>
-                            </td>
-                            <td><input type="number" name="amount" placeholder="Enter Amount"></td>
-                            <td><input type="date" name="date"></td>
-                            <td>
-                                <select name="status">
-                                    <option value="paid">Paid</option>
-                                    <option value="not_paid">Not Paid</option>
-                                    <option value="fully_paid">Fully Paid</option>
-                                </select>
-                            </td>
-                            <td><input type="text" name="violation" placeholder="Enter Violation"></td>
-                            <td><input type="text" name="comment" placeholder="Enter Comment"></td>
-                            <td>
-                                <select class="action-dropdown">
-                                    <option value="update">Update</option>
-                                    <option value="archive">Archive</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <!-- Repeat similar rows as needed -->
-                    </tbody>
-                </table>
-            </div>
+                    @foreach($fullpaids as $fullpaid)
+                <tr>
+                    <td><a href="#" class="customer-link" data-customer-id="{{ $fullpaid->id }}">{{ $fullpaid->name }}</a></td>
+                    <td>
+                        <select name="payment_method">
+                            <option value="OTC">OTC</option>
+                            <option value="ONLINE">ONLINE</option>
+                        </select>
+                    </td>
+                    <td><input type="number" name="amount" placeholder="Enter Amount"></td>
+                    <td><input type="date" name="date"></td>
+                    <td>
+                        <select name="status">
+                            <option value="paid">Paid</option>
+                            <option value="not_paid">Not Paid</option>
+                            <option value="fully_paid">Fully Paid</option>
+                        </select>
+                    </td>
+                    <td><input type="text" name="violation" placeholder="Enter Violation"></td>
+                    <td><input type="text" name="comment" placeholder="Enter Comment"></td>
+                    <td>
+                        <select class="action-dropdown">
+                            <option value="update">Update</option>
+                            <option value="archive">Archive</option>
+                        </select>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 
 
 
+               
                 <!-- Modal Structure -->
                 <div id="customer-modal" class="modal">
                     <div class="modal-content">
@@ -127,10 +118,10 @@
                             <div class="flex-columns">
                                 <div class="customer-info">
                                     <h2>Customer Name:</h2>
-                                    <p><strong id="modal-name">Marian Naparan</strong></p>
-                                    <p>Email: <span id="modal-email">marian_naparan@gmail.com</span></p>
-                                    <p>Phone Number: <span id="modal-phone">0956946355</span></p>
-                                    <p>Address: <span id="modal-address">Quezon City Cubao</span></p>
+                                    <p><strong id="modal-name"></strong></p>
+                                    <p>Email: <span id="modal-email"></span></p>
+                                    <p>Phone Number: <span id="modal-phone"></span></p>
+                                    <p>Address: <span id="modal-address"></span></p>
                                     <a href="#" class="edit-button">Edit</a>
                                 </div>
 
@@ -166,44 +157,47 @@
                     </div>
                 </div>
 
-
-
     <script> 
 
     document.addEventListener('DOMContentLoaded', (event) => {
-    const modal = document.getElementById('customer-modal');
-    const closeButton = document.querySelector('.close');
-    const customerLinks = document.querySelectorAll('.customer-link'); // Updated to .customer-link
+        const modal = document.getElementById('customer-modal');
+        const closeButton = document.querySelector('.close');
+        const customerLinks = document.querySelectorAll('.customer-link');
 
-    // Open modal with customer details
-    customerLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            const customerId = this.getAttribute('data-customer-id');
+        customerLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const customerId = this.getAttribute('data-customer-id');
 
-            // Fetch customer details from the server (Example with static data)
-            // Replace with actual data fetch
-            document.getElementById('modal-name').textContent = 'Marian Naparan';
-            document.getElementById('modal-email').textContent = 'marian_naparan@gmail.com';
-            document.getElementById('modal-phone').textContent = '0956946355';
-            document.getElementById('modal-address').textContent = 'Quezon City Cubao';
+                // Fetch customer details from the server
+                fetch(`/customer/${customerId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update modal content with fetched data
+                        document.getElementById('modal-name').textContent = data.name;
+                        document.getElementById('modal-email').textContent = data.email;
+                        document.getElementById('modal-phone').textContent = data.phone_number;
+                        document.getElementById('modal-address').textContent = data.address;
 
-            modal.style.display = 'block';
+                        // Open modal
+                        modal.style.display = 'block';
+                    })
+                    .catch(error => console.error('Error fetching customer details:', error));
+            });
+        });
+
+        // Close modal
+        closeButton.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // Close modal if outside click
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
         });
     });
-
-    // Close modal
-    closeButton.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
-
-    // Close modal if outside click
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-});
 
 
 

@@ -20,13 +20,13 @@ function toggleDarkModeDashboard() {
 }
 
 // Apply saved dark mode preference from the database when the page loads
-function applySavedDarkModePreferenceFromDB() {
-    const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+    function applySavedDarkModePreferenceFromDB() {
+        const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }}
 
-    if (darkMode) {
-        document.body.classList.add('dark-mode');
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+        }
     }
-}
 
 // Call the function when the page loads
 applySavedDarkModePreferenceFromDB();

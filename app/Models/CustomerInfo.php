@@ -36,4 +36,9 @@ class CustomerInfo extends Model
     {
         return $this->hasMany(Order::class);
     }
+
+    public function paymentService()
+    {
+        return $this->hasOne(PaymentService::class, 'customer_id');
+    }
 }
