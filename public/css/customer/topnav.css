@@ -293,14 +293,15 @@ body.dark-mode .dropdown-menu a:hover {
 
 .notification-count {
     position: absolute;
-    top: -5px;
-    right: -10px;
+    top: -5px; /* Adjust as needed to fit your design */
+    right: -10px; /* Adjust to prevent clipping */
     background-color: red;
     color: white;
     padding: 5px 8px;
     border-radius: 50%;
     font-size: 12px;
     font-weight: bold;
+    display: none; /* Initially hidden until count > 0 */
 }
 
 .dropdown-notification {
@@ -327,7 +328,9 @@ body.dark-mode .dropdown-menu a:hover {
     background-color: white; /* Background color */
     z-index: 1000; /* Ensure it appears above other elements */
 }
-
+.dropdown-notification h6{
+    text-indent: 10px;
+}
 
 .dropdown-notification.show {
     display: block; /* Show when 'show' class is added */
@@ -352,4 +355,202 @@ body.dark-mode .dropdown-menu a:hover {
     color: black; /* Optional: Set color of the delete icon */
     float: inline-end;
     margin-bottom: 2%;
+}
+
+
+
+@media (max-width: 426px) {
+
+    .bell-icon{
+      font-size: 20px;
+    }
+    .notification-count{
+        font-size: 8px;
+        width: 6px;
+        height: 9px; 
+        right: -5px;
+    }
+
+    .icon img{
+        width: 20px;
+        height: 20px;
+    }
+    .navigation-menu{
+        font-size: 8px;
+        padding: 0;
+        margin: 0;      
+       
+    }
+
+    .top_navbar i.icons{
+        margin: 0%;
+        margin-right: 0%;
+      
+        }
+    .icon{
+        margin-right: 1px;
+    }
+
+    nav ul li {
+        margin: 0 1px;
+      }
+
+    .TopNav-BillnWoWlogo {
+        position: absolute;
+        width: 20.85%;
+        left: 4%;
+    }
+
+
+    
+    .dropdown-menu a {
+        padding: 8px 9px;
+    }
+
+    .dropdown-menu  {
+        font-size: 6px;
+    }
+
+    .dropdown-notification {
+        top: 30px;
+        font-size: 6px;
+        max-height: 100px;
+        width: 600%;
+        right: -4px;
+
+    }
+
+}
+
+
+@media (max-width: 376px) {
+
+    .bell-icon{
+      font-size: 20px;
+    }
+    .notification-count{
+        font-size: 8px;
+        width: 6px;
+        height: 9px; 
+        right: -5px;
+    }
+
+    .icon img{
+        width: 20px;
+        height: 20px;
+    }
+    .navigation-menu{
+        font-size: 8px;
+        padding: 0;
+        margin: 0;      
+       
+    }
+
+    .top_navbar i.icons{
+        margin: 0%;
+        margin-right: 0%;
+      
+        }
+    .icon{
+        margin-right: 1px;
+    }
+
+    nav ul li {
+        margin: 0 1px;
+      }
+
+    .TopNav-BillnWoWlogo {
+        position: absolute;
+        width: 20.85%;
+        left: 4%;
+    }
+
+
+    
+    .dropdown-menu a {
+        padding: 8px 9px;
+    }
+
+    .dropdown-menu  {
+        font-size: 6px;
+    }
+
+    .dropdown-notification {
+        top: 30px;
+        font-size: 6px;
+        max-height: 100px;
+        width: 600%;
+        right: -4px;
+
+    }
+
+}
+
+
+
+
+@media (max-width: 321px) {
+
+    /* .top_navbar {
+        height: 50px;
+    } */
+
+    .bell-icon{
+      font-size: 20px;
+    }
+    .notification-count{
+        font-size: 8px;
+        width: 4px;
+        height: 8px; 
+        right: -5px;
+    }
+
+    .icon img{
+        width: 20px;
+        height: 20px;
+    }
+    .navigation-menu{
+        font-size: 8px;
+        padding: 0;
+        margin: 0;      
+       
+    }
+
+    .top_navbar i.icons{
+        margin: 0%;
+        margin-right: 0%;
+      
+        }
+    .icon{
+        margin-right: 1px;
+    }
+
+    nav ul li {
+        margin: 0 1px;
+      }
+
+    .TopNav-BillnWoWlogo {
+        position: absolute;
+        width: 20.85%;
+        left: 4%;
+    }
+
+
+    .dropdown-menu a {
+        padding: 8px 9px;
+    }
+
+    .dropdown-menu  {
+        font-size: 6px;
+    }
+
+    .dropdown-notification {
+        top: 30px;
+        font-size: 6px;
+        max-height: 100px;
+        width: 600%;
+        right: -4px;
+
+    }
+
 }

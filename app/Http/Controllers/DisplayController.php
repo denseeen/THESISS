@@ -44,18 +44,21 @@ public function user_infos_admin()
 
 public function admin_dashboard()
 {
-    // Fetch customers
-    $customer = DB::table('customer_info')->get();
-
-    // Fetch customers and their payment methods
-    $customerpm = DB::table('customer_info')
-        ->leftJoin('payment_service', 'customer_info.id', '=', 'payment_service.customer_id')
-        ->select('customer_info.id', 'customer_info.name', 'payment_service.installment', 'payment_service.fullypaid')
-        ->get();
-
     // Pass both variables to the view
-    return view('about.adminnav.addashboard', compact('customer', 'customerpm')); 
+    return view('about.adminnav.addashboard'); 
 }
+public function getCustomers()
+{
+     // Fetch customers and their payment service details
+     $customers = DB::table('customer_info')
+     ->leftJoin('payment_service', 'customer_info.id', '=', 'payment_service.customer_id')
+     ->select('customer_info.id', 'customer_info.name', 'payment_service.installment', 'payment_service.fullypaid')
+     ->get();
+
+ // Return JSON response with customer data and payment service
+ return response()->json($customers);
+}
+
 
 
 public function cusInstallments()
@@ -85,10 +88,12 @@ public function cusfullypaid()
 }
 
 
+
     public function getCustomer($id)
     {
         // Fetch customer details by ID
         $customer = DB::table('customer_info')->where('id', $id)->first();
+
 
         if ($customer) {
             return response()->json([
@@ -102,12 +107,7 @@ public function cusfullypaid()
         return response()->json(['error' => 'Customer not found'], 404);
     }
 
-
-
-
 }
-
-
 
 
 

@@ -12,7 +12,7 @@
 
         /* NAVIGATION */
         header {
-            background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
+            background: radial-gradient( circle at 10% 50%, rgb(255, 1, 1) 0%, rgb(8, 8, 180) 100%);
             padding: 1%;
         }
 
@@ -25,7 +25,7 @@
         nav ul {
           list-style: none;
           display: flex;
-          justify-content: center;
+          justify-content: end;
           padding: 0;
           margin: 0;
           align-items: center;
@@ -43,10 +43,13 @@
       
         a.btn {
             color: white;
+            padding: 20%;
+            background-color: rgb(9, 117, 211);
         }
 
         a.btn:hover{
             color: white;
+            background-color: rgb(71, 158, 235);
         }
 
         /* MODAL */

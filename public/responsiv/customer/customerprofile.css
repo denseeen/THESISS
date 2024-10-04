@@ -1,235 +1,288 @@
-/* Tablets (769px - 1024px) */
-@media only screen and (min-width: 769px) and (max-width: 1024px) {
-    .top_navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 60px;
-        /* background-color: #323233; */
-        background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 -20px;
-        z-index: 10; /* Ensure top layer */
-    }
-    
-    .top_navbar {
-        font-size: 25px;
-        font-weight: 700;
-        color: white;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        padding: 10px;
-    }
 
-    .top_navbar .icons {
-        display: flex;
-        align-items: center;
-    }
-    
-    .top_navbar .icon {
-        margin-left: 10px;
-        cursor: pointer;
-    }
-    
-    .top_navbar .icon i {
-        font-size: 20px;
-        color: white;
-    }
-    
-    .TopNav-BillnWoWlogo{ 
-        position: absolute;
-        width: 14.85%;
-        left: 2%;
-    }
-
-
-
-    .profile-body {
-        padding: 25px;
-    }
-
+@media (max-width: 1441px) {
+  
     .profile-header {
-        padding: 25px;
+        margin-top: 20%;
+
     }
 
-    .profile-card {
+}
+
+
+@media (max-width: 1025px) {
+  
+    .profile-header {
+        margin-top: 35%;
+
+    }
+
+    .name-title h2{
+        font-size: 20px;
+    }
+
+    .profile-card {  
+        width: 80%;
+        margin-top: 7%;  
+    }
+
+    .profile-body{
+        padding: 10%;
+    }
+
+    .avatar {
+        width: 50%;
+        height: 50%;
+        font-size: 20%;
+    }
+
+}
+
+
+@media (max-width: 769px) {
+  
+    .profile-header {
+        margin-top: 35%;
+
+    }
+
+    .name-title h2{
+        font-size: 20px;
+    }
+
+    .profile-card {  
+        width: 80%;
+        margin-top: 7%;  
+    }
+
+    .profile-body{
+        padding: 10%;
+    }
+
+    .avatar {
+        width: 50%;
+        height: 50%;
+        font-size: 20%;
+    }
+}
+
+
+@media (max-width: 426px) {
+  
+    .profile-header {
+        margin-top: 35%;
+
+    }
+
+    .name-title h2{
+        font-size: 80%;
+    }
+
+    .profile-card {  
+        width: 80%;
+        margin-top: 7%;  
+    }
+
+    .profile-body{
+        padding: 10%;
+    }
+
+    .avatar {
+        width: 50%;
+        height: 50%;
+        font-size: 20%;
+    }
+    .info{
+        padding: 2%;
+        font-size: 10px;
+    }
+
+    .info h3{
+    
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+    .password-edit{
+        font-size: 10px;
+    }
+
+    .edit-button{
+        padding: 3px 5px;
+        font-size: 10px;
+    }
+    .modal-content{
+        height: 30%;
+        width: 50%;
+        font-size: 50%;
+        padding: 20spx;
+    }
+
+    .password-field-modal{
+       
         width: 70%;
-        margin-top: 15%;
+        padding: 2%;
+        margin: 2px 0;
+        font-size: 10px;
+      
     }
 
-    .info h3 {
-        font-size: 20px;
+    .show-passwords-container label{
+        font-size: 6px;
     }
-    
-    .info p {
-        font-size: 18px;
-    }
-
-    .password-edit {
-        font-size: 18px;
+    .show-passwords-container input{
+        font-size: 5px;
     }
 
-    .password-field {
-        padding: 8px;
-        width: 100%;
+    .modal-submit-button{
+        padding: 3px 5px;
+        font-size: 10px;
     }
+
 }
 
-/* Small Tablets and Large Phones (up to 768px) */
-@media only screen and (max-width: 768px) {
-    .top_navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 50px;
-        /* background-color: #323233; */
-        background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 -20px;
-        z-index: 10; /* Ensure top layer */
-    }
-    
-    .top_navbar {
-        font-size: 25px;
-        font-weight: 700;
-        color: white;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        padding: 10px;
-    }
-
-    .top_navbar .icons {
-        display: flex;
-        align-items: center;
-    }
-    
-    .top_navbar .icon {
-        margin-left: 10px;
-        cursor: pointer;
-    }
-    
-    .top_navbar .icon i {
-        font-size: 20px;
-        color: white;
-    }
-    
-    .TopNav-BillnWoWlogo{ 
-        position: absolute;
-        width: 14.85%;
-        left: 2%;
-    }
-
-    .profile-body {
-        padding: 20px;
-    }
-
+@media (max-width: 376px) {
+  
     .profile-header {
-        padding: 20px;
+        margin-top: 35%;
+
     }
 
-    .profile-card {
+    .name-title h2{
+        font-size: 80%;
+    }
+
+    .profile-card {  
         width: 80%;
-        margin-top: 12%;
+        margin-top: 7%;  
     }
 
-    .info h3 {
-        font-size: 18px;
+    .profile-body{
+        padding: 10%;
     }
+
+    .avatar {
+        width: 50%;
+        height: 50%;
+        font-size: 20%;
+    }
+    .info{
+        padding: 2%;
+        font-size: 10px;
+    }
+
+    .info h3{
     
-    .info p {
-        font-size: 16px;
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+    .password-edit{
+        font-size: 10px;
     }
 
-    .password-edit {
-        font-size: 16px;
+    .edit-button{
+        padding: 3px 5px;
+        font-size: 10px;
+    }
+    .modal-content{
+        height: 30%;
+        width: 50%;
+        font-size: 50%;
+        padding: 20spx;
     }
 
-    .password-field {
-        padding: 6px;
-        width: 100%;
+    .password-field-modal{
+       
+        width: 70%;
+        padding: 2%;
+        margin: 2px 0;
+        font-size: 10px;
+      
     }
+
+    .show-passwords-container label{
+        font-size: 6px;
+    }
+    .show-passwords-container input{
+        font-size: 5px;
+    }
+
+    .modal-submit-button{
+        padding: 3px 5px;
+        font-size: 10px;
+    }
+
 }
 
-/* Small Phones (up to 480px) */
-@media only screen and (max-width: 425px) {
-    .top_navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 40px;
-        /* background-color: #323233; */
-        background: radial-gradient( circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 -20px;
-        z-index: 10; /* Ensure top layer */
-    }
-    
-    .top_navbar {
-        font-size: 25px;
-        font-weight: 700;
-        color: white;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        padding: px;
-    }
-
-    .top_navbar .icons {
-        display: flex;
-        align-items: center;
-    }
-    
-    .top_navbar .icon {
-        margin-left: 10px;
-        cursor: pointer;
-    }
-    
-    .top_navbar .icon i {
-        font-size: 20px;
-        color: white;
-    }
-    
-    .TopNav-BillnWoWlogo{ 
-        position: absolute;
-        width: 20.85%;
-        left: 2%;
-    }
-
-    .profile-body {
-        padding: 15px;
-    }
-
+@media (max-width: 320px) {
+  
     .profile-header {
-        padding: 15px;
+        margin-top: 35%;
+
     }
 
-    .profile-card {
+    .name-title h2{
+        font-size: 80%;
+    }
+
+    .profile-card {  
         width: 80%;
-        margin-top: 20px;
+        margin-top: 7%;  
     }
 
-    .info h3 {
-        font-size: 16px;
+    .profile-body{
+        padding: 10%;
     }
+
+    .avatar {
+        width: 50%;
+        height: 50%;
+        font-size: 20%;
+    }
+    .info{
+        padding: 2%;
+        font-size: 10px;
+    }
+
+    .info h3{
     
-    .info p {
-        font-size: 14px;
+        font-size: 15px;
+        margin-bottom: 0;
+    }
+    .password-edit{
+        font-size: 10px;
     }
 
-    .password-edit {
-        font-size: 14px;
+    .edit-button{
+        padding: 3px 5px;
+        font-size: 10px;
+    }
+    .modal-content{
+        height: 30%;
+        width: 50%;
+        font-size: 50%;
+        padding: 20spx;
     }
 
-    .password-field {
-        padding: 6px;
-        width: 100%;
+    .password-field-modal{
+       
+        width: 70%;
+        padding: 2%;
+        margin: 2px 0;
+        font-size: 10px;
+      
     }
+
+    .show-passwords-container label{
+        font-size: 6px;
+    }
+    .show-passwords-container input{
+        font-size: 5px;
+    }
+
+    .modal-submit-button{
+        padding: 3px 5px;
+        font-size: 10px;
+    }
+
 }
+
+

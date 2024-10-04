@@ -16,6 +16,7 @@
     border: 2px solid #000000;
     border-radius: 3.35rem;
     text-align: center;
+    font-size: 80%
 }
 
 .button-container {
@@ -23,9 +24,10 @@
     justify-content:left;
     width: 30%;
     margin-left: 10%;
-   
-   
+    font-size: 80%;
+    margin-top: 5%; 
 }
+
 body .button-container{
     position: relative;
     top: auto;
@@ -43,6 +45,7 @@ body .button-container{
     border-radius: 5px;
     border-style: groove;
     border-color: #000000;
+
 }
 
 .button:hover {
@@ -58,7 +61,7 @@ body .button-container{
     top: 0;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
-    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+
     overflow: auto;
 }
 
@@ -109,7 +112,7 @@ body .button-container{
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 80%;
     margin: 0 auto;
     /* margin-top: 3%; */
     margin-top: 0 ;
@@ -124,9 +127,10 @@ body .button-container{
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    margin-top: 3%;
+    /* height: 100%; */
+    margin-top: 5%;
     border-style: groove;
+    margin-bottom: 5%;
 }
 
 .card-header {
@@ -139,6 +143,7 @@ body .button-container{
 .card-body {
     padding: 15px 20px;
     flex: 1;
+    margin-bottom: 5%;
 }
 
 .border-start-primary {
@@ -279,3 +284,323 @@ body .button-container{
     box-shadow: 0 4px 8px 0 rgba(223, 219, 219, 0.2), 0 6px 20px 0 rgb(255, 254, 254); /* Adding shadow */
 }
 
+
+
+/* Mobile styles for 425px screen size */
+@media (max-width: 1024px) {
+
+    .button-container {
+        display: flex;
+        justify-content:left;
+        width: 60%;
+        margin-left: 10%;
+        
+    }
+
+    .button {
+        margin-top: 10%;
+        font-size: 14px;
+    }
+
+}
+
+
+@media (max-width: 768px) {
+   
+
+    .viewtitle {
+        width: 25%;
+        margin-left: 37%;
+        padding-top: 5%;
+       
+        border-radius: 2rem;
+        font-size: 40%;
+    }
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 7%;
+        top: 0;
+        width: 80%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto;
+        margin-top: 10%;
+    }
+
+
+    .button-container {
+        display: flex;
+        justify-content:left;
+        width: 60%;
+        margin-left: 2%;
+        font-size: 80%;
+        margin-top: 5%; 
+    }
+
+    .button {
+        margin-top: 10%;
+        font-size: 14px;
+
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+        margin: 10% auto; /* Reduced margin */
+    }
+
+    .container {
+        max-width: 95%;
+        margin: 0 auto;
+    }
+
+    .card-header{
+        font-size: 17px;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .col {
+        flex: none;
+        min-width: 100%;
+    }
+
+    .card {
+        margin-top: 5%; /* Reduced margin for better mobile fit */
+        margin-bottom: 5%;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    /* Make the table responsive */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        margin: 0%;
+    }
+
+    .table {
+        font-size: 10px;
+        table-layout: fixed;
+        width: 100%;
+        word-wrap: break-word; 
+    }
+
+    .table th, .table td {
+        padding: 0.5rem;
+        text-align: left;
+    }
+
+    .table th {
+        white-space: nowrap;
+    }
+
+    .table td {
+        white-space: normal; /* Allow wrapping in table data */
+    }
+
+    /* Adjust padding and spacing */
+    .h3 {
+        font-size: 1.5rem;
+    }
+
+    .badge {
+        font-size: 70%;
+    }
+
+    /* Modal close button */
+    .close {
+        font-size: 24px;
+    }
+
+    .modal {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 426px) {
+
+
+    body {
+        margin-top: 10px;
+        background-color: #ffffff;
+        color: #0a0707;
+        font-size: 14px;
+    }
+
+    .viewtitle {
+        width: 30%;
+        margin-left: 35%;
+        padding-top: 12%;
+        border-radius: 2rem;
+        font-size: 30%;
+    }
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-left: 0;
+        font-size: 15%;
+        margin-top: 5%;
+    }
+
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 7%;
+        top: 0;
+        width: 80%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto;
+        margin-top: 10%;
+    }
+
+    .button {
+        margin-top: 10%;
+        width: 90%;
+        padding: 5px;
+        margin: 10px 0;
+        font-size: 12px;
+    }
+
+    .modal-content {
+        width: 90%;
+        padding: 15px;
+        margin: 10% auto; /* Reduced margin */
+    }
+
+    .container {
+        max-width: 95%;
+        margin: 0 auto;
+    }
+
+    .card-header{
+        font-size: 14px;
+    }
+
+    .row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .col {
+        flex: none;
+        min-width: 100%;
+    }
+
+    .card {
+        margin-top: 5%; /* Reduced margin for better mobile fit */
+        margin-bottom: 5%;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    /* Make the table responsive */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        margin: 0%;
+    }
+
+    .table {
+        font-size: 12px;
+        table-layout: fixed;
+        width: 100%;
+        word-wrap: break-word; 
+    }
+
+    .table th, .table td {
+        padding: 0.5rem;
+        text-align: left;
+    }
+
+    .table th {
+        white-space: nowrap;
+        font-size: 50%;
+    }
+
+    .table td {
+        white-space: normal; /* Allow wrapping in table data */
+    }
+
+    /* Adjust padding and spacing */
+    .h3 {
+        font-size: 12px;
+    }
+
+    .badge {
+        font-size: 70%;
+    }
+
+    /* Modal close button */
+    .close {
+        font-size: 24px;
+    }
+
+    .modal {
+        padding: 10px;
+    }
+   
+}
+
+@media (max-width: 376px) {
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-left: 0;
+        font-size: 70%;
+        margin-top: 10%;
+    }
+
+    .viewtitle {
+        width: 30%;
+        margin-left: 35%;
+        padding-top: 14%;
+        border-radius: 2rem;
+        font-size: 25%;
+    }
+
+    .table th {
+        white-space: nowrap;
+        font-size: 50%;
+    }
+
+}
+
+@media (max-width: 321px) {
+
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        margin-left: 0;
+        font-size: 70%;
+        margin-top: 10%;
+    }
+
+    .viewtitle {
+        width: 30%;
+        margin-left: 35%;
+        padding-top: 16%;
+        border-radius: 2rem;
+        font-size: 25%;
+    }
+
+    .table th {
+        white-space: nowrap;
+        font-size: 60%;
+    }
+
+}

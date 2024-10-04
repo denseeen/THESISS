@@ -10,6 +10,7 @@
         <!-- Stylesheets -->
         <link href="{!! url('css/admin/admindashboard.css') !!}" rel="stylesheet">
         <link href="{{ url('css/admin/topnav_sidenav.css') }}" rel="stylesheet">
+        <link href="{{ url('responsiv/adminnav/addashboard.css') }}" rel="stylesheet">
 
         <!-- Font Awesome for icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -58,7 +59,7 @@
         </div>
         
         <div class ="viewtitle">
-        <h1 style="margin-left: 30%;">Dashboard</h1>
+        <h1>Dashboard</h1>
         </div>
     
         <!-- Content -->
@@ -122,8 +123,8 @@
                 </div>
             </div>
 
-          <!-- Customer List -->
-       <div class="application-list">
+    <!-- Customer List -->
+<div class="application-list">
     <h2>Customer List</h2>
     <table>
         <thead>
@@ -135,28 +136,9 @@
                 <th>Action</th>
             </tr>
         </thead>
-            <tbody>
-                @foreach ($customer as $customers)
-                    <tr>
-                        <td>{{ $customers->name }}</td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                        @php
-                            $customerPayment = $customerpm->firstWhere('id', $customers->id);
-                        @endphp
-                        @if ($customerPayment && $customerPayment->installment)
-                            Installment
-                        @elseif ($customerPayment && $customerPayment->fullypaid)
-                            Fully Paid
-                        @else
-                            -
-                        @endif
-                        </td>
-                        <td><button onclick="openModal('{{ $customers->id }}', '{{ $customers->name }}')">Notify</button></td>
-                    </tr>
-                @endforeach
-            </tbody>
+        <tbody>
+            <!-- Rows will be dynamically generated here by JavaScript -->
+        </tbody>
     </table>
 </div>
 
@@ -171,7 +153,7 @@
         </div>
         <div class="modal-body">
             <input type="hidden" id="recipientId" />
-            <textarea id="messageBox" rows="4" style="width: 100%;" placeholder="Type your message here..."></textarea>
+            <textarea class="textfield"id="messageBox" rows="4" style="width: 100%;" placeholder="Type your message here..."></textarea>
             <div id="modalFeedback" style="margin-top: 10px; color: green;"></div> <!-- Feedback Message -->
         </div>
         <div class="modal-footer">
@@ -186,16 +168,83 @@
 
 
 <script>
-        function openModal(id, name) {
+
+document.addEventListener("DOMContentLoaded", function() {
+    fetchCustomerData();
+});
+
+function fetchCustomerData() {
+    fetch('/api/customers')
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('.application-list tbody');
+            tbody.innerHTML = '';
+
+            data.forEach(customer => {
+                const tr = document.createElement('tr');
+                
+                const nameTd = document.createElement('td');
+                nameTd.textContent = customer.name;
+
+                const balanceTd = document.createElement('td');
+                balanceTd.textContent = '-'; // Placeholder for balance
+
+                const statusTd = document.createElement('td');
+                statusTd.textContent = '-'; // Placeholder for status
+
+                const paymentServiceTd = document.createElement('td');
+                if (customer.installment) {
+                    paymentServiceTd.textContent = 'Installment';
+                } else if (customer.fullypaid) {
+                    paymentServiceTd.textContent = 'Fully Paid';
+                } else {
+                    paymentServiceTd.textContent = '-';
+                }
+
+                const actionTd = document.createElement('td');
+                const notifyButton = document.createElement('button');
+                notifyButton.textContent = 'Notify';
+                notifyButton.addEventListener('click', function() {
+                    openModal(customer.id, customer.name);
+                });
+                actionTd.appendChild(notifyButton);
+
+                tr.appendChild(nameTd);
+                tr.appendChild(balanceTd);
+                tr.appendChild(statusTd);
+                tr.appendChild(paymentServiceTd);
+                tr.appendChild(actionTd);
+
+                tbody.appendChild(tr);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching customer data:', error);
+        });
+}
+
+
+
+
+
+    //message
+    function openModal(id, name) {
             document.getElementById('recipientId').value = id;
             document.getElementById('modalTitle').textContent = `Notify ${name}`;
             document.getElementById('notifyModal').style.display = 'block';
+
+                    
+            // Clear the feedback message when the modal is opened
+            document.getElementById('modalFeedback').textContent = '';
         }
 
         function closeModal() {
             document.getElementById('notifyModal').style.display = 'none';
             document.getElementById('messageBox').value = '';
             document.getElementById('recipientId').value = '';
+
+            // Optionally clear the feedback message when the modal is closed
+            document.getElementById('modalFeedback').textContent = '';
         }
 
         function sendMessage() {
@@ -229,19 +278,20 @@
             })
            
             .then(data => {
-        const feedbackElement = document.getElementById('modalFeedback');
-        if (data.success) {
-            feedbackElement.textContent = 'Message sent successfully!';
-            feedbackElement.style.color = 'green'; // Optional: Set color for success
-        } else {
-            feedbackElement.textContent = 'Error: ' + data.message;
-            feedbackElement.style.color = 'red'; // Optional: Set color for error
-        }
-    })
-    .catch(error => {
+            const feedbackElement = document.getElementById('modalFeedback');
+            
+            if (data.success) {
+                feedbackElement.textContent = 'Message sent successfully!';
+                feedbackElement.style.color = 'green'; // Optional: Set color for success
+            } else {
+                 feedbackElement.textContent = 'Error: ' + data.message;
+                feedbackElement.style.color = 'red'; // Optional: Set color for error
+            }
+        })
+        .catch(error => {
         console.error('Error:', error);
-    });
-}
+        });
+    }
 
     //darkmode
     function toggleDarkModeDashboard() {

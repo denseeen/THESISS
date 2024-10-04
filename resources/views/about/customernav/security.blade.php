@@ -13,21 +13,38 @@
 
 <body>
 
-
-<!-- Top Navbar -->
-    <nav class="top_navbar">
+  <!-- Top Navbar -->
+  <nav class="top_navbar">
             <a href="{{ route('cusdasboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
-
             <div class="icons">
-                <ul class="navigation-menu">
-                        <li><a href="{{ route('cusdasboard.show') }}">Dashboard</a></li>
-                        <li>       
-                           
-                        </li>
+            <ul class="navigation-menu">
+                <li><a href="{{ route('cusdasboard.show') }}">Dashboard</a></li>
+                    <li>       
+                    <div class="notification-container">
+    <!-- Bell Icon -->
+    <span class="bell-icon" id="bellIcon">&#128276;</span>
+
+    <!-- Notification Count -->
+    <span class="notification-count" style="display: none;">0</span>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown-notification" id="dropdownNotification">
+        <div class="box shadow-sm rounded bg-white mb-3">
+            <div class="box-title border-bottom p-3">
+                <h6 class="m-0" style="color:black;">Notification</h6>
+            </div>
+            <div class="box-body p-0"></div>
+        </div>
+    </div>
+</div>
+
+
+                    </li>
                 </ul>
 
+               
                 <!-- Dark Mode -->
                 <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
                     <img src="/image/7721593.png" alt="Sun Icon">
@@ -40,13 +57,13 @@
                     <!-- user Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
-                        <a href="{{ route('cuspurchasehistory.show') }}">Order history</a>
+                        <!-- <a href="{{ route('cuspurchasehistory.show') }}">Order history</a> -->
                         <a href="{{ route('cussecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a>
                     </div>
                 </div>
             </div>
-    </nav>
+        </nav>
 
 
 
@@ -78,7 +95,7 @@
 </div>
 
 
-        <div class="card">
+        <!-- <div class="card">
                 <div class="card-header">Delete Account</div>
                 <div class="card-body">
                     <p>Deleting your account is a permanent action and cannot be undone. If you are sure you want to delete your account, select the button below. Your account will be marked for deletion and will be permanently deleted after 30 days unless you log in within that period to cancel the deletion.</p>
@@ -87,7 +104,7 @@
                         <button type="button" class="btn btn-danger-soft" onclick="confirmDeletion()">I understand, delete my account</button>
                     </form>
                 </div>
-        </div>
+        </div> -->
 
 
 

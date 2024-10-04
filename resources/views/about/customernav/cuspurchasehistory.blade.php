@@ -25,7 +25,24 @@
                     <li><a href="{{ route('cusdasboard.show') }}">Dashboard</a></li>
                     
                     <li>       
-                        
+                                               
+                            <div class="notification-container">
+                                    <!-- Bell Icon -->
+                                    <span class="bell-icon" id="bellIcon">&#128276;</span>
+
+                                    <!-- Notification Count -->
+                                    <span class="notification-count">0</span>
+
+                                    <!-- Dropdown Menu -->
+                                    <div class="dropdown-notification" id="dropdownNotification">
+                                        <div class="box shadow-sm rounded bg-white mb-3">
+                                            <div class="box-title border-bottom p-3">
+                                                <h6 class="m-0" style="color:black;">Notification<</h6>
+                                            </div>
+                                            <div class="box-body p-0"></div>
+                                        </div>
+                                    </div>
+                                </div>
                     </li>
                     
                     
@@ -43,7 +60,7 @@
                     <!-- Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
-                        <a href="{{ route('cuspurchasehistory.show') }}">Order History</a>
+                        <!-- <a href="{{ route('cuspurchasehistory.show') }}">Order History</a> -->
                         <a href="{{ route('cussecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a>
                     </div>
