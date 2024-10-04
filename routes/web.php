@@ -126,6 +126,8 @@ Route::post('/installment/store', [AdminFetchingController::class, 'store'])->na
 //Route for dashboard customer list
 Route::get('/admin/dashboard',[DisplayController::class, 'admin_dashboard'])->name('addashboard.show');
 
+Route::get('/api/customers', [DisplayController::class, 'getCustomers']);
+
 
 //Route for installment customer list
 Route::get('/admin/installment',[DisplayController::class, 'cusInstallments'])->name('adinstallment.show');
@@ -137,6 +139,7 @@ Route::get('/admin/fullypaid',[DisplayController::class, 'cusfullypaid'])->name(
 
 // Route to fetch customer details by ID, modal
 Route::get('/customer/{id}', [DisplayController::class, 'getCustomer']);
+// Route::get('/payment-schedule/{customerId}', [DisplayController::class, 'getPaymentSchedule']);
 
 
 //Route for notification
@@ -144,11 +147,11 @@ Route::post('/send-message', [NotificationController::class, 'sendMessage'])->mi
 
 
 // Route to fetch unread notifications for the user
-Route::get('/customer/dashboard',[NotificationController::class, 'fetching'])->name('cusdasboard.show');
+Route::get('/api/messages', [NotificationController::class, 'fetchMessages']);
 
 
 // Route for marking a message as read, delete
-Route::post('/mark-message-read/{id}', [NotificationController::class, 'markAsRead'])->name('mark.message.read');
+Route::delete('/api/messages/{id}', [NotificationController::class, 'deleteMessage']);
 
 
 

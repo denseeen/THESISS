@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ asset('responsiv/customer/rescusdashboard.css') }}" rel="stylesheet">
+        <link href="{{ url('responsiv/customer/restopnav.css') }}" rel="stylesheet">
+
         <link href="{!! url('css/customer/cusdashboard.css') !!}" rel="stylesheet">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link href="{{ url('css/customer/topnav.css') }}" rel="stylesheet">
@@ -19,47 +23,23 @@
                 <li><a href="{{ route('cusdasboard.show') }}">Anonas Branch</a></li>
                     <li>       
                     <div class="notification-container">
-                            <!-- Bell Icon -->
-                            <span class="bell-icon">&#128276;</span>
-                            <!-- Notification Count -->
-                            <span class="notification-count">{{ $messages->count() }}</span>
+    <!-- Bell Icon -->
+    <span class="bell-icon" id="bellIcon">&#128276;</span>
 
-                            <!-- Dropdown Menu -->
-                            <div class="dropdown-notification">
-                                <!-- Recent Notifications -->
-                                <div class="box shadow-sm rounded bg-white mb-3">
-                                    <div class="box-title border-bottom p-3">
-                                        <h6 class="m-0" style="color:black;">Recent</h6>
-                                    </div>
-                                    <div class="box-body p-0">
-                                        @if($messages->isEmpty())
-                                            <div class="notification-item no-notifications">
-                                                <div class="notification-content">
-                                                    <div class="notification-message" style="padding: 10px; text-align: center;">
-                                                        No Notifications
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @else
-                                            @foreach($messages as $message)
-                                                <!-- Added the data-message-id attribute to hold the message's ID -->
-                                                <div class="notification-item" data-message-id="{{ $message->id }}">
-                                                    <div class="notification-content">
-                                                        <div class="notification-sender" style="color:red; margin-bottom:2%;">
-                                                            {{ $message->sender_name }}
-                                                        </div>
-                                                        <div class="notification-message">{{ $message->content }}</div>
-                                                    </div>
-                                                    <!-- Delete icon with corresponding message ID -->
-                                                    <span class="delete-icon">&#10060;</span>
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                                <!-- Earlier Notifications (if needed) -->
-                            </div>
-                        </div>
+    <!-- Notification Count -->
+    <span class="notification-count" style="display: none;">0</span>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown-notification" id="dropdownNotification">
+        <div class="box shadow-sm rounded bg-white mb-3">
+            <div class="box-title border-bottom p-3">
+                <h6 class="m-0" style="color:black;">Notification</h6>
+            </div>
+            <div class="box-body p-0"></div>
+        </div>
+    </div>
+</div>
+
 
                     </li>
                 </ul>
@@ -77,7 +57,7 @@
                     <!-- user Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('cusprofile.show') }}">Profile</a>
-                        <a href="{{ route('cuspurchasehistory.show') }}">Order history</a>
+                        <!-- <a href="{{ route('cuspurchasehistory.show') }}">Order history</a> -->
                         <a href="{{ route('cussecurity.show') }}">Security</a>
                         <a href="{{ route('about.layout') }}">Logout</a>
                     </div>
@@ -155,7 +135,8 @@
             </div>
 
             <!-- Billing history -->
-            <div class="card">
+            <!--  -->
+            <div class="card" style="margin-top: 5%";> 
                 <div class="card-header">Billing History</div>
                 <div class="card-body p-0">
                     <!-- Billing history table -->
@@ -163,11 +144,11 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Transaction ID</th>
+                                    <th>transaction #</th>
                                     <th>Date</th>
                                     <th>Amount</th>
                                     <th>Status</th>
-                                    <th>Payment Method</th>
+                                    <!-- <th>Payment Method</th> -->
                                 </tr>
                             </thead>
                             <tbody id="billing-history-body">
@@ -285,8 +266,6 @@
                 rulesModal.style.display = "none";
             }
         }
-
-
 
 
 </script>

@@ -1,11 +1,9 @@
 body {
     margin-top: 20px;
-    background-color: #99c2f5;
+    background-color: #ffffff;
     color: #0a0707;
     font-family: Arial, sans-serif;
 }
-
-
 
 
 .img-account-profile {
@@ -17,7 +15,7 @@ body {
 }
 
 /* Styles for the Delete Account card */
-    .card {
+    /* .card {
         border: 1px solid #ddd;
         border-radius: 8px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -33,13 +31,13 @@ body {
         color: #721c24;
         font-size: 1.25rem;
         font-weight: bold;
-        padding: 15px;
+        padding: 100%;
         border-bottom: 1px solid #f5c6cb;
         border-top-left-radius: 8px;
         border-top-right-radius: 8px;
-    }
+    } */
 
-    .card-body {
+    /* .card-body {
         padding: 20px;
     }
 
@@ -69,7 +67,7 @@ body {
 .btn-danger-soft:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(122, 12, 30, 0.4);
-}
+} */
 
 
 .form-control {
@@ -201,4 +199,49 @@ button {
     color: #cccccc; /* Lighter text for placeholder */
 }
 
+
+
+@media (max-width: 768px) {
+
+    .container{
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 10%;
+
+    }
+
+     
+    button {
+       font-size: 10px;
+    }
+    
+
+}
+
+
+@media (max-width: 426px) {
+
+    .container{
+        width: 80%;
+        margin: 0 auto;
+        margin-top: 20%;
+        font-size: 10px;
+        
+    }
+
+    input, select {
+        width: 100%;
+        padding: 3px;
+        margin: 10px 0;
+        box-sizing: border-box;
+    }
+    
+    button {
+        padding: 3px;
+        width: 18%;
+        cursor: pointer;
+        float: inline-end;
+    }
+
+}
 

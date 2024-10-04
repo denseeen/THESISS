@@ -127,11 +127,7 @@ td .archive-button {
 .table-container {
     padding-top: 20px; /* Add space above the table */
 }
- 
- 
- 
- 
- 
+
 .dark-mode .modal-content{
  
     background-color: #000;
@@ -141,3 +137,165 @@ td .archive-button {
  
     color: #ffffff;
 }
+
+
+@media (max-width: 2561px)
+{
+    input[type="text"], input[type="number"], select, input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 100%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 99%;
+        font-size: 128%;
+        
+    }
+}
+@media (max-width: 2000px)
+{
+    input[type="text"], input[type="number"], select, input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 90%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 90%;
+        
+    }
+}
+@media (max-width: 1701px){}
+@media (max-width: 1441px)
+{
+    .installment-container h2 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 115%;
+        margin-left: 10%;
+    }
+
+    input[type="text"], input[type="number"], select, input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 90%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 90%;
+        
+    }
+}
+@media (max-width: 1025px)
+{   
+    .installment-container h2 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 107%;
+        
+    }
+    
+    input[type="text"], input[type="number"], select, input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 70%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 80%;
+        
+    }
+}
+@media (max-width: 769px)
+{
+    .installment-container h2 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 107%;
+        width: 79%;
+        margin-left: 10%;
+    }
+
+    .installment-container {
+        background-color: #fff;
+        margin: 0 10%;
+        margin-top: 10%;
+        color: #000;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        width: 83%;
+    }
+    
+    input[type="text"], input[type="number"], select, input[type="date"] {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 81%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 66%;
+    }
+}
+@media (max-width: 426px)
+{
+
+    .installment-container h2 {
+        margin-top: 0;
+        text-align: center;
+        font-size: 51%;
+        width: 79%;
+        margin-left: 10%;
+    }
+    
+    th, td {
+        padding: 2px;
+        text-align: left;
+        width: 30%;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 23%;
+    }
+
+    input[type="text"], input[type="number"], select, input[type="date"] {
+        width: 100%;
+        padding: 1px;
+        box-sizing: border-box;
+        font-size: 81%;
+    }
+
+
+    .installment-container {
+        background-color: #fff;
+        /* margin: 0 -98%; */
+        margin-top: 15%;
+        color: #000;
+        border-radius: 15px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        width: 76%;
+        margin-left: 18%;
+    }
+}
+
+

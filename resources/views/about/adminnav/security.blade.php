@@ -86,7 +86,7 @@
 </div>
 
 
-        <div class="card">
+        <!-- <div class="card">
                 <div class="card-header">Delete Account</div>
                 <div class="card-body">
                     <p>Deleting your account is a permanent action and cannot be undone. If you are sure you want to delete your account, select the button below. Your account will be marked for deletion and will be permanently deleted after 30 days unless you log in within that period to cancel the deletion.</p>
@@ -96,7 +96,7 @@
                     </form>
                 </div>
         </div>
-            
+             -->
 
 
 <script>

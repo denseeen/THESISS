@@ -158,13 +158,10 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="unitDescription" style="margin-left: 25%">Unit Description</label>
-                            <input type="text" id="unitDescription" name="unitDescription" style="width: 50%; margin-left: 25%">
+                            <label for="unitDescription" id="unitDescriptionLabel">Unit Description</label>
+                            <input type="text" id="unitDescription" name="unitDescription">
                         </div>
-                    </div>
-
-                <h2>Payment Service</h2>
-                <div class="centered-row">
+                    </div><!-- <div class="centered-row">
                     <div class="form-group"> 
                         <div class="checkbox-group">
                             <label>Fully Paid</label>
@@ -174,51 +171,70 @@
                                 <input type="checkbox" id="installment" name="installment" value="1"><br>
                         </div>
                     </div>
+                </div> -->
+
+                <h2>Payment Service</h2>
+                
+                <div class="centered-row payment-service">
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label>Fully Paid</label>
+                            <input type="checkbox" id="fullypaid" name="fullypaid" value="1">
+                        </div>
+
+                        <div class="checkbox-group">
+                            <label>Installment</label>
+                            <input type="checkbox" id="installment" name="installment" value="1">
+                        </div>
+                    </div>
                 </div>
+
 
                 <div id="installmentOptions" class="installment-options">
                     <div class="checkbox-group">
+                    
                         <label>6 Months</label>
                         <input type="checkbox" name="sixmonths" value="6">
-
+                        
                         <label>12 Months</label>
                         <input type="checkbox" name="twelvemonths" value="12">
 
                         <label>18 Months</label>
                         <input type="checkbox" name="eighteenmonths" value="18">
+
                     </div>
                 </div>
 
                 <h2>Account Creation</h2>
-                <div class="centered-row">
-                    <div class="form-group">          
+                <div class="centered-row account-creation">
+                    <div class="form-group">
                         <div class="mb-3 col-md-1">
-                            <label class="form-label">Email address</label>
+                            <label id="form-label-Email-id"class="form-label">Email address</label>
                             <input type="email" class="form-control" name="email">
                             @if($errors->has('email'))
                             <div class="error">{{ $errors->first('email') }}</div>
-                                @endif
-                            </div>
-                
-                            <div class="mr-1 mb-3 col-md-1">
-                                <label class="form-label">Password</label>
-                                <input type="password" class="form-control" name="password">
-                                @if($errors->has('password'))
-                                <div class="error">{{ $errors->first('password') }}</div>
-                                    @endif
-                                </div>
+                            @endif
+                        </div>
 
-                                <!-- UserRoles  -->
-                                <div class="mb-3 col-md-1">
-                                    <select name="user_roles" class="form-control" id="user_roles">
-                                        <option value="0" disabled>Select User Role</option>
-                                        <option value="1" @if (old('user_roles') == "1") {{ 'selected' }} @endif>admin</option>
-                                        <option value="2" @if (old('user_roles') == "2") {{ 'selected' }} @endif>Customer</option>
-                                    </select>
-                                </div>
-                            </div>
+                        <div class="mr-1 mb-3 col-md-1">
+                            <label id="form-label-Password"class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password">
+                            @if($errors->has('password'))
+                            <div class="error">{{ $errors->first('password') }}</div>
+                            @endif
+                        </div>
+
+                        <!-- UserRoles -->
+                        <div class="mb-3 col-md-1">
+                            <label class="form-label">User Role</label>
+                            <select name="user_roles" class="form-control" id="user_roles">
+                                <option value="0" disabled>Select User Role</option>
+                                <option value="1" @if (old('user_roles') == "1") {{ 'selected' }} @endif>admin</option>
+                                <option value="2" @if (old('user_roles') == "2") {{ 'selected' }} @endif>Customer</option>
+                            </select>
                         </div>
                     </div>
+                    <input class="submit" type="submit" value="Submit">
                 </div>
                 <input type="submit" value="Submit">
              
@@ -266,7 +282,39 @@
         
         
         <script>
-          
+            //darkmode
+    function toggleDarkModeDashboard() {
+        document.body.classList.toggle('dark-mode');
+
+        let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+        // Send AJAX request to update dark mode preference in the database
+        fetch('/update-dark-mode', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ dark_mode: darkModeEnabled })
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Dark mode preference updated successfully.');
+            }
+        });
+    }
+
+    // Apply saved dark mode preference from the database when the page loads
+    function applySavedDarkModePreferenceFromDB() {
+        const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+        }
+    }
+
+    // Call the function when the page loads
+    applySavedDarkModePreferenceFromDB();
 
         </script>
         <script src="{{ asset('js/admin/adrequest.js') }}"></script>

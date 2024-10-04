@@ -1,5 +1,6 @@
 h2 {
     text-align: center;
+    margin-top: 10%;
 }
 
 table {
@@ -10,7 +11,7 @@ table, th, td {
     border: 1px solid #ddd;
 }
 th, td {
-    padding: 10px;
+    padding: 100px;
     text-align: left;
 }
 th {
@@ -24,28 +25,19 @@ th a:hover, td a:hover {
     text-decoration: underline;
 }
 
-.application-form {
-    background-color: #fff;
-    margin-top: 5%;
-    margin-left: 30%;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 800px;
-}
-
 .form-row {
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 15px;
 }
 
+
+
 .form-group {
-    display: flex;
-    flex-direction: column;
-    margin-right: 30px;
-    flex: 1;
+    width: 400%;
+    max-width: 500px; /* Adjust max width as needed */
 }
 
 .form-group label {
@@ -58,14 +50,22 @@ th a:hover, td a:hover {
 .form-group input[name="name"], 
 .form-group input[type="emailad"]{
     padding: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #050404;
     border-radius: 5px;
     width: 100%;
 }
 
+#unitDescription {
+    width: 50%; 
+    margin-left: 25%;
+}
+
+#unitDescriptionLabel{
+    margin-left: 25%;
+}
 .form-group input.short-input, .form-group select {
     padding: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 5px;
     width: 100%;
 }
@@ -100,25 +100,704 @@ button:hover {
     background-color: #0056b3;
 }
 
-.centered-row {
+/* .centered-row {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 20px; /* Adjust the gap as needed */
+    gap: 20px; 
     margin-bottom: 15px;
 }
 
 .centered-row .form-group {
-    flex: 1 1 200px; /* Minimum width of 200px for each field, adjust as needed */
-    max-width: 102px; /* Maximum width for better layout control */
+    flex: 1 1 200px; 
+    max-width: 102px; 
+} */
+
+/* Account Creation (No grid, vertical stack) */
+.account-creation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
 }
+
+.account-creation .form-group {
+    width: 100%;
+    max-width: 400px; /* Adjust max width as needed */
+}
+
+.account-creation .mb-3.col-md-1 {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Payment Service (Grid layout) */
+.payment-service {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+    
+}
+
+.payment-service .form-group {
+    
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns grid */
+    gap: 20px; /* Adjust gap between grid items */
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.payment-service .checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+}
+
 
 .form-group input[type="email"],
 .form-group input[type="password"],
 .form-group select[name="user_roles"]{
     padding: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid #000000;
     border-radius: 5px;
     margin-top: 5%;
     margin-bottom: 5%;
+}
+
+.dark-mode {
+    color: #ddd;
+    border: 1px solid #ffffff;
+}
+
+
+/* desktop */
+@media (max-width: 2561px) 
+{
+    h2 {
+        text-align: center;
+        margin-top: 10%;
+        font-size: 30px ;
+        margin-left: 5%;
+    } 
+
+    .form-group label {
+        margin-bottom: 5px;
+        font-size: 22px;
+    }
+
+    .form-group {
+        width: 400%;
+        max-width: 627px;
+    }
+    
+    .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group input[name="name"], .form-group input[type="emailad"] {
+        padding: 10px;
+        border: 1px solid #050404;
+        border-radius: 5px;
+        width: 121%;
+        font-size: 19px;
+    }
+
+    .form-group input.short-input, .form-group select {
+        padding: 10px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        width: 125%;
+        font-size: 20px;
+    }
+
+    .payment-service {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-direction: column;
+        margin-left: 10%;
+    }
+
+    #installmentOptions {
+        margin-left: 42%;
+    }
+
+   
+
+     .checkbox-group label {
+        display: inline-flex;
+        align-items: center;
+        font-size: 28px;
+    }
+
+
+    .form-group input[type="email"], .form-group input[type="password"], .form-group select[name="user_roles"] {
+        padding: 10px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 178%;
+    }
+
+    .form-group input[type="email"], .form-group input[type="password"], .form-group select[name="user_roles"] {
+        padding: 15px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 177%;
+        font-size: 106%; 
+     } 
+
+
+    .checkbox-group input[type="checkbox"] {
+    vertical-align: middle; /* Ensures checkbox is vertically centered */
+    transform: scale(2.5); /* Increase or decrease the scale to make the checkbox bigger or smaller */
+    margin-right: 10px; /* Add some spacing if needed */
+    }
+
+    .account-creation {
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        /* gap: 276px; */
+        margin-bottom: 15px;
+        margin-right: 8%;
+        font-size: 21px;
+    }
+    #user_roles {
+        width: 200px; /* Adjust this to whatever size you need */
+        font-size: 20px;
+    }
+
+    option{
+        font-size: 13px;
+        padding: 0;
+    }
+
+    .submit {
+        font-size: 19px;
+        width: 106px;
+        padding: 9px;
+        margin-left: 42%;
+    }
+    #unitDescription {
+        width: 121%; /* Adjust this value to set the width you want */
+        margin-left: 0%; /* Optional: To align it with the label or position it */
+    }
+
+    #unitDescriptionLabel{
+        margin-left: 0%;
+    }
+
+    .checkbox-group label {
+        margin-right: 20px; /* Adds margin to the right of each label */
+    }
+    .installment-options {
+        display: none;
+        margin-left: 37%;
+        margin-top: 1%;
+    }
+
+    #date_of_birth{
+        width: 121%;
+    }
+}
+/* desktop */
+@media (max-width: 2000px) 
+{
+    h2 {
+        text-align: center;
+        margin-top: 10%;
+        font-size: 20px ;
+        margin-left: 5%;
+    } 
+
+    .form-group label {
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    .form-group {
+        width: 400%;
+        max-width: 450px;
+    }
+    
+    .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group input[name="name"], .form-group input[type="emailad"] {
+        padding: 8px;
+        border: 1px solid #050404;
+        border-radius: 5px;
+        width: 121%;
+        font-size: 15px;
+    }
+
+    .form-group input.short-input, .form-group select {
+        padding: 8px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        width: 125%;
+        font-size: 15px;
+    }
+
+    #date_of_birth{
+        width: 121%;
+    }
+
+
+     .checkbox-group label {
+        display: inline-flex;
+        align-items: center;
+        font-size: 15px;
+    }
+
+    .payment-service {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-direction: column;
+        margin-left: 10%;
+    }
+
+    #installmentOptions {
+        margin-left: 39%;
+    }
+
+
+    .checkbox-group label {
+        margin-right: 20px; /* Adds margin to the right of each label */
+    }
+    
+
+
+    .form-group input[type="email"], .form-group input[type="password"], .form-group select[name="user_roles"] {
+        padding: 5px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 130%;
+    }
+
+    .form-group input[type="email"], .form-group input[type="password"], .form-group select[name="user_roles"] {
+        padding: 5px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 130%;
+        font-size: 106%; 
+     } 
+
+
+    .checkbox-group input[type="checkbox"] {
+    vertical-align: middle; /* Ensures checkbox is vertically centered */
+    transform: scale(1.5); /* Increase or decrease the scale to make the checkbox bigger or smaller */
+    margin-right: 10px; /* Add some spacing if needed */
+    }
+
+    .account-creation {
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        /* gap: 276px; */
+        margin-bottom: 15px;
+        margin-right: 5%;
+        font-size: 15px;
+    }
+    #user_roles {
+        width: 120px; /* Adjust this to whatever size you need */
+        font-size: 15px;
+    }
+
+    option{
+        font-size: 13px;
+        padding: 0;
+    }
+
+    .submit {
+        font-size: 15px;
+        width: 106px;
+        padding: 9px;
+        margin-left: 45%;
+    }
+    #unitDescription {
+        width: 121%; /* Adjust this value to set the width you want */
+        margin-left: 0%; /* Optional: To align it with the label or position it */
+    }
+
+    #unitDescriptionLabel{
+        margin-left: 0%;
+    }
+
+    .checkbox-group label {
+        margin-right: 20px; /* Adds margin to the right of each label */
+    }
+ 
+}
+/* desktop */
+@media (max-width: 1701px) {}
+/* laptop */
+@media (max-width: 1441px) 
+{
+
+    h2 {
+        text-align: center;
+        margin-top: 10%;
+        font-size: 20px ;
+        margin-left: 5%;
+    } 
+
+    .form-group label {
+        margin-bottom: 5px;
+        font-size: 15px;
+    }
+
+    .form-group {
+        width: 400%;
+        max-width: 450px;
+    }
+    
+    .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group input[name="name"], .form-group input[type="emailad"] {
+        padding: 8px;
+        border: 1px solid #050404;
+        border-radius: 5px;
+        width: 121%;
+        font-size: 15px;
+    }
+
+    .form-group input.short-input, .form-group select {
+        padding: 8px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        width: 125%;
+        font-size: 15px;
+    }
+
+    #date_of_birth{
+        width: 121%;
+    }
+
+
+     .checkbox-group label {
+        display: inline-flex;
+        align-items: center;
+        font-size: 15px;
+    }
+
+    .payment-service {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-direction: column;
+        margin-left: 10%;
+    }
+
+    #installmentOptions {
+        margin-left: 39%;
+    }
+
+
+    .checkbox-group label {
+        margin-right: 20px; /* Adds margin to the right of each label */
+    }
+    
+
+
+    .form-group input[type="email"], .form-group input[type="password"], .form-group select[name="user_roles"] {
+        padding: 5px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 130%;
+    }
+
+    .form-group input[type="email"], .form-group input[type="password"], .form-group select[name="user_roles"] {
+        padding: 5px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        margin-top: 5%;
+        margin-bottom: 5%;
+        width: 130%;
+        font-size: 106%; 
+     } 
+
+
+    .checkbox-group input[type="checkbox"] {
+    vertical-align: middle; /* Ensures checkbox is vertically centered */
+    transform: scale(1.5); /* Increase or decrease the scale to make the checkbox bigger or smaller */
+    margin-right: 10px; /* Add some spacing if needed */
+    }
+
+    .account-creation {
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        /* gap: 276px; */
+        margin-bottom: 15px;
+        margin-right: 5%;
+        font-size: 15px;
+    }
+    #user_roles {
+        width: 120px; /* Adjust this to whatever size you need */
+        font-size: 15px;
+    }
+
+    option{
+        font-size: 13px;
+        padding: 0;
+    }
+
+    .submit {
+        font-size: 15px;
+        width: 106px;
+        padding: 9px;
+        margin-left: 45%;
+    }
+    #unitDescription {
+        width: 121%; /* Adjust this value to set the width you want */
+        margin-left: 0%; /* Optional: To align it with the label or position it */
+    }
+
+    #unitDescriptionLabel{
+        margin-left: 0%;
+    }
+
+    .checkbox-group label {
+        margin-right: 20px; /* Adds margin to the right of each label */
+    }
+ 
+}
+/* laptop */
+@media (max-width: 1025px)
+{
+    
+    h2 {
+        font-size: 15px ;
+        margin-left:5%;
+    } 
+
+    .form-group label {
+        font-size: 12px;
+    }
+
+    .form-group {
+        width: 400%;
+        max-width: 300px;
+    }
+    
+    .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group input[name="name"], .form-group input[type="emailad"] {
+        padding: 5px;
+        border: 1px solid #050404;
+        border-radius: 5px;
+        width: 121%;
+        font-size: 12px;
+    }
+
+    .form-group input.short-input, .form-group select {
+        padding: 5px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        width: 125%;
+        font-size: 12px;
+    }
+
+   
+
+     .checkbox-group label {
+        display: inline-flex;
+        align-items: center;
+        font-size: 15px;
+    }
+
+
+   
+
+    .form-group input[type="email"], .form-group input[type="password"], .form-group select[name="user_roles"] {
+        padding: 2px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        margin-top: 1%;
+        margin-bottom: 5%;
+        width: 91%;
+        font-size: 103%; 
+     } 
+
+
+    .checkbox-group input[type="checkbox"] {
+    vertical-align: middle; /* Ensures checkbox is vertically centered */
+    transform: scale(1.5); /* Increase or decrease the scale to make the checkbox bigger or smaller */
+    margin-right: 10px; /* Add some spacing if needed */
+    }
+
+    .account-creation {
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        /* gap: 276px; */
+        margin-bottom: 15px;
+        margin-right: 0%;
+        font-size: 15px;
+        margin-left: 10%;
+    }
+
+    .payment-service {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-direction: column;
+        margin-left: 10%;
+    }
+    #user_roles {
+        width: 120px; /* Adjust this to whatever size you need */
+        font-size: 13px;
+        padding: 1%;
+    }
+
+    option{
+        font-size: 13px;
+        padding: 0;
+    }
+
+    .submit {
+        font-size: 12px;
+        width: 80px;
+        padding: 5px;
+        margin-left: 25%;
+    }
+    #unitDescription {
+        width: 121%; /* Adjust this value to set the width you want */
+        margin-left: 0%; /* Optional: To align it with the label or position it */
+    }
+
+    #unitDescriptionLabel{
+        margin-left: 0%;
+    }
+
+    .checkbox-group label {
+        margin-right: 20px; /* Adds margin to the right of each label */
+    }
+    .installment-options {
+        display: none;
+        margin-left: 37%;
+        margin-top: 1%;
+    }
+
+    #installmentOptions{
+        margin-left: 35%;
+    }
+
+}
+/* tablet */
+@media (max-width: 769px) {}
+/* phone */
+@media (max-width: 426px) 
+{
+
+    h2 {
+        font-size: 15px ;
+        margin-left: 10%;
+        margin-top: 15%;
+    } 
+
+.form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group input[name="name"], .form-group input[type="emailad"] {
+    padding: 5px;
+    border: 1px solid #050404;
+    border-radius: 5px;
+    width: 96%;
+    font-size: 12px;
+    margin-left: 10%;
+}
+
+.form-group label {
+    font-size: 12px;
+    margin-left: 10%;
+}
+
+.form-group input.short-input, .form-group select {
+    padding: 5px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 100%;
+    font-size: 12px;
+    margin-left: 10%;
+}
+
+#date_of_birth{
+    width: 96%;
+}
+
+#unitDescription {
+    width: 97%;
+    margin-left: 10%;
+}
+
+#unitDescriptionLabel{
+    margin-left: 10%;
+}
+
+.payment-service {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-direction: column;
+    margin-left: 15%;
+}
+
+.checkbox-group input[type="checkbox"] {
+    vertical-align: middle;
+    transform: scale(1);
+    margin-right: 10px;
+}
+
+.checkbox-group label {
+    margin-right: 20px; /* Adds margin to the right of each label */
+}
+
+#installmentOptions{
+    margin-left: 20%;
+}
+
+.checkbox-group label {
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+}
+
+.account-creation {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    /* gap: 276px; */
+    margin-bottom: 15px;
+    margin-right: 0%;
+    font-size: 15px;
+    margin-left: 21%;
+}
+
+.mb-3.col-md-1 label{
+    margin-left: 0%;
+}
+
+#user_roles {
+    width: 69px;
+    font-size: 13px;
+    padding: 1%;
+}
+
+
+.submit {
+    font-size: 12px;
+    width: 80px;
+    padding: 5px;
+    margin-left: 58%;
+}
+
+
+
 }

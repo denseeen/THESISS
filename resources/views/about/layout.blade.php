@@ -13,7 +13,7 @@
       <nav>
           <ul>
             <img src="/image/billnwow-logo.png" class="billnwow-logo" alt="NWOW Philippines Storefront">
-            <li><a href="{{ route('about.registration') }}">Online Application</a></li>
+            <!-- <li><a href="{{ route('about.registration') }}">Online Application</a></li> -->
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Contact Us</a></li>
             <li class="nav-btn">

@@ -44,47 +44,44 @@ class NotificationController extends Controller
 }
 
 
-        public function fetching()
+public function fetchMessages()
+{
+    // Get the current authenticated user
+    $user = Auth::user();
+    
+    // Find the customer's info based on user ID
+    $customerInfo = DB::table('customer_info')->where('user_id', $user->id)->first();
+    
+    if ($customerInfo) {
+        // Fetch only unread messages for the current user
+        $messages = DB::table('messages')
+            ->join('admin_info', 'messages.sender_id', '=', 'admin_info.id')
+            ->where('messages.recipient_id', $customerInfo->id) // Use customer's ID
+            ->where('messages.is_read', false) // Only get unread messages
+            ->select('messages.*', 'admin_info.name as sender_name') // Select the necessary fields
+            ->orderBy('messages.created_at', 'desc')
+            ->get();
+
+        return response()->json($messages);
+    }
+
+    return response()->json([]); // Return an empty array if no customer info
+}
+
+
+        public function deleteMessage($id)
         {
-                        // Get the current authenticated user
-                $user = Auth::user();
+                $message = Message::find($id); // Find the message by ID
                 
-                // Find the customer's info based on user ID
-                $customerInfo = DB::table('customer_info')->where('user_id', $user->id)->first();
-                
-                if ($customerInfo) {
-                    // Use a join to get messages with sender's name
-                    $messages = DB::table('messages')
-                        ->join('admin_info', 'messages.sender_id', '=', 'admin_info.id')
-                        ->where('messages.recipient_id', $customerInfo->id) // Use customer's ID
-                        ->where('messages.is_read', false) // Only get unread messages
-                        ->select('messages.*', 'admin_info.name as sender_name') // Select the necessary fields
-                        ->orderBy('messages.created_at', 'desc')
-                        ->get();
-                    
-                    // Pass the messages to the view
-                    return view('about.customernav.cusdashboard', compact('messages'));
+                if ($message) {
+                    $message->delete(); // Delete the message from the database
+                    return response()->json(['success' => true], 204); // Return a success response
                 }
-
-                // Return an empty collection if no messages
-                return view('about.customernav.cusdashboard', ['messages' => collect()]);
-
+                
+                return response()->json(['error' => 'Message not found'], 404);
+            
         }
 
-
-                    public function markAsRead($id)
-            {
-                $message = Message::find($id);
-
-                if ($message) {
-                    $message->is_read = true;
-                    $message->save();
-
-                    return response()->json(['success' => true]);
-                }
-
-                return response()->json(['success' => false], 404);
-            }
 
 
 
