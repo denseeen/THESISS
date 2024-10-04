@@ -95,7 +95,8 @@ class AuthManager extends Controller
                   'name' => $request->input('name'),
                   'email' => $request->input('email'),
                   'password' => Hash::make($request->input('password')),
-                  'user_roles' => $request->input('user_roles')
+                  'user_roles' => $request->input('user_roles'),
+                  'dark_mode'  => false
                 ]);
 
                 return view('about.registration');     

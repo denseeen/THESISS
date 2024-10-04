@@ -17,7 +17,7 @@
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
-            <a href="{{ route('addashboard.show') }}">
+            <a href="{{ route('admin_dashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
 
@@ -46,10 +46,10 @@
             <div class="sidebar">
                 <div class="sidebar_inner">
                     <ul>
-                        <li><a href="{{ route('addashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
+                        <li><a href="{{ route('admin_dashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
-                        <li><a href="{{ route('adinstallment.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
-                        <li><a href="{{ route('adfullypaid.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
+                        <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
+                        <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
                         <li><a href="{{ route('adarchived.show') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>
                     </ul>
                 </div>
@@ -121,44 +121,45 @@
                 </div>
             </div>
 
-        <!-- Customer List -->
-        <div class="application-list">
-            <h2>Customer List</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                        <th>Payment Method</th>
-                        <th>Action</th>
+             
+    <!-- Customer List -->
+            <div class="application-list">
+    <h2>Customer List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Balance</th>
+                <th>Status</th>
+                <th>Payment Service</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+            <tbody>
+                @foreach ($customer as $customers)
+                        <tr>
+                        <td>{{ $customers->name }}</td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            @php
+                                // Fetch the payment details for the current customer
+                                $customerPayment = $customerpm->firstWhere('id', $customers->id);
+                            @endphp
+                            @if ($customerPayment && $customerPayment->installment)
+                                Installment
+                            @elseif ($customerPayment && $customerPayment->fullypaid)
+                                Fully Paid
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td><button onclick="openModal('{{ $customers->id }}', '{{ $customers->name }}')">Notify</button></td>
                     </tr>
-                </thead>
-                <tbody>
-                    <tr data-user-id="1">
-                        <td>Marian Naparan</td>
-                        <td>10,000</td>
-                        <td>Paid</td>
-                        <td>OTC</td>
-                        <td><button onclick="openModal(1, 'Marian Naparan')">Notify</button></td>
-                    </tr>
-                    <tr data-user-id="2">
-                        <td>John Doe</td>
-                        <td>11,000</td>
-                        <td>Paid</td>
-                        <td>Online</td>
-                        <td><button onclick="openModal(2, 'John Doe')">Notify</button></td>
-                    </tr>
-                    <tr data-user-id="3">
-                        <td>Jane Smith</td>
-                        <td>12,000</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td><button onclick="openModal(3, 'Jane Smith')">Notify</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                @endforeach
+            </tbody>
+    </table>
+</div>
 
 
         <!-- Modal Structure -->
