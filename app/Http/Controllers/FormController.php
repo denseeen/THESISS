@@ -24,10 +24,10 @@ class FormController extends Controller
         // Validate and save the data
         $validatedData = $request->validate([
             // Customer & Admin
-            'name'             => 'required|string|max:255',
-            'email'            => 'required|email|max:255',
+            'name'             => 'requirred|email|max:255',
             'streetaddress'    => 'nullable|string|max:255',
-            'phone_number'     => 'nullable|string|max:15',
+            'phone_number'     => 'nullabed|string|max:255',
+            'email'            => 'requile|string|max:15',
             'date_of_birth'    => 'nullable|date',
             'age'              => 'required|integer',
             'facebook'         => 'nullable|string|max:255',
@@ -42,14 +42,24 @@ class FormController extends Controller
             'unitDescription' => 'nullable|string',
  
             //Payment Method & Installment Plan
-            'installment'     => 'nullable|boolean',
-            'fullypaid'       => 'nullable|boolean',
-            'sixmonths'       => 'nullable|boolean',
-            'twelvemonths'    => 'nullable|boolean',
-            'eighteenmonths'  => 'nullable|boolean',
- 
+            'installment'     => 'nullable|integer',
+            'fullypaid'       => 'nullable|integer',
+            'sixmonths'       => 'nullable|integer',
+            'twelvemonths'    => 'nullable|integer',
+            'eighteenmonths'  => 'nullable|integer',
+
             'customer_id' => 'nullable|integer',
+
+
+//             'installment'     => 'nullable|boolean',
+//             'fullypaid'       => 'nullable|boolean',
+//             'sixmonths'       => 'nullable|boolean',
+//             'twelvemonths'    => 'nullable|boolean',
+//             'eighteenmonths'  => 'nullable|boolean',
  
+//             'customer_id' => 'nullable|integer',
+ 
+
             //Users
             'name'       => 'required',
             'email'      => 'required|unique:users,email',
@@ -65,16 +75,71 @@ class FormController extends Controller
         $twelvemonths   = $request->input('twelvemonths', false) ? 1 : 0;
         $sixmonths      = $request->input('sixmonths', false) ? 1 : 0;
         $eighteenmonths = $request->input('eighteenmonths', false) ? 1 : 0;
-        
-        // Save to the users table
-         $save = User::create([
-            'name'       => $request->input('name'),
-            'email'      => $request->input('email'),
-            'password'   => Hash::make($request->input('password')),
-            'user_roles' => $request->input('user_roles'),
-            'dark_mode'  => false
-        ]);
- 
+
+
+//         if ($validatedData['user_roles'] == 1) {
+//             // Save to the admin_info table
+//             $adminInfo = AdminInfo::create([
+//             'name'              => $validatedData['name'],
+//             'email'             => $validatedData['email'],
+//             'streetaddress'     => $validatedData['streetaddress'],
+//             'phone_number'      => $validatedData['phone_number'],
+//             'date_of_birth'     => $validatedData['date_of_birth'],
+//             'age'               => $validatedData['age'],
+//             'facebook'          => $validatedData['facebook'],
+//             'gender'            => $validatedData['gender'],
+//             'telephone_number'  => $validatedData['telephone_number'],
+//         ]);
+//         }
+
+//         elseif ($validatedData['user_roles'] == 2) {
+//         // Save to the customer_info table
+//         $customerInfo = CustomerInfo::create([
+//             'name'              => $validatedData['name'],
+//             'email'             => $validatedData['email'],
+//             'streetaddress'     => $validatedData['streetaddress'],
+//             'phone_number'      => $validatedData['phone_number'],
+//             'date_of_birth'     => $validatedData['date_of_birth'],
+//             'age'               => $validatedData['age'],
+//             'facebook'          => $validatedData['facebook'],
+//             'gender'            => $validatedData['gender'],
+//             'telephone_number'  => $validatedData['telephone_number'],
+//         ]);
+
+//         // Save to the orders table
+//         $order = Order::create([
+//             // 'customer_id'     => $customerInfo->id, // Assuming you need to link this
+//             'orderNumber'     => $validatedData['orderNumber'],
+//             'dateOrder'       => $validatedData['dateOrder'],
+//             'unitName'        => $validatedData['unitName'],
+//             'unitprice'       => $validatedData['unitprice'],
+//             'unitDescription' => $validatedData['unitDescription']
+//         ]);
+
+//         // Save to the payment_service table
+//         $paymentService = PaymentService::create([
+//            'customer_id'     => $customerInfo->id,
+//             'fullypaid'   => $fullypaid,
+//             'installment' => $installment
+//         ]);
+
+//         // Save to the installment_plan table
+//         $installmentPlan = InstallmentPlan::create([
+//             'twelvemonths'   => $twelvemonths,
+//             'sixmonths'      => $sixmonths,
+//             'eighteenmonths' => $eighteenmonths
+//         ]);
+//         }
+
+//         // Save to the users table
+//          $save = User::create([
+//             'name'       => $request->input('name'),
+//             'email'      => $request->input('email'),
+//             'password'   => Hash::make($request->input('password')),
+//             'user_roles' => $request->input('user_roles'),
+//             'dark_mode'  => false
+//         ]);
+
        
         if ($validatedData['user_roles'] == 1) {
             // Save to the admin_info table
@@ -132,7 +197,7 @@ class FormController extends Controller
                 ]);
             }
         }
-    
+
         return redirect()->route('success.page');
     }
 
@@ -141,46 +206,82 @@ class FormController extends Controller
 
  
     public function LoginEntry(Request $request)
-    {
+              {
+                  // Validate the login credentials
+                  $credentials = $request->validate([
+                      'email' => ['required', 'email'],
+                      'password' => ['required'],
+                  ]);
+              
+                  // Attempt to authenticate the user with the provided credentials
+                  if (Auth::attempt($credentials)) {
+                      // Retrieve the authenticated user
+                      $user = Auth::user();
+              
+                      // Check user role and return the appropriate view
+                      switch ($user->user_roles) {
+                          case '1':
+                              // Admin view
+                              return view('about.adminnav.addashboard', ['user' => $user]);
+              
+                          case '2':
+                              // Customer view
+                              return view('about.customernav.cusdashboard', ['user' => $user]);
+              
+                          default:
+                              // Handle other roles or redirect with an error if the role is unauthorized
+                              return redirect()->route('login')->withErrors(['email' => 'Unauthorized role']);
+                      }
+                  }
+              
+                  // If authentication fails, return back with an error
+                  return back()->withErrors([
+                      'email' => 'The provided credentials do not match our records.',
+                  ])->onlyInput('email');
+              }
+}
 
-        {
-            // Validate the login credentials
-            $credentials = $request->validate([
-                'email' => ['required', 'email'],
-                'password' => ['required'],
-            ]);
+//     {
+
+//         {
+//             // Validate the login credentials
+//             $credentials = $request->validate([
+//                 'email' => ['required', 'email'],
+//                 'password' => ['required'],
+//             ]);
         
-            // Attempt to authenticate the user with the provided credentials
-            if (Auth::attempt($credentials)) {
-                // Retrieve the authenticated user
-                $user = Auth::user();
+//             // Attempt to authenticate the user with the provided credentials
+//             if (Auth::attempt($credentials)) {
+//                 // Retrieve the authenticated user
+//                 $user = Auth::user();
         
-                // Check user role and return the appropriate view
-                switch ($user->user_roles) {
-                    case '1':
-                        // Admin view
-                        return view('about.adminnav.addashboard', ['user' => $user]);
+//                 // Check user role and return the appropriate view
+//                 switch ($user->user_roles) {
+//                     case '1':
+//                         // Admin view
+//                         return view('about.adminnav.addashboard', ['user' => $user]);
                       
         
-                    case '2':
-                        // Customer view
-                        return view('about.customernav.cusdashboard', ['user' => $user]);
+//                     case '2':
+//                         // Customer view
+//                         return view('about.customernav.cusdashboard', ['user' => $user]);
 
                       
         
-                    default:
-                        // Handle other roles or redirect with an error if the role is unauthorized
-                        return redirect()->route('about.entry')->withErrors(['email' => 'Unauthorized role']);
-                }
-            }
+//                     default:
+//                         // Handle other roles or redirect with an error if the role is unauthorized
+//                         return redirect()->route('about.entry')->withErrors(['email' => 'Unauthorized role']);
+//                 }
+//             }
         
-            // If authentication fails, return back with an error
-            return back()->withErrors([
-                'email' => 'The provided credentials do not match our records.',
-            ])->onlyInput('email');
-        }
+//             // If authentication fails, return back with an error
+//             return back()->withErrors([
+//                 'email' => 'The provided credentials do not match our records.',
+//             ])->onlyInput('email');
+//         }
 
-    }
+//     }
     
  
-}
+// }
+

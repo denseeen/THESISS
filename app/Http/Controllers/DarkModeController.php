@@ -17,11 +17,4 @@ class DarkModeController extends Controller
     }
     
 }
-   
-
-
-
-
-
-
 ?>

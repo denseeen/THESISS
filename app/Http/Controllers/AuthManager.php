@@ -103,6 +103,39 @@ class AuthManager extends Controller
 
 
 
+//     public function Saved(Request $request){
+//               $request->validate([
+//                 'name'=> 'required',
+//                 'email' => 'required|unique:users,email',
+//                 'password' => 'required',
+//                 'user_roles' => 'required'
+//             ]);
+
+//               $save = User::create([ 
+//                   'name' => $request->input('name'),
+//                   'email' => $request->input('email'),
+//                   'password' => Hash::make($request->input('password')),
+//                   'user_roles' => $request->input('user_roles'),
+//                   'dark_mode'  => false
+//                 ]);
+
+//                 return view('about.registration');     
+//            }
+  
+//           public function Login(){
+//           return view('about.login');
+//           }
+
+
+//                 // for all kind of user but only for user table
+              
+              
+//                 public function showProfile()
+//                     {
+//                         $user = Auth::user();
+//                         $maskedPassword = str_repeat('*', strlen($user->password));
+
+
      // Validate the uploaded file
      public function upload(Request $request)
      {

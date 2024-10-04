@@ -7,7 +7,14 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\DisplayController;
 use App\Http\Controllers\SecurityQuestionController;
 use App\Http\Controllers\DarkModeController;
+
+use App\Http\Controllers\InstallmentProcessController;
+
+use App\Http\Controllers\AdminFetchingController;
+
+
 use App\Http\Controllers\NotificationController;
+
 
 // Route::get('/welcome',[AuthManager::class, 'Def'])->name('welcome'); 
 
@@ -41,7 +48,7 @@ Route::post('/logins',[FormController::class, 'LoginEntry'])->name('about.entry'
 Route::get('/admin/profile',[AuthManager::class, 'admin_profile'])->name('adprofile.show');
 Route::get('/admin/installment',[AuthManager::class, 'admin_installment'])->name('adinstallment.show');
 Route::get('/admin/fullypaid',[AuthManager::class, 'admin_fullypaid'])->name('adfullypaid.show');
-Route::get('/admin/dashboard',[AuthManager::class, 'admin_dashboard'])->name('addashboard.show');
+// Route::get('/admin/dashboard',[AuthManager::class, 'admin_dashboard'])->name('addashboard.show');
 Route::get('/admin/archived',[AuthManager::class, 'admin_archived'])->name('adarchived.show');
 Route::get('/admin/request',[AuthManager::class, 'admin_request'])->name('adrequest.show');
 
@@ -97,6 +104,23 @@ Route::get('/success-forgotpassword',[SecurityQuestionController::class, 'change
 
 //Route for DarkMode
 Route::post('/update-dark-mode', [DarkModeController::class, 'updateDarkMode'])->name('update-dark-mode');
+
+// Fetching the Information in customer_info database
+Route::get('/admin/dashboard', [AdminFetchingController::class, 'AdminDashboardCustomerList'])->name('admin_dashboard.show');
+
+Route::get('/admin/installment', [AdminFetchingController::class, 'InstallmentCustomer'])->name('Installment_Customer.show');
+Route::get('/admin/fullypaid', [AdminFetchingController::class, 'FullyPaidCustomer'])->name('FullyPaid_Customer.show');
+// Route to fetch customer details by ID
+Route::get('/customer/{id}', [AdminFetchingController::class, 'getCustomer']);
+Route::get('/payment-schedule/{customerId}', [AdminFetchingController::class, 'getPaymentSchedule']);
+
+
+// Route for storing new installment_process data
+Route::post('/installment/store', [AdminFetchingController::class, 'store'])->name('installment.store');
+
+
+
+
 
 
 //Route for dashboard customer list

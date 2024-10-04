@@ -17,7 +17,7 @@
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
-            <a href="{{ route('addashboard.show') }}">
+            <a href="{{ route('admin_dashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a> 
 
@@ -46,10 +46,10 @@
             <div class="sidebar">
                 <div class="sidebar_inner">
                     <ul>
-                        <li><a href="{{ route('addashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
+                        <li><a href="{{ route('admin_dashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
-                        <li><a href="{{ route('adinstallment.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
-                        <li><a href="{{ route('adfullypaid.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
+                        <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
+                        <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
                         <li><a href="{{ route('adarchived.show') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>       
                     </ul>
                 </div>
@@ -57,13 +57,12 @@
         </div>
 
 <!-- content -->
-            <div class="installment-container">
+<div class="installment-container">
                 <h2>Fully Paid PROCESS</h2>
                 <table>
                     <thead>
                         <tr>
                             <th style= "width:20%;">Name</th>
-                            
                             <th>Payment Method</th>
                             <th>Amount</th>
                             <th>Date</th>
@@ -106,8 +105,6 @@
     </table>
 </div>
 
-
-
                
                 <!-- Modal Structure -->
                 <div id="customer-modal" class="modal">
@@ -124,14 +121,14 @@
                                     <p>Address: <span id="modal-address"></span></p>
                                     <a href="#" class="edit-button">Edit</a>
                                 </div>
-
+ 
                                 <div class="transaction-records">
                                     <h2>Transaction Records</h2>
                                     <p>Unit Price: ERVS3 59,800</p>
                                     <p>Balance: 30,500</p>
                                 </div>
                             </div>
-
+ 
                             <!-- Table below the customer info and transaction records -->
                             <div class="table-container">
                                 <table>
@@ -157,7 +154,9 @@
                     </div>
                 </div>
 
+
     <script> 
+
 
     document.addEventListener('DOMContentLoaded', (event) => {
         const modal = document.getElementById('customer-modal');
@@ -197,6 +196,7 @@
                 modal.style.display = 'none';
             }
         });
+
     });
 
 
@@ -221,19 +221,6 @@
             console.log('Dark mode preference updated successfully.');
         }
     });
-}
-
-// Apply saved dark mode preference from the database when the page loads
-function applySavedDarkModePreferenceFromDB() {
-    const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
-
-    if (darkMode) {
-        document.body.classList.add('dark-mode');
-    }
-}
-
-// Call the function when the page loads
-applySavedDarkModePreferenceFromDB();
 
     </script> 
     <script src="{{ asset('js/admin/adfullypaid.js') }}"></script>     
