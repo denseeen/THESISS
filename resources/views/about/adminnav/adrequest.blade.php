@@ -17,7 +17,7 @@
     <body>
         <!-- !-- Top Navbar -->
         <nav class="top_navbar">
-            <a href="{{ route('addashboard.show') }}">
+            <a href="{{ route('admin_dashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
 
@@ -45,10 +45,10 @@
             <div class="sidebar">
                 <div class="sidebar_inner">
                     <ul>
-                        <li><a href="{{ route('addashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
+                        <li><a href="{{ route('admin_dashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
-                        <li><a href="{{ route('adinstallment.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
-                        <li><a href="{{ route('adfullypaid.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
+                        <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
+                        <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
                         <li><a href="{{ route('adarchived.show') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>                
                     </ul>
                 </div>
@@ -192,14 +192,16 @@
 
                 <div id="installmentOptions" class="installment-options">
                     <div class="checkbox-group">
+                    
                         <label>6 Months</label>
-                        <input type="checkbox" id="sixmonths" name="sixmonths" value="1">
-
+                        <input type="checkbox" name="sixmonths" value="6">
+                        
                         <label>12 Months</label>
-                        <input type="checkbox" id="twelvemonths" name="twelvemonths" value="1">
+                        <input type="checkbox" name="twelvemonths" value="12">
 
                         <label>18 Months</label>
-                        <input type="checkbox" id="eighteenmonths" name="eighteenmonths" value="1">
+                        <input type="checkbox" name="eighteenmonths" value="18">
+
                     </div>
                 </div>
 

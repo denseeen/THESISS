@@ -1,4 +1,4 @@
-/* TopNav */
+ 
 .installment-container {
     background-color: #fff;
     margin: 0 10%;
@@ -9,28 +9,28 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     width: 80%;
-    
+   
 }
 .installment-container h2 {
     margin-top: 0;
     text-align: center;
 }
-
-
-
+ 
+ 
+ 
 input[type="text"], input[type="number"], select, input[type="date"] {
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
 }
-
+ 
 .action-dropdown {
     width: auto;
 }
-
-
+ 
+ 
 table {
-  
+ 
     border-collapse: collapse;
 }
 table, th, td {
@@ -63,9 +63,9 @@ td .update-button, td .archive-button {
 td .archive-button {
     background-color: #ff6347;
 }
-
-
-
+ 
+ 
+ 
 /* Modal Styles */
 .modal {
     display: none;
@@ -79,7 +79,7 @@ td .archive-button {
     background-color: rgba(0, 0, 0, 0.4);
     padding-top: 60px;
 }
-
+ 
 .modal-content {
     background-color: #fefefe;
     margin: 5% auto;
@@ -87,7 +87,7 @@ td .archive-button {
     border: 1px solid #888;
     width: 80%;
 }
-
+ 
 /* Close Button */
 .close {
     color: #aaa;
@@ -95,47 +95,46 @@ td .archive-button {
     font-size: 28px;
     font-weight: bold;
 }
-
+ 
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
-
+ 
 /* Flexbox Layout for Modal Body */
 .modal-body {
     display: flex;
     flex-direction: column; /* Stack items vertically */
     gap: 20px; /* Add space between sections */
 }
-
+ 
 /* Flexbox Layout for Customer Info and Transaction Records */
 .flex-columns {
     display: flex;
     gap: 20px; /* Space between columns */
 }
-
+ 
 .customer-info,
 .transaction-records {
     flex: 1; /* Each section takes up equal space */
     padding: 10px; /* Add padding inside each section */
     border: 1px solid #ddd; /* Border for visual separation */
 }
-
+ 
 /* Ensure the table is below customer-info and transaction-records */
 .table-container {
     padding-top: 20px; /* Add space above the table */
 }
 
-
 .dark-mode .modal-content{
-
+ 
     background-color: #000;
 }
-
+ 
 .dark-mode .modal-content {
-
+ 
     color: #ffffff;
 }
 
@@ -298,9 +297,5 @@ td .archive-button {
         margin-left: 18%;
     }
 }
-
-
-
-
 
 
