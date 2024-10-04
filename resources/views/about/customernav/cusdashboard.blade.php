@@ -9,9 +9,6 @@
 
     <body>
 
-   
-
-
         <!-- Top Navbar -->
         <nav class="top_navbar">
             <a href="{{ route('cusdasboard.show') }}">
@@ -21,11 +18,11 @@
             <ul class="navigation-menu">
                 <li><a href="{{ route('cusdasboard.show') }}">Anonas Branch</a></li>
                     <li>       
-                         <div class="notification-container">
+                    <div class="notification-container">
                             <!-- Bell Icon -->
                             <span class="bell-icon">&#128276;</span>
                             <!-- Notification Count -->
-                            <span class="notification-count">3</span>
+                            <span class="notification-count">{{ $messages->count() }}</span>
 
                             <!-- Dropdown Menu -->
                             <div class="dropdown-notification">
@@ -35,59 +32,39 @@
                                         <h6 class="m-0" style="color:black;">Recent</h6>
                                     </div>
                                     <div class="box-body p-0">
-                                    
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                              
-                                                <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Income tax sops on the cards, The bias in VC funding, and other top news for you</div>
+                                        @if($messages->isEmpty())
+                                            <div class="notification-item no-notifications">
+                                                <div class="notification-content">
+                                                    <div class="notification-message" style="padding: 10px; text-align: center;">
+                                                        No Notifications
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Vivamus imperdiet venenatis est...</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
+                                        @else
+                                            @foreach($messages as $message)
+                                                <!-- Added the data-message-id attribute to hold the message's ID -->
+                                                <div class="notification-item" data-message-id="{{ $message->id }}">
+                                                    <div class="notification-content">
+                                                        <div class="notification-sender" style="color:red; margin-bottom:2%;">
+                                                            {{ $message->sender_name }}
+                                                        </div>
+                                                        <div class="notification-message">{{ $message->content }}</div>
+                                                    </div>
+                                                    <!-- Delete icon with corresponding message ID -->
+                                                    <span class="delete-icon">&#10060;</span>
+                                                </div>
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </div>
-                                <!-- Earlier Notifications -->
-                                <div class="box shadow-sm rounded bg-white mb-3">
-                                    <div class="box-title border-bottom p-3">
-                                        <h6 class="m-0" style="color:black;">Earlier</h6>
-                                    </div>
-                                    <div class="box-body p-0">
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Nunc purus metus, aliquam vitae venenatis sit amet, porta non est.</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Pellentesque semper ex diam, at tristique ipsum varius sed. Pellentesque non metus ullamcorper</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                        <div class="notification-item">
-                                            <div class="notification-content">
-                                            <div class="notification-sender" style="color:red; margin-bottom:2%;">{{ Auth::user()->name }}</div>
-                                                <div class="notification-message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ipsum elit.</div>
-                                            </div>
-                                            <span class="delete-icon">&#10060;</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!-- Earlier Notifications (if needed) -->
                             </div>
                         </div>
+
                     </li>
                 </ul>
 
-
+               
                 <!-- Dark Mode -->
                 <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
                     <img src="/image/7721593.png" alt="Sun Icon">
@@ -119,6 +96,11 @@
                 <button id="contractBtn" class="button">Contract</button>
                 <button id="rulesBtn" class="button">Rules & Regulations</button>
             </div>
+
+            <!-- Error Message -->
+    <div id="error-message" style="display: none; color: red; text-align: center; margin-top: 20px;">
+        An error occurred while fetching notifications. Please try again later.
+    </div>
 
             <!-- Contract Modal -->
             <div id="contractModal" class="modal">

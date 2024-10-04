@@ -55,15 +55,15 @@
                 </div>
             </div>
         </div>
-     
- 
- 
+
 <div class="installment-container">
     <h2>INSTALLMENT PROCESS</h2>
     <table>
         <thead>
             <tr>
-                <th>Name</th>
+
+                <th style="width:20%;">Name</th>
+
                 <th>Payment Method</th>
                 <th>Amount</th>
                 <th>Date</th>
@@ -74,6 +74,7 @@
             </tr>
         </thead>
         <tbody>
+
     @foreach($installments as $installment)
     <tr>
             <td>
@@ -91,7 +92,6 @@
     </select>
     </td>
 
-
     <td>
     <input type="number" name="amount" placeholder="Enter Amount">
     </td>
@@ -106,6 +106,7 @@
         <option value="not paid">Not Paid</option>
     </select>
     </td>
+
 
     <td>
     <input type="text" name="violation" placeholder="Enter Violation">
@@ -126,24 +127,23 @@
     </table>
 </div>
  
- 
- 
- <!-- Modal Structure -->
-<div id="customer-modal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <div class="modal-body">
-            <!-- Flex container for customer info and transaction records -->
-            <div class="flex-columns">
-                <div class="customer-info">
-                    <h2>Customer Name:</h2>
-                    <p><strong id="modal-name"></strong></p>
-                    <p>Email: <span id="modal-email"></span></p>
-                    <p>Phone Number: <span id="modal-phone"></span></p>
-                    <p>Address: <span id="modal-address"></span></p>
-                    <a href="#" class="edit-button">Edit</a>
-                </div>
- 
+
+    <!-- Modal Structure -->
+        <div id="customer-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close">&times;</span>
+                            <div class="modal-body">
+                                <!-- Flex container for customer info and transaction records -->
+                                <div class="flex-columns">
+                                    <div class="customer-info">
+                                        <h2>Customer Name:</h2>
+                                        <p><strong id="modal-name"></strong></p>
+                                        <p>Email: <span id="modal-email"></span></p>
+                                        <p>Phone Number: <span id="modal-phone"></span></p>
+                                        <p>Address: <span id="modal-address"></span></p>
+                                        <a href="#" class="edit-button">Edit</a>
+                                    </div>
+
                 <div class="transaction-records">
                     <h2>Transaction Records</h2>
                     <p>Unit Price: <span id="modal-unitprice"></span></p>
@@ -192,6 +192,7 @@
  
  
 <script>
+
  
  document.addEventListener('DOMContentLoaded', (event) => {
     const modal = document.getElementById('customer-modal');
@@ -293,11 +294,9 @@
     // Close modal if outside click
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-});
- 
+
+
+
         //darkmode
         function toggleDarkModeDashboard() {
             document.body.classList.toggle('dark-mode');

@@ -18,4 +18,9 @@ class InstallmentPlan extends Model
         'twelvemonths', 
         'eighteenmonths'
     ];
+
+
+    public function customer() {
+        return $this->belongsTo(CustomerInfo::class, 'customer_id');
+    }
 }

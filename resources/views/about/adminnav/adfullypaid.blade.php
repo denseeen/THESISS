@@ -63,7 +63,6 @@
                     <thead>
                         <tr>
                             <th style= "width:20%;">Name</th>
-                           
                             <th>Payment Method</th>
                             <th>Amount</th>
                             <th>Date</th>
@@ -105,9 +104,7 @@
         </tbody>
     </table>
 </div>
- 
- 
- 
+
                
                 <!-- Modal Structure -->
                 <div id="customer-modal" class="modal">
@@ -156,21 +153,21 @@
                         </div>
                     </div>
                 </div>
- 
- 
- 
-    <script>
- 
+
+
+    <script> 
+
+
     document.addEventListener('DOMContentLoaded', (event) => {
         const modal = document.getElementById('customer-modal');
         const closeButton = document.querySelector('.close');
         const customerLinks = document.querySelectorAll('.customer-link');
- 
+
         customerLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const customerId = this.getAttribute('data-customer-id');
- 
+
                 // Fetch customer details from the server
                 fetch(`/customer/${customerId}`)
                     .then(response => response.json())
@@ -180,25 +177,49 @@
                         document.getElementById('modal-email').textContent = data.email;
                         document.getElementById('modal-phone').textContent = data.phone_number;
                         document.getElementById('modal-address').textContent = data.address;
- 
+
                         // Open modal
                         modal.style.display = 'block';
                     })
                     .catch(error => console.error('Error fetching customer details:', error));
             });
         });
- 
+
         // Close modal
         closeButton.addEventListener('click', function() {
             modal.style.display = 'none';
         });
- 
+
         // Close modal if outside click
         window.addEventListener('click', function(event) {
             if (event.target === modal) {
                 modal.style.display = 'none';
             }
         });
+
+    });
+
+
+
+     //darkmode
+     function toggleDarkModeDashboard() {
+    document.body.classList.toggle('dark-mode');
+
+    let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+    // Send AJAX request to update dark mode preference in the database
+    fetch('/update-dark-mode', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ dark_mode: darkModeEnabled })
+    }).then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log('Dark mode preference updated successfully.');
+        }
     });
 
     </script> 

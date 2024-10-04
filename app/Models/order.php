@@ -37,4 +37,9 @@ class order extends Model
      {
          return $this->hasOne(PaymentService::class, 'id', 'id');  // Assuming the 'id' matches
      }
+
+    public function customer() {
+        return $this->belongsTo(CustomerInfo::class, 'customer_id');
+    }
+
 }

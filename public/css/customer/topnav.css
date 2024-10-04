@@ -308,7 +308,8 @@ body.dark-mode .dropdown-menu a:hover {
     position: absolute;
     top: 50px;
     right: 2%;
-    background-color: #92baee;
+    background-color: #fbfdff;
+    color: #000000;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
     border-radius: 5px;
@@ -319,6 +320,14 @@ body.dark-mode .dropdown-menu a:hover {
     width: 1000%;
    
 }
+
+.dropdown-notification {
+    display: none; /* Hidden by default */
+    position: absolute; /* Position it absolutely */
+    background-color: white; /* Background color */
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
 
 .dropdown-notification.show {
     display: block; /* Show when 'show' class is added */

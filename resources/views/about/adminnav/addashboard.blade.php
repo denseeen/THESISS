@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
+   
         <title>Dashboard</title>
 
         <!-- Stylesheets -->
@@ -121,9 +122,9 @@
                 </div>
             </div>
 
-             
-    <!-- Customer List -->
-            <div class="application-list">
+
+          <!-- Customer List -->
+       <div class="application-list">
     <h2>Customer List</h2>
     <table>
         <thead>
@@ -137,11 +138,15 @@
         </thead>
             <tbody>
                 @foreach ($customer as $customers)
+
                         <tr>
+
+                    <tr>
                         <td>{{ $customers->name }}</td>
                         <td></td>
                         <td></td>
                         <td>
+
                             @php
                                 // Fetch the payment details for the current customer
                                 $customerPayment = $customerpm->firstWhere('id', $customers->id);
@@ -153,6 +158,9 @@
                             @else
                                 -
                             @endif
+
+                    
+
                         </td>
                         <td><button onclick="openModal('{{ $customers->id }}', '{{ $customers->name }}')">Notify</button></td>
                     </tr>
@@ -162,107 +170,124 @@
 </div>
 
 
-        <!-- Modal Structure -->
-        <div id="notifyModal" class="modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <h2 id="modalTitle">Notify User</h2>
-                </div>
-                <div class="modal-body">
-                    <textarea id="messageBox" rows="4" style="width: 100%; padding: 10px;" placeholder="Type your message here..."></textarea>
-                </div>
-                <div class="modal-footer">
-                    <button onclick="sendMessage()">Send</button>
-                </div>
-            </div>
+       <!-- Modal Structure -->
+<div id="notifyModal" class="modal" style="display:none;">
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Notify User</h2>
         </div>
+        <div class="modal-body">
+            <input type="hidden" id="recipientId" />
+            <textarea id="messageBox" rows="4" style="width: 100%;" placeholder="Type your message here..."></textarea>
+            <div id="modalFeedback" style="margin-top: 10px; color: green;"></div> <!-- Feedback Message -->
+        </div>
+        <div class="modal-footer">
+       
+            <button onclick="sendMessage()">Send</button>
+          
+        </div>
+    </div>
+</div>
 
 
 
 
 <script>
-    function openModal(userId, userName) {
-        document.getElementById('modalTitle').textContent = `Notify ${userName}`;
-        document.getElementById('notifyModal').style.display = 'block';
-        document.getElementById('notifyModal').setAttribute('data-user-id', userId);
-    }
-
-    function closeModal() {
-        document.getElementById('notifyModal').style.display = 'none';
-    }
-
-    function sendMessage() {
-        var message = document.getElementById('messageBox').value;
-        var userId = document.getElementById('notifyModal').getAttribute('data-user-id');
-
-        if (message.trim() === '') {
-            alert('Please enter a message.');
-            return;
+        function openModal(id, name) {
+            document.getElementById('recipientId').value = id;
+            document.getElementById('modalTitle').textContent = `Notify ${name}`;
+            document.getElementById('notifyModal').style.display = 'block';
         }
 
-        // AJAX request to send the message
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', '/send-message', true);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader('X-CSRF-Token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                alert('Message sent successfully.');
-                closeModal();
-            } else {
-                alert('An error occurred. Please try again.');
+        function closeModal() {
+            document.getElementById('notifyModal').style.display = 'none';
+            document.getElementById('messageBox').value = '';
+            document.getElementById('recipientId').value = '';
+        }
+
+        function sendMessage() {
+            const recipientId = document.getElementById('recipientId').value;
+            const message = document.getElementById('messageBox').value;
+
+            if (!recipientId || !message) {
+                console.error('Recipient ID or message is missing.');
+                return;
             }
-        };
-        xhr.send(JSON.stringify({
-            userId: userId,
-            message: message
-        }));
-    }
+   
 
-    window.onclick = function(event) {
-        if (event.target === document.getElementById('notifyModal')) {
-            closeModal();
-        }
-    }
-
-
-    //darkmode
-    function toggleDarkModeDashboard() {
-    document.body.classList.toggle('dark-mode');
-
-    let darkModeEnabled = document.body.classList.contains('dark-mode');
-
-    // Send AJAX request to update dark mode preference in the database
-    fetch('/update-dark-mode', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ dark_mode: darkModeEnabled })
-    }).then(response => response.json())
-    .then(data => {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+          
+            fetch('/send-message', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                },
+                body: JSON.stringify({
+                    recipientId: recipientId,
+                    message: message,
+                }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+           
+            .then(data => {
+        const feedbackElement = document.getElementById('modalFeedback');
         if (data.success) {
-            console.log('Dark mode preference updated successfully.');
+            feedbackElement.textContent = 'Message sent successfully!';
+            feedbackElement.style.color = 'green'; // Optional: Set color for success
+        } else {
+            feedbackElement.textContent = 'Error: ' + data.message;
+            feedbackElement.style.color = 'red'; // Optional: Set color for error
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
     });
 }
 
-// Apply saved dark mode preference from the database when the page loads
-function applySavedDarkModePreferenceFromDB() {
-    const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+    //darkmode
+    function toggleDarkModeDashboard() {
+        document.body.classList.toggle('dark-mode');
 
-    if (darkMode) {
-        document.body.classList.add('dark-mode');
+        let darkModeEnabled = document.body.classList.contains('dark-mode');
+
+        // Send AJAX request to update dark mode preference in the database
+        fetch('/update-dark-mode', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ dark_mode: darkModeEnabled })
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Dark mode preference updated successfully.');
+            }
+        });
     }
-}
 
-// Call the function when the page loads
-applySavedDarkModePreferenceFromDB();
+    // Apply saved dark mode preference from the database when the page loads
+    function applySavedDarkModePreferenceFromDB() {
+        const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
+        }
+    }
+
+    // Call the function when the page loads
+    applySavedDarkModePreferenceFromDB();
 
 
-    </script>
+</script>
         
 <script src="{{ asset('js/admin/addashboard.js') }}"></script>
 <script src="{{ asset('js/admin/toppsidenav.js') }}"></script>  
