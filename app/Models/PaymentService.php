@@ -14,9 +14,10 @@ class PaymentService extends Model
     protected $table = 'payment_service'; // default table name
     
     protected $fillable = [
+        'customer_id',
         'installment', 
-        'fullypaid',
-        'customer_id'
+        'fullypaid'
+        
     ];
 
 

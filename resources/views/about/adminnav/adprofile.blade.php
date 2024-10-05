@@ -20,6 +20,7 @@
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
+        <li style="font-size: 128%; margin-leftt: 11%; margin-left: 80%; display: block; color: aliceblue;">Anonas Branch</li>
             <a href="{{ route('addashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a> 

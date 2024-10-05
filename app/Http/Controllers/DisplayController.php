@@ -47,6 +47,9 @@ public function admin_dashboard()
     // Pass both variables to the view
     return view('about.adminnav.addashboard'); 
 }
+
+
+
 public function getCustomers()
 {
      // Fetch customers and their payment service details

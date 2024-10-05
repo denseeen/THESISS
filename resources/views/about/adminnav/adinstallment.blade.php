@@ -20,7 +20,8 @@
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
-            <a href="{{ route('admin_dashboard.show') }}">
+        <li style="font-size: 128%; margin-leftt: 11%; margin-left: 80%; display: block; color: aliceblue;">Anonas Branch</li>
+            <a href="{{ route('addashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
             <div class="icons">
@@ -46,7 +47,7 @@
             <div class="sidebar">
                 <div class="sidebar_inner">
                     <ul>
-                        <li><a href="{{ route('admin_dashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
+                        <li><a href="{{ route('addashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
                         <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
                         <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
@@ -55,15 +56,15 @@
                 </div>
             </div>
         </div>
-
+     
+ 
+ 
 <div class="installment-container">
     <h2>INSTALLMENT PROCESS</h2>
     <table>
         <thead>
             <tr>
-
-                <th style="width:20%;">Name</th>
-
+                <th>Name</th>
                 <th>Payment Method</th>
                 <th>Amount</th>
                 <th>Date</th>
@@ -74,28 +75,28 @@
             </tr>
         </thead>
         <tbody>
-
     @foreach($installments as $installment)
     <tr>
             <td>
                 <a href="#" class="customer-link" data-customer-id="{{ $installment->id }}">{{ $installment->name }}</a>
             </td>
-
+ 
             <form action="{{ route('installment.store') }}" method="POST">
             @csrf
             <input type="hidden" name="customer_id" value="{{ $installment->id }}"> <!-- Pass the customer ID here -->
-
+ 
             <td>      
     <select id="payment_method" name="payment_method">
         <option value="otc">OTC</option>
         <option value="online">Online</option>
     </select>
     </td>
-
+ 
+ 
     <td>
     <input type="number" name="amount" placeholder="Enter Amount">
     </td>
-
+ 
     <td>
     <input type="date" name="date">
     </td>
@@ -106,44 +107,44 @@
         <option value="not paid">Not Paid</option>
     </select>
     </td>
-
-
+ 
     <td>
     <input type="text" name="violation" placeholder="Enter Violation">
     </td>
-
+ 
     <td>
     <input type="text" name="comment" placeholder="Enter Comment">
     </td>
-
+ 
     <td>
     <button type="update">update</button>
     </td>
 </form>
-
+ 
     </tr>
     @endforeach
 </tbody>
     </table>
 </div>
  
-
-    <!-- Modal Structure -->
-        <div id="customer-modal" class="modal">
-                        <div class="modal-content">
-                            <span class="close">&times;</span>
-                            <div class="modal-body">
-                                <!-- Flex container for customer info and transaction records -->
-                                <div class="flex-columns">
-                                    <div class="customer-info">
-                                        <h2>Customer Name:</h2>
-                                        <p><strong id="modal-name"></strong></p>
-                                        <p>Email: <span id="modal-email"></span></p>
-                                        <p>Phone Number: <span id="modal-phone"></span></p>
-                                        <p>Address: <span id="modal-address"></span></p>
-                                        <a href="#" class="edit-button">Edit</a>
-                                    </div>
-
+ 
+ 
+ <!-- Modal Structure -->
+<div id="customer-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-body">
+            <!-- Flex container for customer info and transaction records -->
+            <div class="flex-columns">
+                <div class="customer-info">
+                    <h2>Customer Name:</h2>
+                    <p><strong id="modal-name"></strong></p>
+                    <p>Email: <span id="modal-email"></span></p>
+                    <p>Phone Number: <span id="modal-phone"></span></p>
+                    <p>Address: <span id="modal-address"></span></p>
+                    <a href="#" class="edit-button">Edit</a>
+                </div>
+ 
                 <div class="transaction-records">
                     <h2>Transaction Records</h2>
                     <p>Unit Price: <span id="modal-unitprice"></span></p>
@@ -167,8 +168,8 @@
                     </tbody>
                 </table>
             </div>
-
-
+ 
+ 
             <div class="tableee-container">
                 <table>
                     <thead>
@@ -192,7 +193,6 @@
  
  
 <script>
-
  
  document.addEventListener('DOMContentLoaded', (event) => {
     const modal = document.getElementById('customer-modal');
@@ -221,7 +221,7 @@
                 .then(paymentData => {
                     // Update unit price
                     document.getElementById('modal-unitprice').textContent = paymentData.unit_price;
-        
+       
  
                     // Populate payment schedule table
                     const tableBody = document.getElementById('payment-schedule-table-body');
@@ -242,11 +242,11 @@
                         row.appendChild(statusCell);
                         tableBody.appendChild(row);
                     });
-
+ 
                      // Populate installment process table
                 const installmentTableBody = document.getElementById('installment-details-table-body');
                 installmentTableBody.innerHTML = ''; // Clear existing rows
-
+ 
                 paymentData.installment_process.forEach(detail => {
                     const row = document.createElement('tr');
                     const dateCell = document.createElement('td');
@@ -254,10 +254,10 @@
                     const paymentMethodCell = document.createElement('td');
                     const violationCell = document.createElement('td');
                     const commentCell = document.createElement('td');
-
+ 
                     dateCell.textContent = detail.date;
                     amountCell.textContent = detail.amount;
-
+ 
                     // Format date for installment details
                     const installmentDate = new Date(detail.date);
                     dateCell.textContent = installmentDate.toLocaleDateString('en-GB', {
@@ -265,11 +265,11 @@
                         month: 'long',
                         year: 'numeric'
                     });
-                    
+                   
                     paymentMethodCell.textContent = detail.payment_method;
                     violationCell.textContent = detail.violation;
                     commentCell.textContent = detail.comment;
-
+ 
                     row.appendChild(dateCell);
                     row.appendChild(amountCell);
                     row.appendChild(paymentMethodCell);
@@ -277,7 +277,7 @@
                     row.appendChild(commentCell);
                     installmentTableBody.appendChild(row);
                 });
-
+ 
  
                     // Open modal
                     modal.style.display = 'block';
@@ -294,9 +294,12 @@
     // Close modal if outside click
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
-
-
-
+            modal.style.display = 'none';
+        }
+    });
+});
+ 
+       
         //darkmode
         function toggleDarkModeDashboard() {
             document.body.classList.toggle('dark-mode');

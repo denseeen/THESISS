@@ -17,7 +17,8 @@
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
-            <a href="{{ route('admin_dashboard.show') }}">
+        <li style="font-size: 128%; margin-leftt: 11%; margin-left: 80%; display: block; color: aliceblue;">Anonas Branch</li>
+            <a href="{{ route('addashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a> 
 
@@ -46,7 +47,7 @@
             <div class="sidebar">
                 <div class="sidebar_inner">
                     <ul>
-                        <li><a href="{{ route('admin_dashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
+                        <li><a href="{{ route('addashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
                         <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
                         <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
@@ -201,26 +202,40 @@
 
 
 
-     //darkmode
-     function toggleDarkModeDashboard() {
-    document.body.classList.toggle('dark-mode');
+    //darkmode
+    function toggleDarkModeDashboard() {
+        document.body.classList.toggle('dark-mode');
 
-    let darkModeEnabled = document.body.classList.contains('dark-mode');
+        let darkModeEnabled = document.body.classList.contains('dark-mode');
 
-    // Send AJAX request to update dark mode preference in the database
-    fetch('/update-dark-mode', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-        body: JSON.stringify({ dark_mode: darkModeEnabled })
-    }).then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            console.log('Dark mode preference updated successfully.');
+        // Send AJAX request to update dark mode preference in the database
+        fetch('/update-dark-mode', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ dark_mode: darkModeEnabled })
+        }).then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Dark mode preference updated successfully.');
+            }
+        });
+    }
+
+    // Apply saved dark mode preference from the database when the page loads
+    function applySavedDarkModePreferenceFromDB() {
+        const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
+
+        if (darkMode) {
+            document.body.classList.add('dark-mode');
         }
-    });
+    }
+
+    // Call the function when the page loads
+    applySavedDarkModePreferenceFromDB();
+
 
     </script> 
     <script src="{{ asset('js/admin/adfullypaid.js') }}"></script>     

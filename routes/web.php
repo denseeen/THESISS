@@ -48,7 +48,7 @@ Route::post('/logins',[FormController::class, 'LoginEntry'])->name('about.entry'
 Route::get('/admin/profile',[AuthManager::class, 'admin_profile'])->name('adprofile.show');
 Route::get('/admin/installment',[AuthManager::class, 'admin_installment'])->name('adinstallment.show');
 Route::get('/admin/fullypaid',[AuthManager::class, 'admin_fullypaid'])->name('adfullypaid.show');
-// Route::get('/admin/dashboard',[AuthManager::class, 'admin_dashboard'])->name('addashboard.show');
+Route::get('/admin/dashboard',[AuthManager::class, 'admin_dashboard'])->name('addashboard.show');
 Route::get('/admin/archived',[AuthManager::class, 'admin_archived'])->name('adarchived.show');
 Route::get('/admin/request',[AuthManager::class, 'admin_request'])->name('adrequest.show');
 
@@ -106,10 +106,11 @@ Route::get('/success-forgotpassword',[SecurityQuestionController::class, 'change
 Route::post('/update-dark-mode', [DarkModeController::class, 'updateDarkMode'])->name('update-dark-mode');
 
 // Fetching the Information in customer_info database
-Route::get('/admin/dashboard', [AdminFetchingController::class, 'AdminDashboardCustomerList'])->name('admin_dashboard.show');
+// Route::get('/admin/dashboard', [AdminFetchingController::class, 'AdminDashboardCustomerList'])->name('admin_dashboard.show');
 
 Route::get('/admin/installment', [AdminFetchingController::class, 'InstallmentCustomer'])->name('Installment_Customer.show');
 Route::get('/admin/fullypaid', [AdminFetchingController::class, 'FullyPaidCustomer'])->name('FullyPaid_Customer.show');
+
 // Route to fetch customer details by ID
 Route::get('/customer/{id}', [AdminFetchingController::class, 'getCustomer']);
 Route::get('/payment-schedule/{customerId}', [AdminFetchingController::class, 'getPaymentSchedule']);
@@ -130,11 +131,11 @@ Route::get('/api/customers', [DisplayController::class, 'getCustomers']);
 
 
 //Route for installment customer list
-Route::get('/admin/installment',[DisplayController::class, 'cusInstallments'])->name('adinstallment.show');
+// Route::get('/admin/installment',[DisplayController::class, 'cusInstallments'])->name('adinstallment.show');
 
 
 //Route for fullypaid customer list
-Route::get('/admin/fullypaid',[DisplayController::class, 'cusfullypaid'])->name('adfullypaid.show');
+// Route::get('/admin/fullypaid',[DisplayController::class, 'cusfullypaid'])->name('adfullypaid.show');
 
 
 // Route to fetch customer details by ID, modal
