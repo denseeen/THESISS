@@ -22,6 +22,12 @@ class InstallmentPlan extends Model
     ];
 
 
+    // Define a relationship with the CustomerInfo
+    public function customerInfo()
+    {
+        return $this->hasOne(CustomerInfo::class, 'id', 'id');  // Assuming the 'id' matches
+    }
+
     public function customer() {
         return $this->belongsTo(CustomerInfo::class, 'customer_id');
     }

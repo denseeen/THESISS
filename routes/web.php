@@ -114,10 +114,23 @@ Route::get('/admin/fullypaid', [AdminFetchingController::class, 'FullyPaidCustom
 // Route to fetch customer details by ID
 Route::get('/customer/{id}', [AdminFetchingController::class, 'getCustomer']);
 Route::get('/payment-schedule/{customerId}', [AdminFetchingController::class, 'getPaymentSchedule']);
+// In routes/api.php or routes/web.php
+Route::get('/fully-paid-customers', [AdminFetchingController::class, 'getFullyPaidCustomers']);
+
 
 
 // Route for storing new installment_process data
 Route::post('/installment/store', [AdminFetchingController::class, 'store'])->name('installment.store');
+Route::post('/installment/archive', [AdminFetchingController::class, 'archive'])->name('installment.archive');
+Route::get('/admin/archived', [AdminFetchingController::class, 'showArchived'])->name('installments.archived');
+// Route::delete('/customer/{id}', [AdminFetchingController::class, 'deleteCustomer'])->name('customer.delete');
+Route::delete('/customer/{id}', [AdminFetchingController::class, 'destroy'])->name('customer.destroy');
+Route::post('/add-order', [AdminFetchingController::class, 'addOrder'])->name('add.order');
+
+
+
+// Route::post('/installment/archive/{id}', [AdminFetchingController::class, 'archive'])->name('installment.archive');
+// Route::get('/admin/archived', [AdminFetchingController::class, 'showArchived'])->name('installments.archived');
 
 
 
