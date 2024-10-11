@@ -110,7 +110,8 @@ return new class extends Migration
             $table->boolean('eighteenmonths')->nullable();
             $table->unsignedBigInteger('customer_id')->nullable();
             $table->foreign('customer_id')->references('id')->on('customer_info')->onDelete('cascade');
-        });
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        }); 
 
         // Create predefined_security_questions table
         Schema::create('predefined_security_questions', function (Blueprint $table) {

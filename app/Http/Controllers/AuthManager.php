@@ -88,6 +88,10 @@ class AuthManager extends Controller
           return view('about.adminnav.adrequest');
        }
 
+       public function admin_edit(){
+        return view('about.adminnav.adEdit');
+     }
+
 
 
     //customer view address
@@ -167,6 +171,43 @@ class AuthManager extends Controller
          // Return a JSON response indicating the failure of the upload process
          return response()->json(['success' => false, 'message' => 'Failed to upload avatar.']);
      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     
 
 
 

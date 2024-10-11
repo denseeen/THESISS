@@ -3,9 +3,149 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color:  #c2d9f1;
+    background-color:  #ffffff;
     transition: background-color 0.3s, color 0.3s;
 }
+
+.sale-print{
+    display: flex;
+    display: end;
+}
+
+@media print {
+    
+   
+    .button {
+      display: none;
+  }
+}
+
+.btn-print {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border-radius: 50%;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 77%;
+}
+
+.search-bar #searchName{
+    width: 30%;
+    margin-left: 57%;
+}
+
+.search-bar button{
+    width: 10%;
+    border-radius: 0%;
+    
+}
+.modal .table{
+    font-size: 50%;
+}
+
+/* Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Table Styles */
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Removes space between borders */
+}
+
+.table th, .table td {
+    padding: 10px; /* Added padding for better spacing */
+    text-align: left;
+    border-bottom: 1px solid #ddd; /* Adds a bottom border to rows */
+}
+
+.table th {
+    background-color: #f2f2f2; /* Light gray background for table headers */
+    font-weight: bold; /* Bold font for header text */
+}
+
+/* Input and Button Styles */
+.form-group {
+    margin-bottom: 15px; /* Space between input groups */
+}
+
+.form-control {
+    width: 100%; /* Full width input */
+    padding: 10px; /* Padding for input */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 4px; /* Rounded corners for inputs */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    font-size: 50%;
+}
+
+.form-control label{
+    font-size: 50%;
+}
+
+.form-control:focus {
+    border-color: #4A90E2; /* Border color on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5); /* Add subtle shadow on focus */
+    font-size: 50%;
+}
+
+.btn {
+    padding: 10px 15px; /* Padding for buttons */
+    background-color: #4A90E2; /* Primary button color */
+    color: white; /* Text color for buttons */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners for buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.btn:hover {
+    background-color: #357ABD; /* Darker shade on hover */
+}
+
+/* Status Message Styles */
+#statusMessage {
+    font-weight: bold; /* Bold text for status messages */
+    margin-top: 10px; /* Space above status message */
+}
+
+input[type="text"], input[type="email"], input[type="url"], input[type="date"], input[type="number"], select {
+    width: calc(100% - 22px); /* Ensure input fields take full width with padding */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px; /* Add spacing above input fields */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .viewtitle {
     width: 30%;
     background-color: #fafafa;
@@ -16,6 +156,40 @@ body {
     border: 2px solid #000000;
     border-radius: 3.35rem;
     text-align: center;
+}
+
+.dashboard-design{
+    position: relative;
+    text-align: center;
+    color: white;
+    margin: 0 6%;
+    margin-top: 6%;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 90%;
+    overflow: hidden; /* Ensures content stays within the div */
+}
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the container */
+    z-index: 1; /* Places the image behind the text */
+    border-radius: 15px;
+}
+
+
+
+.dashboard-design h2 {
+    position: relative;
+    z-index: 1; /* Ensures the text appears on top of the image */
+    margin: 0;
+    padding: 20px;
 }
 
 
@@ -87,15 +261,16 @@ body {
 
 
 /* customer list */
-.container {
-    background-color: white;
+/* .container {
+    background-color: whitesmoke;
     margin-top: 2%;
     color: black;
     border-radius: 15px;
     padding: 20px;
     width: 600px;
     box-shadow: 0 0 15px rgba(0,0,0,0.5);
-}
+    border: #000 1px solid;
+} */
 
 .data-table {
     width: 100%;
@@ -119,7 +294,7 @@ body {
 }
 
 .application-list {
-    background-color: #fff;
+    background-color: whitesmoke;
     margin-top: 2%;
     margin-left: 9%;
     color: #000;
@@ -129,6 +304,7 @@ body {
     margin-bottom: 20px;
     width: 85%;
     font-size: 20px;
+    border: #000 1px solid;
 }
 
 .application-list h2 {
@@ -151,11 +327,11 @@ th, td {
 }
 
 th{
-    background-color: #007bff;
+    background-color: #9dc0ea;
 }
 
 th a, td a {
-    color: #007bff;
+    color: #388df4;
     text-decoration: none;
 }
 
@@ -166,10 +342,10 @@ th a:hover, td a:hover {
 button {
     width: 100%;
     padding: 5px;
-    background-color: #007bff;
-    border: none;
+    background-color: #fafafa;
+    border: black 1px solid;
     border-radius: 55px;
-    color: #fff;
+    color: #121212;
     font-size: 14px;
     cursor: pointer;
 }
@@ -190,6 +366,7 @@ button:hover {
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    border-radius: 2%;
 }
 
 .modal-content {
@@ -198,6 +375,7 @@ button:hover {
     padding: 20px;
     border: 1px solid #ffffff;
     width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 3%;
 }
 
 .close {
@@ -270,6 +448,17 @@ button:hover {
     background-color: #0b0b0b;
     color: #c2d9f1;
 }
+.dark-mode body{
+    background-color: black; 
+} 
+
+.dark-mode button{
+    color:#ffffff
+}
+.dark-mode #searchName {
+    background-color: #302f2f87;
+    color: #ffffff;
+}
 
 
 
@@ -337,6 +526,11 @@ button:hover {
 
     }
 
+    .col {
+        flex: 0 0 auto;
+        margin-right: 60px;
+    }
+
     .row {
         display: flex;
         flex-wrap: nowrap; /* Prevent wrapping of items */
@@ -392,6 +586,11 @@ button:hover {
 
     }
 
+    .col {
+        flex: 0 0 auto;
+        margin-right: 37px;
+    }
+
     .row {
         display: flex;
         flex-wrap: nowrap; /* Prevent wrapping of items */
@@ -422,6 +621,21 @@ button:hover {
 /* laptop */
 @media (max-width: 1025px) {
 
+    .dashboard-design{
+        position: relative;
+        text-align: center;
+        color: white;
+        margin: 0 9%;
+        margin-top: 10%;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        width: 85%;
+        padding: -5%;
+        overflow: hidden; /* Ensures content stays within the div */
+    }
+
     .viewtitle {
         width: 21%;
         padding-left: 0;
@@ -430,6 +644,9 @@ button:hover {
         font-size: 8px;
         margin-left: 430px;
     }
+
+    
+   
 
     .row {
         display: flex;
@@ -442,33 +659,33 @@ button:hover {
    
     .border-start-primary
     {
-        margin-right: 7px; 
+        margin-right: 6px; 
     }
     .border-start-secondary
     {
-        margin-right: 7px;
+        margin-right: 6px;
     }
     .border-start-third{
         width: 100px;
-        margin-right: 7px;
+        margin-right: 6px;
     }
     .border-start-forth
     {
-        margin-right: 7px;  
+        margin-right: 6px;  
     }
     .border-start-fifth
     {
-        margin-right: 7px;
+        margin-right: 6px;
     }
 
     .card-body {
-        padding: 10px 10px;
+        padding: 10px 5px;
         flex: 1; 
-        margin-left: 2px;   
+        margin-left: 10px;   
     }
 
     .card {
-        min-width: 168px;
+        min-width: 160px;
         font-size: 10px;
     }
 
@@ -524,6 +741,29 @@ button:hover {
         text-align: center;
         font-size: 5px;
         margin-left: 328px;
+    }
+    .dashboard-design{
+        position: relative;
+        text-align: center;
+        color: white;
+        margin: 0 10%;
+        margin-top: 10%;
+        border-radius: 15px;
+        height: 10;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        
+        width: 80%;
+       
+        overflow: hidden; /* Ensures content stays within the div */
+    }
+    .dashboard-design h2{
+        padding: 0%;
+        font-size: 50%;
+    }
+
+    .col {
+      
+        margin-right: 20px;
     }
 
     .row {

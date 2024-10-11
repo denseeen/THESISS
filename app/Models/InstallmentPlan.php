@@ -14,6 +14,7 @@ class InstallmentPlan extends Model
     protected $table = 'installment_plan'; // default table name
     
     protected $fillable = [
+        'user_id',
         'customer_id',
         'sixmonths', 
         'twelvemonths', 

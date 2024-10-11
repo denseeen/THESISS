@@ -1,4 +1,7 @@
 /* TopNav */
+body{
+    background: #fff;
+}
 .container {
     background: #fff;
     margin-top: 10%;

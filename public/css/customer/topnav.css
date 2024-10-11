@@ -17,6 +17,18 @@
     letter-spacing: 2px;
     text-transform: uppercase;
 }
+.des{
+    animation: colorChange 3s infinite;
+}
+@keyframes colorChange {
+    5% {color: blue;}
+    25% {color: black;}
+    50% {color: goldenrod}
+    75% {color: antiquewhite;}
+    100% {color: rgb(102, 5, 5);}
+}
+
+
 
 .top_navbar .icons {
     display: flex;

@@ -4,9 +4,9 @@ body {
     padding: 0;
   }
 
-
   .top_navbar {
     background: radial-gradient(circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
+    /* background-color:  whitesmoke; */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -16,6 +16,8 @@ body {
     left: 0;
     width: 100%;
     z-index: 9999; /* Higher z-index to stay on top */
+   
+    
 }
 
 .top_navbar .icons {
@@ -49,8 +51,11 @@ color: white;
   width: 220px;
   height: 100%;
   background-color: rgb(15, 15, 84);
+  /* background-color: rgb(158, 189, 228); */
+  /* border-right: blue 1px solid ; */
   transition: width 0.5s;
   z-index: 20; /* Lower z-index to stay behind the navbar */
+  /* background: transparent; */
 }
 
 .sidebar_inner {
@@ -68,7 +73,7 @@ margin-bottom: 10px;
 .sidebar ul li a {
 display: block;
 padding: 5px 5px;
-color: #fff;
+color: #ffffff;
 text-decoration: none;
 font-size: 18px;
 margin-left: 15px
@@ -98,7 +103,7 @@ body.dark-mode {
 }
 
 .sidebar.dark-mode {
-background-color: #333;
+background-color: #000000;
 }
 
 .container.dark-mode {
@@ -176,4 +181,16 @@ height: 30px;
 
 .show {
   display: block;
+}
+.dark-mode .sidebar{
+  background-color: #000000;
+  color: #ffffff;
+}
+.dark-mode .top_navbar{
+  background-color: #333;
+  color: #ffffff;
+}
+
+.dark-mode .sidebar ul li a {
+  color: #ffffff;
 }
