@@ -1,19 +1,81 @@
 
+body{
+    
+}
+
+
+
+.installment-design {
+    position: relative;
+    text-align: center;
+    color: black;
+    margin: 0 6%;
+    margin-top: 6%;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 90%;
+    overflow: hidden; /* Ensures content stays within the div */
+}
+
+.bg-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the container */
+    z-index: -1; /* Places the image behind the text */
+    border-radius: 15px;
+}
+
+.installment-design h2 {
+    position: relative;
+    z-index: 1; /* Ensures the text appears on top of the image */
+    margin: 0;
+    padding: 20px;
+}
 .installment-container {
     background-color: #fff;
-    margin: 0 10%;
-    margin-top: 10%;
+    margin: 0 6%;
+    /* margin-top: 5%; */
     color: #000;
     border-radius: 15px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
-    width: 80%;
-    
+    width: 90%;
 }
-.installment-container h2 {
-    margin-top: 0;
-    text-align: center;
+
+.btn-print{
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    border-radius: 50%;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 56%;
+}
+.btn-print:hover{
+    background: #888;
+} 
+
+.btn-print-design{
+    display: flex;
+}
+
+@media print {
+    .close,
+    .edit-button,
+   
+    .btn-print {
+      display: none;
+  }
 }
 
 
@@ -129,16 +191,35 @@ td .archive-button {
 }
 
 
-
+.dark-mode th {
+    background-color: #000000;
+}
 
 
 .dark-mode .modal-content{
 
     background-color: #000;
+    
 }
 
 .dark-mode .modal-content {
 
+    color: #ffffff;
+}
+
+.dark-mode .installment-container{
+    background-color: #000;
+    
+    color: #ffffff;
+}
+
+
+.dark-mode input{
+    background-color: #000;
+    color: #ffffff;
+}
+.dark-mode select{
+    background-color: #000;
     color: #ffffff;
 }
 

@@ -57,6 +57,12 @@
         </div>
 
         <!-- content -->
+        <div class="application-design">
+        <img src="/image/application_bg.jpg" alt="bg-application" class="bg-image">
+         <h2>Application Form</h2>
+        </div>
+
+
         <form action="{{ route('form.submit') }}" method="POST" class="application-form">
         <form action="{{ route('about.save') }}" method="POST" enctype="multipart/form-data">
             @csrf

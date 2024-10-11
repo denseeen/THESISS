@@ -11,6 +11,8 @@ use App\Http\Controllers\DarkModeController;
 use App\Http\Controllers\InstallmentProcessController;
 
 use App\Http\Controllers\AdminFetchingController;
+use App\Http\Controllers\CustomerFetchingController;
+use App\Http\Controllers\AdminDashboardController;
 
 
 use App\Http\Controllers\NotificationController;
@@ -51,6 +53,19 @@ Route::get('/admin/fullypaid',[AuthManager::class, 'admin_fullypaid'])->name('ad
 Route::get('/admin/dashboard',[AuthManager::class, 'admin_dashboard'])->name('addashboard.show');
 Route::get('/admin/archived',[AuthManager::class, 'admin_archived'])->name('adarchived.show');
 Route::get('/admin/request',[AuthManager::class, 'admin_request'])->name('adrequest.show');
+Route::get('/admin/edit',[AuthManager::class, 'admin_edit'])->name('edit.show');
+
+// customer infomation Edit
+Route::get('/search-customer', [AdminDashboardController::class, 'searchCustomer']); //search function for both cusInfo_intallProcess
+Route::get('/edit-customer/{id}', [AdminDashboardController::class, 'showEditForm']);
+Route::post('/update-customer', [AdminDashboardController::class, 'updateCustomer']);
+
+// customer intallment_process edit
+Route::get('/get-installments/{customerId}', [AdminDashboardController::class, 'getInstallments']);
+Route::get('/get-installment/{installmentId}', [AdminDashboardController::class, 'getInstallment']);
+Route::get('/update-installment/{installmentId}', [AdminDashboardController::class, 'getInstallment']); // This route uses the same method as /get-installment
+Route::post('/update-installment/{installmentId}', [AdminDashboardController::class, 'updateInstallment']);
+
 
 // REGISTRATION
 Route::post('/submit-form', [FormController::class, 'submitForm'])->name('form.submit');
@@ -63,6 +78,14 @@ Route::get('/success', function () {
 // Route::get('/customer/profile',[AuthManager::class, 'customer_profile'])->name('cusprofile.show');
 Route::get('/customer/perchasehistory',[AuthManager::class, 'customer_perchasehistory'])->name('cuspurchasehistory.show');
 Route::get('/customer/dashboard',[AuthManager::class, 'customer_dashboard'])->name('cusdasboard.show');
+
+// customer_order
+Route::get('/api/unit-details', [CustomerFetchingController::class, 'getUnitDetails']);
+// customer payment_schedule
+Route::get('/payment-schedule/customer', [CustomerFetchingController::class, 'getBillingInfoAndPaymentSchedule'])->middleware('auth');
+// customer transaction
+Route::get('/billing-history', [CustomerFetchingController::class, 'getBillingHistory'])->name('billing.history');
+
 
 
 
@@ -119,6 +142,9 @@ Route::get('/fully-paid-customers', [AdminFetchingController::class, 'getFullyPa
 
 
 
+
+
+
 // Route for storing new installment_process data
 Route::post('/installment/store', [AdminFetchingController::class, 'store'])->name('installment.store');
 Route::post('/installment/archive', [AdminFetchingController::class, 'archive'])->name('installment.archive');
@@ -166,6 +192,14 @@ Route::get('/api/messages', [NotificationController::class, 'fetchMessages']);
 
 // Route for marking a message as read, delete
 Route::delete('/api/messages/{id}', [NotificationController::class, 'deleteMessage']);
+
+
+// dashboard cards
+Route::get('/api/expected-income', [AdminFetchingController::class, 'getExpectedIncome']);
+Route::get('/api/payment-received', [AdminFetchingController::class, 'getPaymentReceived']);
+Route::get('/api/installment-count', [AdminFetchingController::class, 'getInstallmentCount']);
+Route::get('/api/fully-paid-count', [AdminFetchingController::class, 'getFullyPaidCount']);
+Route::get('/api/sales-unit-count', [AdminFetchingController::class, 'getSalesUnitCount']);
 
 
 

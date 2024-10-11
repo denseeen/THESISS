@@ -1,5 +1,12 @@
 /* TopNav */
+
+body{
+    background: #fff;
+}
+.container {
+
 .archive-container {
+
     background: #fff;
     margin-top: 10%;
     margin-left: 10%;

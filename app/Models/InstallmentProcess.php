@@ -15,6 +15,7 @@ class InstallmentProcess extends Model
 
     protected $fillable = [
         'id',
+        'user_id',
         'customer_id', // foreign, this stablish a relationship between installment_process and customer_info
         'account_number',
         'payment_method', 

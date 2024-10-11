@@ -14,6 +14,7 @@ class order extends Model
     protected $table = 'orders'; // Default table name
     
     protected $fillable = [
+        'user_id',
         'customer_id',
         'orderNumber', 
         'dateOrder', 

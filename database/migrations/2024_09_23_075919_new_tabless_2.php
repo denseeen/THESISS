@@ -109,7 +109,11 @@ return new class extends Migration
             $table->boolean('sixmonths')->nullable();
             $table->boolean('twelvemonths')->nullable();
             $table->boolean('eighteenmonths')->nullable();
-        });
+
+      
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        }); 
+
 
         // Create predefined_security_questions table
         Schema::create('predefined_security_questions', function (Blueprint $table) {

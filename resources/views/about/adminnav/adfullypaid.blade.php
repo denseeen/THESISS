@@ -9,6 +9,7 @@
         <!-- Stylesheets -->
         <link href="{!! url('css/admin/adminfullypaid.css') !!}" rel="stylesheet">
         <link href="{{ url('css/admin/topnav_sidenav.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=print" />
     
         <!-- Font Awesome for icons (sideNav-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
@@ -58,8 +59,14 @@
         </div>
 
 <!-- content -->
+
+<div class="installment-design">
+        <img src="/image/installment_bg.jpg" alt="bg-installment" class="bg-image">
+         <h2>Fully Paid PROCESS</h2>
+        </div>
+
 <div class="installment-container">
-                <h2>Fully Paid PROCESS</h2>
+             
                 <table>
                     <thead>
                         <tr>
@@ -143,7 +150,16 @@
                             <!-- Flex container for customer info and transaction records -->
                             <div class="flex-columns">
                                 <div class="customer-info">
+
+                                <div class="btn-print-design">
+                                    <h2>Customer Name:</h2>
+                                    <button class="btn-print" type="button" onclick="printModal('customer-modal')">
+                                    <span class="material-symbols-outlined">print</span>
+                                    </button>
+                                 </div>
+                                   
                                     <h2><strong id="modal-name"></strong></h2>   
+
                                     <p>Email: <span id="modal-email"></span></p>
                                     <p>Phone Number: <span id="modal-phone"></span></p>
                                     <p>Address: <span id="modal-address"></span></p>
@@ -220,6 +236,27 @@
 </div>
 
     <script> 
+
+     // PrintButton
+     function printModal(modalId) {
+    // Get the modal element by its ID
+    var modalContent = document.getElementById(modalId).innerHTML;
+
+    // Save the current page's content
+    var originalContent = document.body.innerHTML;
+
+    // Replace the page's content with the modal's content
+    document.body.innerHTML = modalContent;
+
+    // Trigger the print function
+    window.print();
+
+    // Restore the original page content after printing
+    document.body.innerHTML = originalContent;
+
+    // Re-run any scripts or JavaScript necessary to reset the page's functionality
+    window.location.reload();
+}
 
 
     document.addEventListener('DOMContentLoaded', (event) => {

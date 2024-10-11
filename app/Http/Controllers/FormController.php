@@ -9,6 +9,7 @@ use App\Models\Notifications;
 use App\Models\PaymentService;
 use App\Models\InstallmentPlan;
 use App\Models\User;
+use Illuminate\Support\Facades\DB; // Correct DB facade import
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -145,6 +146,12 @@ class FormController extends Controller
                     return view('about.adminnav.addashboard', ['user' => $user]);
 
                 case '2':
+                   
+                // Fetch customer information from the customer_info table
+                $customerInfo = DB::table('customer_info')
+                ->where('email', $user->email) // Use the authenticated user's email
+                ->first();
+
                     // Customer view
                     return view('about.customernav.cusdashboard', ['user' => $user]);
 

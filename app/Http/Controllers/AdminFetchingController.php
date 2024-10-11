@@ -34,10 +34,9 @@ class AdminFetchingController extends Controller
 
 
 
-
-
 public function InstallmentCustomer()
 {
+
     // $installments = DB::table('payment_service')
     // ->join('customer_info', 'payment_service.id', '=', 'customer_info.id')
     // ->where('payment_service.installment', 1)  // Filtering for records where installment is true
@@ -55,6 +54,7 @@ public function InstallmentCustomer()
         ->where('payment_service.installment', 1)
         ->select('customer_info.id', 'customer_info.name')
         ->get();
+
  
     return view('about.adminnav.adinstallment', compact('installments'));
 }
@@ -223,6 +223,45 @@ public function getCustomer($id)
 
 }
 
+
+
+
+// dashboard
+// Get Expected Income (Sum of unit prices from Orders)
+public function getExpectedIncome()
+{
+    $expectedIncome = Order::sum('unitprice');
+    return response()->json(['expected_income' => $expectedIncome]);
+}
+
+public function getPaymentReceived()
+{
+    $paymentReceived = InstallmentProcess::sum('amount'); // Make sure the model is correctly spelled
+    return response()->json(['payment_received' => $paymentReceived]);
+}
+
+public function getInstallmentCount()
+{
+    $installmentCount = PaymentService::where('installment', true)->count();
+    return response()->json(['installment_count' => $installmentCount]);
+}
+
+public function getFullyPaidCount()
+{
+    $fullyPaidCount = PaymentService::where('fullypaid', true)->count();
+    return response()->json(['fully_paid_count' => $fullyPaidCount]);
+}
+
+public function getSalesUnitCount()
+{
+    $salesUnitCount = Order::distinct('unitName')->count('unitName');
+    return response()->json(['sales_unit_count' => $salesUnitCount]);
+}
+
+
+
+
+
 public function archive(Request $request)
 {
     // Validate that customer_id is present
@@ -360,5 +399,6 @@ public function addOrder(Request $request)
     // Redirect back with a success message
     return redirect()->back()->with('success', 'Installment created successfully!');
 }
+
 
 }
