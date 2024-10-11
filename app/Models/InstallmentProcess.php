@@ -16,14 +16,22 @@ class InstallmentProcess extends Model
     protected $fillable = [
         'id',
         'customer_id', // foreign, this stablish a relationship between installment_process and customer_info
+        'account_number',
         'payment_method', 
         'amount', 
         'date', 
         'status', 
         'violation',
         'comment',
+        'is_archived', // Newly added column for archiving
     ];
 
+
+    // Define a relationship with the CustomerInfo
+    public function customerInfo()
+    {
+        return $this->hasOne(CustomerInfo::class, 'id', 'id');  // Assuming the 'id' matches
+    }
 
     public function customer() {
         return $this->belongsTo(CustomerInfo::class, 'customer_id');

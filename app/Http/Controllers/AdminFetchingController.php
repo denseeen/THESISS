@@ -38,13 +38,23 @@ class AdminFetchingController extends Controller
 
 public function InstallmentCustomer()
 {
-    $installments = DB::table('payment_service')
-    ->join('customer_info', 'payment_service.id', '=', 'customer_info.id')
-    ->where('payment_service.installment', 1)  // Filtering for records where installment is true
-    ->select('customer_info.id', 'customer_info.name')
-    ->distinct()  // Ensure unique names are returned
-    ->get();
+    // $installments = DB::table('payment_service')
+    // ->join('customer_info', 'payment_service.id', '=', 'customer_info.id')
+    // ->where('payment_service.installment', 1)  // Filtering for records where installment is true
+    // ->select('customer_info.id', 'customer_info.name')
+    // ->distinct()  // Ensure unique names are returned
+    // ->get();
 
+    // $installments = CustomerInfo::where('customer_info.is_archived', false)
+    // ->join('installment_process', 'customer_info.id', '=', 'installment_process.customer_id') // Join on customer_id
+    // ->select('customer_info.id', 'customer_info.name')
+    // ->get();
+
+    $installments = CustomerInfo::where('customer_info.is_archived', false)
+        ->join('payment_service', 'customer_info.id', '=', 'payment_service.customer_id')
+        ->where('payment_service.installment', 1)
+        ->select('customer_info.id', 'customer_info.name')
+        ->get();
  
     return view('about.adminnav.adinstallment', compact('installments'));
 }
@@ -53,11 +63,25 @@ public function InstallmentCustomer()
  
 public function FullyPaidCustomer()
 {
-    $fullpaids = DB::table('payment_service')
-        ->join('customer_info', 'payment_service.id', '=', 'customer_info.id')
-        ->where('payment_service.fullypaid', 1)  // Filtering for records where fullypaid is true
-        ->select('customer_info.id', 'customer_info.name')  // Include customer_id to use in the modal
-        ->distinct()  // Ensure unique names are returned
+    // $fullpaids = DB::table('payment_service')
+    //     ->join('customer_info', 'payment_service.id', '=', 'customer_info.id')
+    //     ->where('payment_service.fullypaid', 1)  // Filtering for records where fullypaid is true
+    //     ->select('customer_info.id', 'customer_info.name')  // Include customer_id to use in the modal
+    //     ->distinct()  // Ensure unique names are returned
+    //     ->get();
+
+    // $fullpaids = CustomerInfo::where('customer_info.is_archived', false)
+    // ->join('installment_process', 'customer_info.id', '=', 'installment_process.id') // Join on customer_id
+    // ->join('payment_service', 'installment_process.id', '=', 'payment_service.id') // Join on the appropriate field
+    // ->where('payment_service.fullypaid', 1) // Filter where fullypaid is 1
+    // ->select('customer_info.id', 'customer_info.name')
+    // ->get();
+
+
+    $fullpaids = CustomerInfo::where('customer_info.is_archived', false)
+        ->join('payment_service', 'customer_info.id', '=', 'payment_service.customer_id')
+        ->where('payment_service.fullypaid', 1)
+        ->select('customer_info.id', 'customer_info.name')
         ->get();
  
     return view('about.adminnav.adfullypaid', compact('fullpaids'));
@@ -109,8 +133,10 @@ public function getCustomer($id)
  
     $unitPrice = $orders->unitprice; // Assuming you have a unit price in the orders
     $statuses = $installmentProcess->pluck('status')->toArray(); // Fetch all statuses into an array
+    $amountsPaid = $installmentProcess->pluck('amount')->toArray(); // Fetch all amounts paid
 
     $paymentSchedule = [];
+    $remainingBalance = $unitPrice; // Initialize remaining balance with unit price 
  
     // Determine the installment duration and calculate payments
     if ($installmentPlan->sixmonths) {
@@ -138,18 +164,27 @@ public function getCustomer($id)
         
         // Assign status from installment_process (or default to 'not_paid' if no status exists)
         $status = isset($statuses[$i]) ? $statuses[$i] : 'not paid';
+
+         // Get the amount paid for this installment or default to 0
+         $amountPaid = isset($amountsPaid[$i]) ? $amountsPaid[$i] : 0;
+
+         // Subtract the amount paid from the remaining balance
+        $remainingBalance -= $amountPaid;
  
         // Format the payment date and add to schedule
         $paymentSchedule[] = [
             'date' => $paymentDate->format('F j, Y'), // e.g., "April 5, 2024"
             'amount' => number_format($monthlyPayment, 2), // Format to 2 decimal places
-            'status' => $status // Add the corresponding status for the month
+            'amount_paid' => number_format($amountPaid, 2), // Amount paid
+            'status' => $status, // Add the corresponding status for the month
+            'balance' => number_format($remainingBalance, 2), // Remaining balance after payment
         ];
     }
  
     return response()->json([
         'unit_price' => number_format($unitPrice, 2),
         'payment_schedule' => $paymentSchedule,
+        'remaining_balance' => number_format($remainingBalance, 2), // Include remaining balance overall
         'installment_process' => $installmentProcess, // Include installment process data
     ]);
 }
@@ -162,10 +197,11 @@ public function getCustomer($id)
     // Validate the incoming request data
     $validatedData = $request->validate([
         'customer_id'      => 'required|exists:customer_info,id', // Validate that the customer exists
-        'payment_method'   => 'required|string|in:otc,online',
-        'amount'           => 'required|numeric',
-        'date'             => 'required|date',
-        'status'           => 'required|string|in:paid,not_paid',
+        'account_number'   => 'nullable|numeric',
+        'payment_method'   => 'nullable|string|in:otc,online',
+        'amount'           => 'nullable|numeric',
+        'date'             => 'nullable|date',
+        'status'           => 'nullable|string|in:paid,fully_paid,not_paid',
         'violation'        => 'nullable|string|max:255',
         'comment'          => 'nullable|string|max:255',
     ]);
@@ -173,6 +209,7 @@ public function getCustomer($id)
     // Create a new installment record
       $installmentProcess =  InstallmentProcess::create([
         'customer_id'          => $validatedData['customer_id'], // Store the customer ID
+        'account_number'       => $validatedData['account_number'],
         'payment_method'       => $validatedData['payment_method'],
         'amount'               => $validatedData['amount'],
         'date'                 => $validatedData['date'],
@@ -185,4 +222,143 @@ public function getCustomer($id)
     return redirect()->back()->with('success', 'Installment created successfully!');
 
 }
+
+public function archive(Request $request)
+{
+    // Validate that customer_id is present
+    $request->validate([
+        'customer_id' => 'required|integer|exists:installment_process,customer_id',
+    ]);
+
+    // Find the installment by customer_id
+    $installment = InstallmentProcess::where('customer_id', $request->customer_id)->first();
+
+    if ($installment) {
+        $installment->is_archived = true; // Mark the installment as archived
+        $installment->save();
+
+        // Optionally, if you want to archive the related customer as well
+        $customer = CustomerInfo::find($installment->customer_id);
+        if ($customer) {
+            $customer->is_archived = true; // Archive the customer
+            $customer->save();
+        }
+
+        // Fetch and archive the related orders
+        $orders = $customer->orders; // Fetch related orders
+
+        return redirect()->back()->with('success', 'Installment and customer archived successfully.');
+    }
+
+    return redirect()->back()->with('error', 'Installment not found.');
+}
+
+// public function showArchived()
+// {
+//     $archivedInstallments = InstallmentProcess::where('is_archived', true)->get();
+
+//     // $customers = CustomerInfo::all();
+
+//     $customers = InstallmentProcess::join('customer_info', 'installment_process.customer_id', '=', 'customer_info.id')
+//     ->where('installment_process.is_archived', true) // Archived installments
+//     ->where('customer_info.is_deleted', false)      // Only non-deleted customers
+//     ->select('installment_process.*', 'customer_info.name as customer_name', 'customer_info.email as customer_email') // Select fields from both tables
+//     ->get();
+
+//     // Define your specific IDs array
+//     $yourSpecificIdsArray = [1, 2, 3, 4, 11]; // Replace with your actual IDs
+//     return view('about.adminnav.adarchived', compact('archivedInstallments', 'yourSpecificIdsArray','customers'));
+// }
+
+public function showArchived()
+{
+
+    $archivedInstallments = InstallmentProcess::where('is_archived', true)->get();
+    // Fetch archived installments along with customer and order data
+    $customers = InstallmentProcess::join('customer_info', 'installment_process.customer_id', '=', 'customer_info.id')
+        ->join('orders', 'installment_process.customer_id', '=', 'orders.customer_id') // Join with orders table to get unitName
+        ->where('installment_process.is_archived', true) // Archived installments
+
+        ->select(
+            'installment_process.*', 
+            'customer_info.name as customer_name', 
+            'customer_info.phone_number as customer_phoneNum', 
+            'orders.*' // Fetch unitName from orders table
+        )
+        ->get();
+
+    // Group by customer and collect unit names in an array
+    $yourSpecificIdsArray = $customers->groupBy('customer_id')->map(function ($customer) {
+        return [
+            'account_number' => $customer->first()->customer_name,
+            'customer_name' => $customer->first()->customer_name,
+            'customer_phoneNum' => $customer->first()->customer_phoneNum,
+            'unit_names' => $customer->pluck('unitName')->unique() // Collect all unique unitNames for each customer
+        ];
+    });
+
+    // Return the view with the grouped customer data
+    return view('about.adminnav.adarchived', compact('yourSpecificIdsArray','customers','archivedInstallments'));
+}
+
+// public function deleteCustomer($id)
+// {
+//     // Fetch the customer to check if it exists and is not deleted
+//     $customer = DB::table('customer_info')
+//         ->where('id', $id)
+//         ->where('is_deleted', false)
+//         ->first();
+
+//     // Check if the customer exists
+//     if (!$customer) {
+//         return response()->json(['error' => 'Customer not found or already deleted.'], 404);
+//     }
+
+//     // Soft delete by updating the 'is_deleted' column
+//     DB::table('customer_info')
+//         ->where('id', $id)
+//         ->update(['is_deleted' => true]);
+
+//     return response()->json(['message' => 'Customer deleted successfully']);
+// }
+
+public function destroy($id)
+{
+    $customer = CustomerInfo::find($id);
+
+    if ($customer) {
+        // Delete related records, if needed
+        $customer->orders()->delete();
+        $customer->installmentProcess()->delete();
+
+        // Delete the customer record
+        $customer->delete();
+
+        return redirect()->back()->with('success', 'Customer deleted successfully');
+    }
+
+    return redirect()->back()->with('error', 'Customer not found');
+}
+
+
+public function addOrder(Request $request)
+{
+    // Validate the request data
+    $validatedData = $request->validate([
+        'customer_id' => 'required|integer',
+        'orderNumber'     => 'nullable|string|max:255',
+        'unitName'        => 'nullable|string|max:255',
+        'dateOrder'       => 'nullable|date',
+        'unitprice'       => 'nullable|numeric',
+        'unitDescription' => 'nullable|string',
+    ]);
+
+    // Use $validatedData after validation
+    // For example, saving the order
+    Order::create($validatedData);
+
+    // Redirect back with a success message
+    return redirect()->back()->with('success', 'Installment created successfully!');
+}
+
 }
