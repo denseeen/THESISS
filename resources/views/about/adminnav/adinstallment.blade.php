@@ -52,7 +52,7 @@
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
                         <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
                         <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
-                        <li><a href="{{ route('adarchived.show') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>      
+                        <li><a href="{{ route('installments.archived') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>      
                     </ul>
                 </div>
             </div>
@@ -79,68 +79,83 @@
         </div>
 
     <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Payment Method</th>
-                        <th>Amount</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Violation</th>
-                        <th>Comment</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-        <tbody>
-            @foreach($installments as $installment)
-            <tr>
-                    <td>
-                        <a href="#" class="customer-link" data-customer-id="{{ $installment->id }}">{{ $installment->name }}</a>
-                    </td>
-        
-                <form action="{{ route('installment.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="customer_id" value="{{ $installment->id }}"> <!-- Pass the customer ID here -->
-                
-                            <td>      
-                                <select id="payment_method" name="payment_method">
-                                    <option value="otc">OTC</option>
-                                    <option value="online">Online</option>
-                                </select>
-                            </td>
-                
-                
-                            <td>
-                                <input type="number" name="amount" placeholder="Enter Amount">
-                            </td>
-                
-                            <td>
-                                <input type="date" name="date">
-                            </td>
-                
-                            <td>
-                                <select id="status" name="status">
-                                    <option value="paid">Paid</option>
-                                    <option value="not paid">Not Paid</option>
-                                </select>
-                            </td>
-                
-                            <td>
-                                <input type="text" name="violation" placeholder="Enter Violation">
-                            </td>
-                        
-                            <td>
-                                <input type="text" name="comment" placeholder="Enter Comment">
-                            </td>
-                        
-                            <td>
-                                <button type="update">update</button>
-                            </td>
-                </form>
-        
+           <thead>
+               <tr>
+                 
+                <th>Name</th>
+                <th>Account Number</th>
+                <th>Payment Method</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Violation</th>
+                <th>Comment</th>
+                <th>Update</th>
+                <th>Archive</th>
             </tr>
-            @endforeach
-        </tbody>
+        </thead>
+        <tbody>
+    @foreach($installments as $installment)
+    <tr>
+            <td>
+                <a href="#" class="customer-link" data-customer-id="{{ $installment->id }}">{{ $installment->name }}</a>
+            </td>
+ 
+            <form action="{{ route('installment.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="customer_id" value="{{ $installment->id }}"> <!-- Pass the customer ID here -->
+
+            <td>
+            <input type="number" name="account_number" placeholder="Enter Account Number">
+            </td>
+ 
+            <td>      
+    <select id="payment_method" name="payment_method">
+        <option value="otc">OTC</option>
+        <option value="online">Online</option>
+    </select>
+    </td>
+ 
+ 
+    <td>
+    <input type="number" name="amount" placeholder="Enter Amount">
+    </td>
+ 
+    <td>
+    <input type="date" name="date">
+    </td>
+ 
+    <td>
+    <select id="status" name="status">
+        <option value="paid">Paid</option>
+        <option value="not_paid">Not Paid</option>
+    </select>
+    </td>
+ 
+    <td>
+    <input type="text" name="violation" placeholder="Enter Violation">
+    </td>
+ 
+    <td>
+    <input type="text" name="comment" placeholder="Enter Comment">
+    </td>
+ 
+    <td>
+    <button type="submit">UPDATE</button>
+    </td>
+</form>
+ <!-- Form for archiving installment -->
+<form action="{{ route('installment.archive') }}" method="POST" style="display:inline;">
+    @csrf
+    <input type="hidden" name="customer_id" value="{{ $installment->id }}">
+    <td>
+    <button type="submit">ARCHIVE</button>
+    </td>
+</form>
+    </tr>
+    @endforeach
+</tbody>
+
     </table>
 </div>
  
@@ -168,13 +183,17 @@
             <!-- Flex container for customer info and transaction records -->
             <div class="flex-columns">
                 <div class="customer-info">
+
                     <div class="btn-print-design">
                         <h2>Customer Name:</h2>
                         <button class="btn-print" type="button" onclick="printModal('customer-modal')">
                         <span class="material-symbols-outlined">print</span>
                         </button>
                     </div>
-                    <p><strong id="modal-name"></strong></p>
+            
+
+                    <h2><strong id="modal-name"></strong></h2>
+
                     <p>Email: <span id="modal-email"></span></p>
                     <p>Phone Number: <span id="modal-phone"></span></p>
                     <p>Address: <span id="modal-address"></span></p>
@@ -186,6 +205,7 @@
                 <div class="transaction-records">
                     <h2>Transaction Records</h2>
                     <p>Unit Price: <span id="modal-unitprice"></span></p>
+                    <p>Balance: <span id="modal-balance"></p>
                     <span id="modal-status"></span>
                 </div>
             </div>
@@ -198,6 +218,7 @@
                             <th>Date</th>
                             <th>Amount</th>
                             <th>Status</th>
+                            <!-- <th>Balance</th> -->
                         </tr>
                     </thead>
                     <tbody id="payment-schedule-table-body">
@@ -213,9 +234,9 @@
                     <thead>
                         <tr>
                             <th>Date</th>
-                            <th>Amount</th>
+                            <th>Amount Paid</th>
                             <th>Payment Method</th>
-                            <th>Violation</th>
+                            <th>Penalty</th>
                             <th>Comment</th>
                         </tr>
                     </thead>
@@ -487,28 +508,7 @@
                 .then(paymentData => {
                     // Update unit price
                     document.getElementById('modal-unitprice').textContent = paymentData.unit_price;
- 
-                //    // Fetch unit price from paymentData and normalize it
-                //     const unitPriceString = paymentData.unit_price; // Assume this is in string format
-                //     const unitPrice = parseFloat(unitPriceString.replace(/,/g, '')) || 0; // Remove commas before parsing
- 
-                //     console.log("Unit Price: ", unitPrice); // Log to check the value
- 
-                //     // Calculate total amount paid from installment process
-                //     const totalPaid = paymentData.installment_process.reduce((sum, payment) => {
-                //     return sum + (parseFloat(payment.amount) || 0); // Ensure each amount is a number
-                //     }, 0);
- 
-                //     console.log("Total Paid: ", totalPaid); // Log to check the total paid
- 
-                //     // Calculate remaining balance
-                //     const balance = Math.max(0, unitPrice - totalPaid);
-                //     console.log("Remaining Balance: ", balance); // Log to check the remaining balance
- 
-                //     // Update balance in modal
-                //     document.getElementById('modal-balance').textContent = balance.toFixed(2); // Format to 2 decimal places
- 
-               
+
  
                     // Fetch unit price from paymentData and normalize it
                     const unitPriceString = paymentData.unit_price; // Assume this is in string format
@@ -516,10 +516,13 @@
  
                     console.log("Unit Price: ", unitPrice); // Log to check the value
  
+
+              
                     // Calculate total amount paid from installment process
                     const totalPaid = paymentData.installment_process.reduce((sum, payment) => {
                     return sum + (parseFloat(payment.amount) || 0); // Ensure each amount is a number
                     }, 0);
+
  
                     console.log("Total Paid: ", totalPaid); // Log to check the total paid
  
@@ -527,15 +530,17 @@
                     const balance = Math.max(0, unitPrice - totalPaid);
                     console.log("Remaining Balance: ", balance); // Log to check the remaining balance
  
+
+
                     // Format balance to include commas and two decimal places
                     const formattedBalance = new Intl.NumberFormat('en-US', {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                     }).format(balance);
+
  
                     // Update balance in modal
                     document.getElementById('modal-balance').textContent = formattedBalance; // Format to currency
- 
  
        
  

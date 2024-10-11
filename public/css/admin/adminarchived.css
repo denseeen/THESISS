@@ -1,8 +1,12 @@
 /* TopNav */
+
 body{
     background: #fff;
 }
 .container {
+
+.archive-container {
+
     background: #fff;
     margin-top: 10%;
     margin-left: 10%;
@@ -13,9 +17,9 @@ body{
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     width: 80%;
 }
-h2 {
+.archive-container h2 {
+    margin-top: 0;
     text-align: center;
-    margin-bottom: 20px;
 }
 table {
     width: 100%;

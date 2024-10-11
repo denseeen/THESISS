@@ -52,7 +52,7 @@
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
                         <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
                         <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
-                        <li><a href="{{ route('adarchived.show') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>       
+                        <li><a href="{{ route('installments.archived') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>       
                     </ul>
                 </div>
             </div>
@@ -71,44 +71,72 @@
                     <thead>
                         <tr>
                             <th style= "width:20%;">Name</th>
+                            <th>Account Number</th>
                             <th>Payment Method</th>
                             <th>Amount</th>
                             <th>Date</th>
                             <th>Status</th>
-                            <th>Violation</th>
-                            <th>Comment</th>
-                            <th>Action</th>
+                            <th>Update</th>
+                            <th>Add Order</th>
+                            <th>Archive</th>
                         </tr>
                     </thead>
                     <tbody>
                     @foreach($fullpaids as $fullpaid)
                 <tr>
                     <td><a href="#" class="customer-link" data-customer-id="{{ $fullpaid->id }}">{{ $fullpaid->name }}</a></td>
+                    <form action="{{ route('installment.store') }}" method="POST">
+            @csrf
+            <input type="hidden" name="customer_id" value="{{ $fullpaid->id }}"> <!-- Pass the customer ID here -->
+            <td>
+            <input type="number" name="account_number" placeholder="Enter Account Number">
+            </td>
+ 
+            <td>      
+    <select id="payment_method" name="payment_method">
+        <option value="otc">OTC</option>
+        <option value="online">Online</option>
+    </select>
+    </td>
+ 
+ 
+    <td>
+    <input type="number" name="amount" placeholder="Enter Amount">
+    </td>
+ 
+    <td>
+    <input type="date" name="date">
+    </td>
+ 
+    <td>
+    <select id="status" name="status">
+        <option value="fully_paid">Fully Paid</option>
+        <option value="paid">Paid</option>
+        <option value="not_paid">Not Paid</option>
+    </select>
+    </td>
+
+    <input type="hidden" type="text" name="violation" placeholder="Enter Violation">
+    <input type="hidden" type="text" name="comment" placeholder="Enter Comment">
+    
                     <td>
-                        <select name="payment_method">
-                            <option value="OTC">OTC</option>
-                            <option value="ONLINE">ONLINE</option>
-                        </select>
+                        <button type="submit">UPDATE</button>
                     </td>
-                    <td><input type="number" name="amount" placeholder="Enter Amount"></td>
-                    <td><input type="date" name="date"></td>
+                    </form>
                     <td>
-                        <select name="status">
-                            <option value="paid">Paid</option>
-                            <option value="not_paid">Not Paid</option>
-                            <option value="fully_paid">Fully Paid</option>
-                        </select>
+                        <button id="addOrderButton"  class="addOrderButton" data-customer-id="{{ $fullpaid->id }}">Add Order</button>
                     </td>
-                    <td><input type="text" name="violation" placeholder="Enter Violation"></td>
-                    <td><input type="text" name="comment" placeholder="Enter Comment"></td>
+                    
+                 <!-- Form for archiving installment -->
+<form action="{{ route('installment.archive') }}" method="POST" style="display:inline;">
+    @csrf
+    <input type="hidden" name="customer_id" value="{{ $fullpaid->id }}">
                     <td>
-                        <select class="action-dropdown">
-                            <option value="update">Update</option>
-                            <option value="archive">Archive</option>
-                        </select>
+                        <button type="submit">ARCHIVE</button>
                     </td>
+                    </form>
                 </tr>
-            @endforeach
+                @endforeach
         </tbody>
     </table>
 </div>
@@ -122,13 +150,16 @@
                             <!-- Flex container for customer info and transaction records -->
                             <div class="flex-columns">
                                 <div class="customer-info">
+
                                 <div class="btn-print-design">
                                     <h2>Customer Name:</h2>
                                     <button class="btn-print" type="button" onclick="printModal('customer-modal')">
                                     <span class="material-symbols-outlined">print</span>
                                     </button>
                                  </div>
-                                    <p><strong id="modal-name"></strong></p>
+                                   
+                                    <h2><strong id="modal-name"></strong></h2>   
+
                                     <p>Email: <span id="modal-email"></span></p>
                                     <p>Phone Number: <span id="modal-phone"></span></p>
                                     <p>Address: <span id="modal-address"></span></p>
@@ -167,6 +198,42 @@
                     </div>
                 </div>
 
+
+
+       <!-- Add Order Modal -->
+<div id="addOrderModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Add Order</h2>
+        <form id="orderForm" action="{{ route('add.order') }}" method="POST">
+            @csrf
+            <input type="hidden" id="customer_id" name="customer_id"> <!-- This will be set dynamically -->
+            <table>
+                <tr>
+                    <td><label for="orderNumber">Order Number:</label></td>
+                    <td><input type="text" id="orderNumber" name="orderNumber" required></td>
+                </tr>
+                <tr>
+                    <td><label for="unitName">Unit Name:</label></td>
+                    <td><input type="text" id="unitName" name="unitName" required></td>
+                </tr>
+                <tr>
+                    <td><label for="dateOrder">Date of Order:</label></td>
+                    <td><input type="date" id="dateOrder" name="dateOrder" required></td>
+                </tr>
+                <tr>
+                    <td><label for="unitprice">Unit Price:</label></td>
+                    <td><input type="number" id="unitprice" name="unitprice" step="0.01" required></td>
+                </tr>
+                <tr>
+                    <td><label for="unitDescription">Unit Description:</label></td>
+                    <td><input type="text" id="unitDescription" name="unitDescription" required></td>
+                </tr>
+            </table>
+            <button type="submit">Save Order</button>
+        </form>
+    </div>
+</div>
 
     <script> 
 
@@ -234,6 +301,33 @@
     });
 
 
+    document.addEventListener('DOMContentLoaded', function () {
+    const addOrderButtons = document.querySelectorAll('.addOrderButton'); // All add buttons
+    const modal = document.getElementById('addOrderModal');
+    const closeModal = document.getElementById('closeModal');
+    const orderForm = document.getElementById('orderForm');
+    const customerIdInput = document.getElementById('customer_id');
+
+    // Event listener for each add order button
+    addOrderButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // Set the customer ID dynamically
+            const customerId = this.getAttribute('data-customer-id');
+            customerIdInput.value = customerId; // Set the hidden input field value
+            modal.style.display = 'block'; // Show the modal
+        });
+    });
+
+    closeModal.addEventListener('click', function () {
+        modal.style.display = 'none'; // Hide modal
+    });
+
+    window.onclick = function (event) {
+        if (event.target === modal) {
+            modal.style.display = 'none'; // Hide modal if clicked outside
+        }
+    };
+});
 
     //darkmode
     function toggleDarkModeDashboard() {
