@@ -5,16 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Archived</title>
-   
+    
         <!-- Stylesheets -->
         <link href="{!! url('css/admin/adminarchived.css') !!}" rel="stylesheet">
         <link href="{!! url('css/admin/admininstallment.css') !!}" rel="stylesheet">
         <link href="{!! url('css/admin/topnav_sidenav.css') !!}" rel="stylesheet">
  
         <!-- Font Awesome for icons (sideNav-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">   
     </head>
- 
+
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
@@ -22,27 +22,27 @@
             <a href="{{ route('addashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
- 
+
             <div class="icons">
                 <!-- Dark Mode -->
                 <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
                     <img src="/image/7721593.png" alt="Sun Icon">
                 </div>
- 
-                <div class="icon profile-icon img" onclick="toggleDropdown()">  
+
+                <div class="icon profile-icon img" onclick="toggleDropdown()">   
                     <img src="/image/4174470.png" alt="Profile Icon">
                     <!-- <span class="profile-text">Account Profile</span> -->
- 
+
                     <!-- Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('adprofile.show') }}">Profile</a>
                         <a href="{{ route('adsecurity.show') }}">Security</a>
-                        <a href="{{ route('about.layout') }}">Logout</a>
+                        <a href="{{ route('about.layout') }}">Logout</a> 
                     </div>
                 </div>
             </div>
         </nav>
- 
+
         <!-- Sidebar -->
         <div class="wrapper hover_collapse">
             <div class="sidebar">
@@ -52,24 +52,24 @@
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
                         <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
                         <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
-                        <li><a href="{{ route('installments.archived') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>            
+                        <li><a href="{{ route('installments.archived') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>             
                     </ul>
                 </div>
             </div>
         </div>
- 
- 
- 
+
+
+
        
- 
-       
+
+        
         <div class="archive-container">
     <h2>Archived</h2>
     <table>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Account Number</th>
+                <th>Account Number</th> 
                 <th>Unit Name</th>
                 <th>Contact Number</th>
                 <th>Payment Service</th>  <!-- New column added here -->
@@ -77,7 +77,7 @@
                 <th>Delete</th>
             </tr>
         </thead>
- 
+
         <tbody>
             @foreach($yourSpecificIdsArray as $customerId => $customer)
                 <tr>
@@ -103,9 +103,9 @@
         </tbody>
     </table>
 </div>
- 
- 
- 
+
+
+
  <!-- Modal Structure -->
 <div id="customer-modal" class="modal">
     <div class="modal-content">
@@ -122,34 +122,34 @@
                 </div>
  
                 <div class="transaction-records">
-                    <h2>Transaction Records</h2>
+                    <h2>Order Details</h2>
+                    <p>Unit Name: <span id="modal-unitname"></span></p>
                     <p>Unit Price: <span id="modal-unitprice"></span></p>
-                    <p>Balance: <span id="modal-balance"></p>
+                    <p>Balance: <span id="modal-balance"></span></p>
+
                     <span id="modal-status"></span>
                 </div>
             </div>
  
             <!-- Payment Schedule Table -->
-            <div class="table-container">
+            <div class="table-container" style="display: none;"> <!-- Initially hidden -->
+                <h3>Payment Schedule</h3>
                 <table>
                     <thead>
                         <tr>
                             <th>Date</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <!-- <th>Balance</th> -->
                         </tr>
                     </thead>
                     <tbody id="payment-schedule-table-body">
                         <!-- Dynamic rows go here -->
-                         
                     </tbody>
                 </table>
             </div>
  
- 
-            <!-- Installment Details Table -->
-            <div class="table-container">
+            <div class="tableee-container">
+            <h2>Transaction Records</h2>
                 <table>
                     <thead>
                         <tr>
@@ -163,13 +163,14 @@
                         </tr>
                     </thead>
                     <tbody id="installment-details-table-body">
-                        <!-- Rows will be added dynamically -->
+                    <!-- Rows will be added dynamically -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
  
  
  
@@ -178,150 +179,99 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const modal = document.getElementById('customer-modal');
     const closeButton = document.querySelector('.close');
     const customerLinks = document.querySelectorAll('.customer-link');
- 
+    const installmentDetailsTableBody = document.getElementById('installment-details-table-body');
+    const paymentScheduleTableBody = document.getElementById('payment-schedule-table-body');
+    const paymentScheduleContainer = document.querySelector('.table-container');
+
     customerLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const customerId = this.getAttribute('data-customer-id');
- 
+
             // Fetch customer details from the server
             fetch(`/customer/${customerId}`)
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to fetch customer data');
-                    return response.json();
-                })
-                .then(customerData => {
-                    // Update modal content with fetched customer details
-                    document.getElementById('modal-name').textContent = customerData.name || "N/A";
-                    document.getElementById('modal-email').textContent = customerData.email || "N/A";
-                    document.getElementById('modal-phone').textContent = customerData.phone_number || "N/A";
-                    document.getElementById('modal-address').textContent = customerData.address || "N/A";
- 
-                    // Fetch payment schedule
-                    return fetch(`/payment-schedule/${customerId}`);
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        // Handle case where payment schedule is not found
-                        handleNoPaymentSchedule();
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error);
                         return;
                     }
-                    return response.json();
-                })
-                .then(paymentData => {
-                    // Validate payment data
-                    if (!paymentData || typeof paymentData.unit_price === 'undefined') {
-                        handleNoPaymentSchedule();
-                        return;
-                    }
- 
-                    // Display the unit price
-                    const unitPrice = parseFloat(paymentData.unit_price.replace(/,/g, '')) || 0;
-                    document.getElementById('modal-unitprice').textContent = unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2 });
- 
-                    // Calculate total paid and balance
-                    const installmentProcess = paymentData.installment_process || [];
-                    const totalPaid = installmentProcess.reduce((sum, payment) => sum + (parseFloat(payment.amount) || 0), 0);
-                    const balance = Math.max(0, unitPrice - totalPaid);
-                   
-                    // Display balance or fully paid message
-                    if (balance === 0) {
-                        document.getElementById('modal-balance').textContent = "Fully Paid";
+
+                    // Update modal content with fetched data
+                    document.getElementById('modal-name').textContent = data.name;
+                    document.getElementById('modal-email').textContent = data.email;
+                    document.getElementById('modal-phone').textContent = data.phone_number;
+                    document.getElementById('modal-address').textContent = data.address;
+                    document.getElementById('modal-unitname').textContent = data.unitnames; // Updated to use unitnames
+                    document.getElementById('modal-unitprice').textContent = data.unit_price;
+                    document.getElementById('modal-balance').textContent = data.balance;
+
+                    // Clear existing installment details and payment schedule
+                    installmentDetailsTableBody.innerHTML = '';
+                    paymentScheduleTableBody.innerHTML = '';
+
+                    // Populate payment schedule table if data exists
+                    if (data.payment_schedule && data.payment_schedule.length > 0) {
+                        paymentScheduleContainer.style.display = 'block'; // Show the payment schedule section
+                        data.payment_schedule.forEach(payment => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${payment.date}</td>
+                                <td>${payment.amount}</td>
+                                <td>${payment.status}</td>
+                            `;
+                            paymentScheduleTableBody.appendChild(row);
+                        });
                     } else {
-                        document.getElementById('modal-balance').textContent = balance.toLocaleString('en-US', { minimumFractionDigits: 2 });
+                        paymentScheduleContainer.style.display = 'none'; // Hide if no payment schedule data
                     }
- 
-                    // Populate payment schedule table
-                    populatePaymentScheduleTable(paymentData.payment_schedule);
- 
-                    // Populate installment details table
-                    populateInstallmentDetailsTable(installmentProcess);
- 
+
+                    // Populate installment details
+                    if (data.installments) {
+                        data.installments.forEach(installment => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${installment.account_number}</td>
+                                <td>${installment.date}</td>
+                                <td>${installment.amount}</td>
+                                <td>${installment.payment_method}</td>
+                                <td>${installment.status}</td>
+                                <td>${installment.violation}</td>
+                                <td>${installment.comment}</td>
+                            `;
+                            installmentDetailsTableBody.appendChild(row);
+                        });
+                    }
+
+                    // Open modal
                     modal.style.display = 'block';
                 })
-                .catch(error => {
-                    console.error('Error fetching data:', error);
-                    handleNoPaymentSchedule();
-                });
+                .catch(error => console.error('Error fetching customer details:', error));
         });
     });
- 
+
+    // Close modal on click
     closeButton.addEventListener('click', function() {
         modal.style.display = 'none';
     });
- 
+
+    // Close modal if outside click
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
     });
- 
-    function handleNoPaymentSchedule() {
-        document.getElementById('modal-unitprice').textContent = "N/A";
-        document.getElementById('modal-balance').textContent = "N/A";
-        document.getElementById('payment-schedule-table-body').innerHTML = "<tr><td colspan='3'>No payment schedule available.</td></tr>";
-        document.getElementById('installment-details-table-body').innerHTML = "<tr><td colspan='3'>No installment detail available.</td></tr>";
-        modal.style.display = 'block';
-    }
- 
-    function populatePaymentScheduleTable(paymentSchedule) {
-        const tableBody = document.getElementById('payment-schedule-table-body');
-        tableBody.innerHTML = '';
-        if (paymentSchedule && paymentSchedule.length > 0) {
-            paymentSchedule.forEach(payment => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${payment.date || "N/A"}</td>
-                    <td>${payment.amount || "N/A"}</td>
-                    <td>${payment.status || "N/A"}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        } else {
-            const noPaymentsRow = document.createElement('tr');
-            noPaymentsRow.innerHTML = `<td colspan="3">No payment schedule available for this customer.</td>`;
-            tableBody.appendChild(noPaymentsRow);
-        }
-    }
- 
-    function populateInstallmentDetailsTable(installmentProcess) {
-        const installmentTableBody = document.getElementById('installment-details-table-body');
-        installmentTableBody.innerHTML = '';
-        if (installmentProcess.length > 0) {
-            installmentProcess.forEach(detail => {
-                const row = document.createElement('tr');
-                const installmentDate = new Date(detail.date).toLocaleDateString('en-GB', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                });
-                row.innerHTML = `
-                    <td>${detail.account_number || "N/A"}</td>
-                    <td>${installmentDate       || "N/A"}</td>
-                    <td>${detail.amount         || "N/A"}</td>
-                    <td>${detail.payment_method || "N/A"}</td>
-                    <td>${detail.violation      || "N/A"}</td>
-                    <td>${detail.comment        || "N/A"}</td>
-                `;
-                installmentTableBody.appendChild(row);
-            });
-        } else {
-            const noInstallmentsRow = document.createElement('tr');
-            noInstallmentsRow.innerHTML = `<td colspan="5">No installment details available for this customer.</td>`;
-            installmentTableBody.appendChild(noInstallmentsRow);
-        }
-    }
 });
- 
- 
- 
- 
- 
- 
- 
+
+
+
+
+
+
+
 // document.addEventListener('DOMContentLoaded', (event) => {
 //     const deleteButtons = document.querySelectorAll('.delete-button');
- 
+
 //     deleteButtons.forEach(button => {
 //         button.addEventListener('click', function() {
 //             const customerId = this.getAttribute('data-customer-id');
@@ -352,7 +302,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 //         });
 //     });
 // });
- 
+
        
         //darkmode
         function toggleDarkModeDashboard() {
@@ -388,8 +338,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // Call the function when the page loads
         applySavedDarkModePreferenceFromDB();
  
-  </script>
-       
+  </script> 
+        
         <script src="{{ asset('js/admin/adarchived.js') }}"></script>
         <script src="{{ asset('js/admin/toppsidenav.js') }}"></script>  
     </body>

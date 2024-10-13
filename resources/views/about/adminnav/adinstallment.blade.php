@@ -118,7 +118,7 @@
  
  
     <td>
-    <input type="number" name="amount" placeholder="Enter Amount" step="0.01">
+    <input type="number" name="amount" placeholder="Enter Amount">
     </td>
  
     <td>
@@ -203,10 +203,11 @@
                 </div>
  
                 <div class="transaction-records">
-                    <h2>Transaction Records</h2>
+                    <h2>Orders Details</h2>
+                    <p>Unit Name: <span id="modal-unitname"></span></p> <!-- Corrected from "Unit Unit" to "Unit Name" -->
                     <p>Unit Price: <span id="modal-unitprice"></span></p>
-                    <p>Balance: <span id="modal-balance"></p>
-                    <span id="modal-status"></span>
+                    <p>Balance: <span id="modal-balance"></span></p> <!-- Added closing span tag -->
+   
                 </div>
             </div>
  
@@ -480,17 +481,16 @@
             window.location.reload();
         }
 
-    //  installmentprocess   
-    document.addEventListener('DOMContentLoaded', (event) => {
+        document.addEventListener('DOMContentLoaded', (event) => {
     const modal = document.getElementById('customer-modal');
     const closeButton = document.querySelector('.close');
     const customerLinks = document.querySelectorAll('.customer-link');
- 
+
     customerLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const customerId = this.getAttribute('data-customer-id');
- 
+
             // Fetch customer details and payment schedule from the server
             fetch(`/customer/${customerId}`)
                 .then(response => response.json())
@@ -500,127 +500,107 @@
                     document.getElementById('modal-email').textContent = customerData.email;
                     document.getElementById('modal-phone').textContent = customerData.phone_number;
                     document.getElementById('modal-address').textContent = customerData.address;
- 
+
                     // Fetch payment schedule
                     return fetch(`/payment-schedule/${customerId}`);
                 })
                 .then(response => response.json())
                 .then(paymentData => {
-                    // Update unit price
+                    // Update unit price and unit name
                     document.getElementById('modal-unitprice').textContent = paymentData.unit_price;
+                    document.getElementById('modal-unitname').textContent = paymentData.unit_name; // Display the unit name
 
- 
                     // Fetch unit price from paymentData and normalize it
                     const unitPriceString = paymentData.unit_price; // Assume this is in string format
                     const unitPrice = parseFloat(unitPriceString.replace(/,/g, '')) || 0; // Remove commas before parsing
- 
-                    console.log("Unit Price: ", unitPrice); // Log to check the value
- 
 
-              
+                    console.log("Unit Price: ", unitPrice); // Log to check the value
+
                     // Calculate total amount paid from installment process
                     const totalPaid = paymentData.installment_process.reduce((sum, payment) => {
-                    return sum + (parseFloat(payment.amount) || 0); // Ensure each amount is a number
+                        return sum + (parseFloat(payment.amount) || 0); // Ensure each amount is a number
                     }, 0);
 
- 
                     console.log("Total Paid: ", totalPaid); // Log to check the total paid
- 
+
                     // Calculate remaining balance
                     const balance = Math.max(0, unitPrice - totalPaid);
                     console.log("Remaining Balance: ", balance); // Log to check the remaining balance
- 
-
 
                     // Format balance to include commas and two decimal places
                     const formattedBalance = new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
                     }).format(balance);
 
- 
                     // Update balance in modal
                     document.getElementById('modal-balance').textContent = formattedBalance; // Format to currency
- 
-       
- 
+
                     // Populate payment schedule table
                     const tableBody = document.getElementById('payment-schedule-table-body');
                     tableBody.innerHTML = ''; // Clear existing rows
- 
+
                     paymentData.payment_schedule.forEach(payment => {
                         const row = document.createElement('tr');
                         const dateCell = document.createElement('td');
                         const amountCell = document.createElement('td');
                         const statusCell = document.createElement('td');
-                        // const balanceCell = document.createElement('td'); // New cell for balance
- 
+
                         dateCell.textContent = payment.date;
                         amountCell.textContent = payment.amount;
                         statusCell.textContent = payment.status;
-                        // balanceCell.textContent = payment.balance; // Add remaining balance
-                       
- 
+
                         row.appendChild(dateCell);
                         row.appendChild(amountCell);
                         row.appendChild(statusCell);
-                        // row.appendChild(balanceCell); // Append balance to the row
                         tableBody.appendChild(row);
                     });
- 
-                     // Populate installment process table
-                const installmentTableBody = document.getElementById('installment-details-table-body');
-                installmentTableBody.innerHTML = ''; // Clear existing rows
- 
-                paymentData.installment_process.forEach(detail => {
-                    const row = document.createElement('tr');
-                    const dateCell = document.createElement('td');
-                    const amountCell = document.createElement('td');
-                    const paymentMethodCell = document.createElement('td');
-                    const violationCell = document.createElement('td');
-                    const commentCell = document.createElement('td');
- 
-                    dateCell.textContent = detail.date;
 
-                    // Format the amount with commas (e.g., 4,166.77)
-                    amountCell.textContent = Number(detail.amount).toLocaleString('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
+                    // Populate installment process table
+                    const installmentTableBody = document.getElementById('installment-details-table-body');
+                    installmentTableBody.innerHTML = ''; // Clear existing rows
+
+                    paymentData.installment_process.forEach(detail => {
+                        const row = document.createElement('tr');
+                        const dateCell = document.createElement('td');
+                        const amountCell = document.createElement('td');
+                        const paymentMethodCell = document.createElement('td');
+                        const violationCell = document.createElement('td');
+                        const commentCell = document.createElement('td');
+
+                        // Format date for installment details
+                        const installmentDate = new Date(detail.date);
+                        dateCell.textContent = installmentDate.toLocaleDateString('en-GB', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                        });
+
+                        amountCell.textContent = detail.amount;
+                        paymentMethodCell.textContent = detail.payment_method;
+                        violationCell.textContent = detail.violation;
+                        commentCell.textContent = detail.comment;
+
+                        row.appendChild(dateCell);
+                        row.appendChild(amountCell);
+                        row.appendChild(paymentMethodCell);
+                        row.appendChild(violationCell);
+                        row.appendChild(commentCell);
+                        installmentTableBody.appendChild(row);
                     });
- 
-                    // Format date for installment details
-                    const installmentDate = new Date(detail.date);
-                    dateCell.textContent = installmentDate.toLocaleDateString('en-GB', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                    });
-                   
-                    paymentMethodCell.textContent = detail.payment_method;
-                    violationCell.textContent = detail.violation;
-                    commentCell.textContent = detail.comment;
- 
-                    row.appendChild(dateCell);
-                    row.appendChild(amountCell);
-                    row.appendChild(paymentMethodCell);
-                    row.appendChild(violationCell);
-                    row.appendChild(commentCell);
-                    installmentTableBody.appendChild(row);
-                });
- 
- 
+
                     // Open modal
                     modal.style.display = 'block';
                 })
                 .catch(error => console.error('Error fetching data:', error));
         });
     });
- 
+
     // Close modal
     closeButton.addEventListener('click', function() {
         modal.style.display = 'none';
     });
- 
+
     // Close modal if outside click
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
@@ -628,6 +608,7 @@
         }
     });
 });
+
         
             
                 //darkmode

@@ -62,7 +62,7 @@ class CustomerFetchingController extends Controller
 
 
    
-    public function getBillingInfoAndPaymentSchedule()
+public function getBillingInfoAndPaymentSchedule()
 {
     $userId = Auth::id(); // Get the authenticated user
 
@@ -73,23 +73,22 @@ class CustomerFetchingController extends Controller
         return response()->json(['error' => 'Customer not found'], 404);
     }
 
-    // Get the unpaid payments from the payment schedule for the current user
+    // Get unpaid payments from the payment schedule for the current user
     $currentPayment = DB::table('installment_process')
         ->where('customer_id', $customerInfo->id)
         ->where('status', 'unpaid')
         ->orderBy('date', 'asc')
         ->first();
 
-    // Calculate the balance (total unit price from orders minus the sum of all paid installments)
+    // Calculate the balance
     $totalUnitprice = DB::table('orders')->where('customer_id', $customerInfo->id)->sum('unitprice');
     $totalPaid = DB::table('installment_process')
         ->where('customer_id', $customerInfo->id)
         ->where('status', 'paid')
         ->sum('amount');
-
     $balance = $totalUnitprice - $totalPaid;
 
-    // Fetch customer's installment plan
+    // Fetch customer's installment plan and orders
     $installmentPlan = DB::table('installment_plan')->where('customer_id', $customerInfo->id)->first();
     $orders = DB::table('orders')->where('customer_id', $customerInfo->id)->first();
     $installmentProcess = DB::table('installment_process')
@@ -101,10 +100,7 @@ class CustomerFetchingController extends Controller
         return response()->json(['error' => 'No order or installment plan found for this customer.'], 404);
     }
 
-    $unitPrice = $orders->unitprice;
-    $paymentSchedule = [];
-
-    // Determine the installment duration and calculate payments
+    // Determine installment plan duration
     if ($installmentPlan->sixmonths) {
         $duration = 6;
     } elseif ($installmentPlan->twelvemonths) {
@@ -115,41 +111,44 @@ class CustomerFetchingController extends Controller
         return response()->json(['error' => 'No installment plan selected.'], 400);
     }
 
-    // Calculate the monthly payment amount
-    $monthlyPayment = $unitPrice / $duration;
+    // Calculate monthly payment
+    $monthlyPayment = $orders->unitprice / $duration;
 
-    // Start date: one month after the order date
+    // Start date for payment (one month after the order date)
     $startDate = new \DateTime($orders->dateOrder);
-    $startDate->modify('+1 month'); // Move to one month after
+    $startDate->modify('+1 month'); // Move one month ahead
 
-    // Generate the payment schedule
+    $paymentSchedule = [];
+    $paymentIndex = 0; // Track which payment we are processing
+
+    // Iterate through the duration to generate the schedule
     foreach (range(0, $duration - 1) as $i) {
         $paymentDate = clone $startDate;
         $paymentDate->modify("+{$i} month");
 
-        // Default status
+        // Default status for payments
         $status = 'not paid';
 
-        // Check if the installment process includes any paid or late paid dates
-        foreach ($installmentProcess as $process) {
+        if (isset($installmentProcess[$paymentIndex])) {
+            $process = $installmentProcess[$paymentIndex];
             $processDate = new \DateTime($process->date);
 
-            // Mark the payment as 'paid' if the date matches
-            if ($processDate->format('Y-m-d') === $paymentDate->format('Y-m-d')) {
+            if ($processDate < $paymentDate) {
+                $status = 'paid in advance';
+            } elseif ($processDate->format('Y-m-d') === $paymentDate->format('Y-m-d')) {
                 $status = $process->status; // 'paid' or 'paid late'
-                break;
             }
+            $paymentIndex++; // Move to the next payment only if it's marked as paid
         }
 
-        // Build the payment schedule
         $paymentSchedule[] = [
             'date' => $paymentDate->format('F j, Y'),
             'amount' => number_format($monthlyPayment, 2),
-            'status' => $status
+            'status' => $status,
         ];
     }
 
-    // Find the next payment due and its corresponding amount
+    // Get next payment due and its amount
     $nextPaymentDue = null;
     $nextPaymentAmount = null;
 
@@ -157,23 +156,24 @@ class CustomerFetchingController extends Controller
         if ($payment['status'] === 'not paid') {
             $nextPaymentDue = $payment['date'];
             $nextPaymentAmount = $payment['amount'];
-            break; // Stop after finding the first not paid installment
+            break;
         }
     }
 
-    // Prepare the combined response
     $response = [
-        'currentMonthlyBill' => $currentPayment ? $currentPayment->amount : 0, // Amount of the current monthly bill
-        'nextPaymentDue' => $nextPaymentDue ?: 'N/A', // Date of next payment due
-        'nextPaymentAmount' => $nextPaymentAmount ?: 0, // Amount of the next payment
+        'currentMonthlyBill' => $currentPayment ? $currentPayment->amount : 0,
+        'nextPaymentDue' => $nextPaymentDue ?: 'N/A',
+        'nextPaymentAmount' => $nextPaymentAmount ?: 0,
         'balance' => $balance,
-        'unit_price' => number_format($unitPrice, 2),
+        'unit_price' => number_format($orders->unitprice, 2),
         'payment_schedule' => $paymentSchedule,
-        'installment_process' => $installmentProcess // Include installment process data if needed
     ];
 
     return response()->json($response);
 }
+
+
+
 
     
 

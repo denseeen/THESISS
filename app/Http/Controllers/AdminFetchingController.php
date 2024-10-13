@@ -76,85 +76,97 @@ class AdminFetchingController extends Controller
  
  
 //  installment view only ,generate monthly schedule
-    public function getPaymentSchedule($customerId)
-    {
-        // Fetch customer's installment plan
-        $installmentPlan = DB::table('installment_plan')
-            ->where('customer_id', $customerId)
-            ->first();
-    
-        // Fetch customer's orders
-        $orders = DB::table('orders')
-            ->where('customer_id', $customerId)
-            ->first();
+public function getPaymentSchedule($customerId)
+{
+    // Fetch customer's installment plan
+    $installmentPlan = DB::table('installment_plan')
+        ->where('customer_id', $customerId)
+        ->first();
 
-        // Fetch customer's installment process
-        $installmentProcess = DB::table('installment_process')
-            ->where('customer_id', $customerId)
-            ->get();
-    
-        // Check if the order exists
-        if (!$orders || !$installmentPlan || !$installmentProcess) {
-            return response()->json(['error' => 'No order or installment plan found for this customer.'], 404);
-        }
-    
-        $unitPrice = $orders->unitprice; // Assuming you have a unit price in the orders
-        $statuses = $installmentProcess->pluck('status')->toArray(); // Fetch all statuses into an array
-        $amountsPaid = $installmentProcess->pluck('amount')->toArray(); // Fetch all amounts paid
+    // Fetch customer's orders
+    $orders = DB::table('orders')
+        ->where('customer_id', $customerId)
+        ->first();
 
-        $paymentSchedule = [];
-        $remainingBalance = $unitPrice; // Initialize remaining balance with unit price 
-    
-        // Determine the installment duration and calculate payments
-        if ($installmentPlan->sixmonths) {
-            $duration = 6;
-        } elseif ($installmentPlan->twelvemonths) {
-            $duration = 12;
-        } elseif ($installmentPlan->eighteenmonths) {
-            $duration = 18;
-        } else {
-            return response()->json(['error' => 'No installment plan selected.'], 400);
-        }
-    
-        // Calculate the monthly payment amount
-        $monthlyPayment = $unitPrice / $duration;
-    
-        // Start date: one month before the order date
-        $startDate = new \DateTime($orders->dateOrder);
-        $startDate->modify('+1 month'); // Move to one month before
-    
-        // Generate the payment schedule
-        for ($i = 0; $i < $duration; $i++) {
-            // Clone the start date and add months
-            $paymentDate = clone $startDate;
-            $paymentDate->modify("+{$i} month");
-            
-            // Assign status from installment_process (or default to 'not_paid' if no status exists)
-            $status = isset($statuses[$i]) ? $statuses[$i] : 'not paid';
+    // Fetch customer's installment process
+    $installmentProcess = DB::table('installment_process')
+        ->where('customer_id', $customerId)
+        ->get();
 
-            // Get the amount paid for this installment or default to 0
-            $amountPaid = isset($amountsPaid[$i]) ? $amountsPaid[$i] : 0;
-
-            // Subtract the amount paid from the remaining balance
-            $remainingBalance -= $amountPaid;
-    
-            // Format the payment date and add to schedule
-            $paymentSchedule[] = [
-                'date' => $paymentDate->format('F j, Y'), // e.g., "April 5, 2024"
-                'amount' => number_format($monthlyPayment, 2), // Format to 2 decimal places
-                'amount_paid' => number_format($amountPaid, 2), // Amount paid
-                'status' => $status, // Add the corresponding status for the month
-                'balance' => number_format($remainingBalance, 2), // Remaining balance after payment
-            ];
-        }
-    
+    // If there are no orders, installment plan, or installment process, provide a default response
+    if (!$orders || !$installmentPlan || !$installmentProcess) {
         return response()->json([
-            'unit_price' => number_format($unitPrice, 2),
-            'payment_schedule' => $paymentSchedule,
-            'remaining_balance' => number_format($remainingBalance, 2), // Include remaining balance overall
-            'installment_process' => $installmentProcess, // Include installment process data
-        ]);
+            'error' => 'No order or installment plan found for this customer.',
+            'payment_schedule' => [],
+            'installment_process' => [],
+            'unit_price' => null,
+            'remaining_balance' => null,
+        ], 200); // Respond with a 200 status to indicate no schedule but not an error
     }
+
+    $unitPrice = $orders->unitprice;
+    $statuses = $installmentProcess->pluck('status')->toArray();
+    $amountsPaid = $installmentProcess->pluck('amount')->toArray();
+
+    $paymentSchedule = [];
+    $remainingBalance = $unitPrice;
+
+    // Determine the installment duration and calculate payments
+    $duration = 0;
+    if ($installmentPlan->sixmonths) {
+        $duration = 6;
+    } elseif ($installmentPlan->twelvemonths) {
+        $duration = 12;
+    } elseif ($installmentPlan->eighteenmonths) {
+        $duration = 18;
+    } 
+
+    if ($duration === 0) {
+        return response()->json([
+            'error' => 'No installment plan selected for this customer.',
+            'payment_schedule' => [],
+            'installment_process' => [],
+            'unit_price' => number_format($unitPrice, 2),
+            'remaining_balance' => number_format($remainingBalance, 2),
+        ], 200); // Return a 200 status instead of error to indicate no plan but continue normally
+    }
+
+    $monthlyPayment = $unitPrice / $duration;
+
+    $startDate = new \DateTime($orders->dateOrder);
+    $startDate->modify('+1 month'); 
+
+    for ($i = 0; $i < $duration; $i++) {
+        $paymentDate = clone $startDate;
+        $paymentDate->modify("+{$i} month");
+
+        $status = isset($statuses[$i]) ? $statuses[$i] : 'not paid';
+        $amountPaid = isset($amountsPaid[$i]) ? $amountsPaid[$i] : 0;
+
+        // Accumulate amounts paid and update the remaining balance
+        $remainingBalance -= $amountPaid;
+
+        $paymentSchedule[] = [
+            'date' => $paymentDate->format('F j, Y'),
+            'amount' => number_format($monthlyPayment, 2),
+            'amount_paid' => number_format($amountPaid, 2),
+            'status' => $status,
+            'balance' => number_format($remainingBalance, 2),
+        ];
+    }
+
+    // If the remaining balance is zero, it means the customer is fully paid
+    if ($remainingBalance <= 0) {
+        $remainingBalance = 0; // Ensure we show a clean zero for fully paid customers
+    }
+
+    return response()->json([
+        'unit_price' => number_format($unitPrice, 2),
+        'payment_schedule' => $paymentSchedule,
+        'remaining_balance' => number_format($remainingBalance, 2),
+        'installment_process' => $installmentProcess,
+    ]);
+}
 
   
 
@@ -260,22 +272,24 @@ class AdminFetchingController extends Controller
 public function showArchived()
 {
     $archivedInstallments = InstallmentProcess::where('is_archived', true)->get();
-   
+
     // Fetch archived installments along with customer, order, and payment service data
     $customers = InstallmentProcess::join('customer_info', 'installment_process.customer_id', '=', 'customer_info.id')
         ->join('orders', 'installment_process.customer_id', '=', 'orders.customer_id') // Join with orders table to get unitName
         ->leftJoin('payment_service', 'customer_info.id', '=', 'payment_service.customer_id') // Left join with payment_service table
         ->where('installment_process.is_archived', true) // Archived installments
         ->select(
-            'installment_process.*',
-            'customer_info.name as customer_name',
-            'customer_info.phone_number as customer_phoneNum',
+
+            'installment_process.*', 
+            'customer_info.name as customer_name', 
+            'customer_info.phone_number as customer_phoneNum', 
+            
             'orders.*', // Fetch unitName from orders table
             'payment_service.installment', // Include installment status
             'payment_service.fullypaid' // Include fully paid status
         )
         ->get();
- 
+
     // Group by customer and collect unit names in an array
     $yourSpecificIdsArray = $customers->groupBy('customer_id')->map(function ($customer) {
         return [
@@ -289,10 +303,12 @@ public function showArchived()
             ]
         ];
     });
- 
+
+
     // Return the view with the grouped customer data
     return view('about.adminnav.adarchived', compact('yourSpecificIdsArray', 'customers', 'archivedInstallments'));
 }
+
 
 
 // delete button at the archive view
@@ -334,10 +350,6 @@ public function showArchived()
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Installment created successfully!');
     }
-
-
-
-
 
 
 

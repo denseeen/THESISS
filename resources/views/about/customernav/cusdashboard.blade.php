@@ -363,37 +363,40 @@ function fetchPaymentSchedule() {
         .then(data => {
             loadingIndicator.style.display = 'none'; // Hide loading indicator
 
-            // Check the response structure
-            console.log(data); // Log data for debugging
+            // Log data for debugging
+            console.log(data); 
 
             const tableBody = document.getElementById('payment-schedule-table-body');
             tableBody.innerHTML = ''; // Clear existing table rows
 
-            let firstNotPaidAmount = null; // Variable to store the first not paid amount
+            let firstNotPaidAmount = null; // Variable to store the first "Not Paid" amount
 
             // Populate the payment schedule table
             data.payment_schedule.forEach(payment => {
                 const row = document.createElement('tr');
                 let statusBadge = '';
 
-                // Determine the status badge
+               // Determine the status badge
                 if (payment.status === 'paid') {
-                    statusBadge = '<span class="badge bg-success">Paid</span>';
+                    statusBadge = '<span class="badge" style="background-color: #28a745; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid</span>';
                 } else if (payment.status === 'paid late') {
-                    statusBadge = '<span class="badge bg-warning">Paid Late</span>';
+                    statusBadge = '<span class="badge" style="background-color: #ffc107; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid Late</span>';
+                } else if (payment.status === 'paid in advance') {
+                    statusBadge = '<span class="badge" style="background-color: green; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid </span>'; // New badge for advance payment
                 } else {
-                    statusBadge = '<span class="badge bg-danger">Not Paid</span>';
+                    statusBadge = '<span class="badge" style="background-color: #dc3545; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Not Paid</span>';
                     
-                    // Capture the first not paid amount
-                    if (firstNotPaidAmount === null) {
-                        firstNotPaidAmount = payment.amount; // Store the amount
-                    }
-                }
+    // Capture the first not paid amount for display in the card
+    if (firstNotPaidAmount === null) {
+        firstNotPaidAmount = payment.amount; // Store the first not paid amount
+    }
+}
+
 
                 // Build the table row with payment details
                 row.innerHTML = `
                     <td>${payment.date}</td>
-                    <td>${payment.amount}</td>
+                    <td>₱${payment.amount}</td>
                     <td>${statusBadge}</td>
                 `;
 
@@ -404,15 +407,20 @@ function fetchPaymentSchedule() {
             // Update billing card values
             document.getElementById('current-monthly-bill').textContent = firstNotPaidAmount ? `₱${firstNotPaidAmount}` : '₱0.00'; // Update with the first not paid amount
             document.getElementById('next-payment-due').textContent = data.nextPaymentDue ? data.nextPaymentDue : 'N/A';
-            document.querySelector('#balance .h3').textContent = `Pesos: ${Number(data.balance).toLocaleString('en-US', {
+
+           document.querySelector('#balance .h3').textContent = `Pesos: ${Number(data.balance).toLocaleString('en-US', {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2
             })}`;
 
+            // Update any other relevant card values (e.g., total unit price if needed)
+            document.getElementById('unit-price').textContent = `₱${data.unit_price}`;  
+
+
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
-            loadingIndicator.style.display = 'none'; // Hide loading indicator
+            loadingIndicator.style.display = 'none'; // Hide loading indicator in case of error
         });
 }
 
