@@ -5,16 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Archived</title>
-    
+   
         <!-- Stylesheets -->
         <link href="{!! url('css/admin/adminarchived.css') !!}" rel="stylesheet">
         <link href="{!! url('css/admin/admininstallment.css') !!}" rel="stylesheet">
         <link href="{!! url('css/admin/topnav_sidenav.css') !!}" rel="stylesheet">
  
         <!-- Font Awesome for icons (sideNav-->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">   
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">  
     </head>
-
+ 
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
@@ -22,27 +22,27 @@
             <a href="{{ route('addashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
-
+ 
             <div class="icons">
                 <!-- Dark Mode -->
                 <div class="icon sun-icon" onclick="toggleDarkModeDashboard()">
                     <img src="/image/7721593.png" alt="Sun Icon">
                 </div>
-
-                <div class="icon profile-icon img" onclick="toggleDropdown()">   
+ 
+                <div class="icon profile-icon img" onclick="toggleDropdown()">  
                     <img src="/image/4174470.png" alt="Profile Icon">
                     <!-- <span class="profile-text">Account Profile</span> -->
-
+ 
                     <!-- Dropdown -->
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="{{ route('adprofile.show') }}">Profile</a>
                         <a href="{{ route('adsecurity.show') }}">Security</a>
-                        <a href="{{ route('about.layout') }}">Logout</a> 
+                        <a href="{{ route('about.layout') }}">Logout</a>
                     </div>
                 </div>
             </div>
         </nav>
-
+ 
         <!-- Sidebar -->
         <div class="wrapper hover_collapse">
             <div class="sidebar">
@@ -52,40 +52,42 @@
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
                         <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
                         <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
-                        <li><a href="{{ route('installments.archived') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>             
+                        <li><a href="{{ route('installments.archived') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>            
                     </ul>
                 </div>
             </div>
         </div>
-
-
-
+ 
+ 
+ 
        
-
-        
+ 
+       
         <div class="archive-container">
     <h2>Archived</h2>
     <table>
         <thead>
             <tr>
                 <th>Name</th>
-                <th>Contract Number</th>
+                <th>Account Number</th>
                 <th>Unit Name</th>
                 <th>Contact Number</th>
+                <th>Payment Service</th>  <!-- New column added here -->
                 <th>View</th>
                 <th>Delete</th>
             </tr>
         </thead>
-
+ 
         <tbody>
             @foreach($yourSpecificIdsArray as $customerId => $customer)
                 <tr>
                     <td>{{ $customer['customer_name'] }}</td>
-                    <td>{{ $customer['account_number'] ?? 'N/A' }}</td> {{-- Assuming you might have to define how to get this --}}
+                    <td>{{ $customer['account_number'] ?? 'N/A' }}</td>
                     <td>
-                        {{ implode(', ', $customer['unit_names']->toArray()) }} {{-- Join unit names with a comma --}}
+                        {{ implode(', ', $customer['unit_names']->toArray()) }}
                     </td>
-                    <td>{{ $customer['customer_phoneNum'] ?? 'N/A' }}</td> {{-- Assuming you might have to define how to get this --}}
+                    <td>{{ $customer['customer_phoneNum'] ?? 'N/A' }}</td>
+                    <td>  {{ $customer['payment_service']['is_installment'] ? 'Installment' : 'Fully Paid' }}</td> <!-- New data cell for Payment Service -->
                     <td>
                         <button type="submit" class="customer-link" data-customer-id="{{ $customerId }}">VIEW</button>
                     </td>
@@ -101,8 +103,9 @@
         </tbody>
     </table>
 </div>
-
-
+ 
+ 
+ 
  <!-- Modal Structure -->
 <div id="customer-modal" class="modal">
     <div class="modal-content">
@@ -115,7 +118,7 @@
                     <p>Email: <span id="modal-email"></span></p>
                     <p>Phone Number: <span id="modal-phone"></span></p>
                     <p>Address: <span id="modal-address"></span></p>
-                    <a href="#" class="edit-button">Edit</a>
+                    <!-- <a href="#" class="edit-button">Edit</a> -->
                 </div>
  
                 <div class="transaction-records">
@@ -145,19 +148,22 @@
             </div>
  
  
-            <div class="tableee-container">
+            <!-- Installment Details Table -->
+            <div class="table-container">
                 <table>
                     <thead>
                         <tr>
+                            <th>Account Number</th>
                             <th>Date</th>
                             <th>Amount Paid</th>
                             <th>Payment Method</th>
+                            <th>Status</th>
                             <th>Penalty</th>
                             <th>Comment</th>
                         </tr>
                     </thead>
                     <tbody id="installment-details-table-body">
-                    <!-- Rows will be added dynamically -->
+                        <!-- Rows will be added dynamically -->
                     </tbody>
                 </table>
             </div>
@@ -168,8 +174,7 @@
  
  
 <script>
- 
- document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', (event) => {
     const modal = document.getElementById('customer-modal');
     const closeButton = document.querySelector('.close');
     const customerLinks = document.querySelectorAll('.customer-link');
@@ -179,137 +184,144 @@
             e.preventDefault();
             const customerId = this.getAttribute('data-customer-id');
  
-            // Fetch customer details and payment schedule from the server
+            // Fetch customer details from the server
             fetch(`/customer/${customerId}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to fetch customer data');
+                    return response.json();
+                })
                 .then(customerData => {
                     // Update modal content with fetched customer details
-                    document.getElementById('modal-name').textContent = customerData.name;
-                    document.getElementById('modal-email').textContent = customerData.email;
-                    document.getElementById('modal-phone').textContent = customerData.phone_number;
-                    document.getElementById('modal-address').textContent = customerData.address;
+                    document.getElementById('modal-name').textContent = customerData.name || "N/A";
+                    document.getElementById('modal-email').textContent = customerData.email || "N/A";
+                    document.getElementById('modal-phone').textContent = customerData.phone_number || "N/A";
+                    document.getElementById('modal-address').textContent = customerData.address || "N/A";
  
                     // Fetch payment schedule
                     return fetch(`/payment-schedule/${customerId}`);
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        // Handle case where payment schedule is not found
+                        handleNoPaymentSchedule();
+                        return;
+                    }
+                    return response.json();
+                })
                 .then(paymentData => {
-                    // Update unit price
-                    document.getElementById('modal-unitprice').textContent = paymentData.unit_price;
-
-               
-                    // Fetch unit price from paymentData and normalize it
-                    const unitPriceString = paymentData.unit_price; // Assume this is in string format
-                    const unitPrice = parseFloat(unitPriceString.replace(/,/g, '')) || 0; // Remove commas before parsing
-
-                    console.log("Unit Price: ", unitPrice); // Log to check the value
-
-                    // Calculate total amount paid from installment process
-                    const totalPaid = paymentData.installment_process.reduce((sum, payment) => {
-                    return sum + (parseFloat(payment.amount) || 0); // Ensure each amount is a number
-                    }, 0);
-
-                    console.log("Total Paid: ", totalPaid); // Log to check the total paid
-
-                    // Calculate remaining balance
+                    // Validate payment data
+                    if (!paymentData || typeof paymentData.unit_price === 'undefined') {
+                        handleNoPaymentSchedule();
+                        return;
+                    }
+ 
+                    // Display the unit price
+                    const unitPrice = parseFloat(paymentData.unit_price.replace(/,/g, '')) || 0;
+                    document.getElementById('modal-unitprice').textContent = unitPrice.toLocaleString('en-US', { minimumFractionDigits: 2 });
+ 
+                    // Calculate total paid and balance
+                    const installmentProcess = paymentData.installment_process || [];
+                    const totalPaid = installmentProcess.reduce((sum, payment) => sum + (parseFloat(payment.amount) || 0), 0);
                     const balance = Math.max(0, unitPrice - totalPaid);
-                    console.log("Remaining Balance: ", balance); // Log to check the remaining balance
-
-                    // Format balance to include commas and two decimal places
-                    const formattedBalance = new Intl.NumberFormat('en-US', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                    }).format(balance);
-
-                    // Update balance in modal
-                    document.getElementById('modal-balance').textContent = formattedBalance; // Format to currency
-
-
-       
-                    // Populate payment schedule table
-                    const tableBody     = document.getElementById('payment-schedule-table-body');
-                    tableBody.innerHTML = ''; // Clear existing rows
- 
-                    paymentData.payment_schedule.forEach(payment => {
-                        const row         = document.createElement('tr');
-                        const dateCell    = document.createElement('td');
-                        const amountCell  = document.createElement('td');
-                        const statusCell  = document.createElement('td');
-                        // const balanceCell = document.createElement('td'); // New cell for balance
- 
-                        dateCell.textContent    = payment.date;
-                        amountCell.textContent  = payment.amount;
-                        statusCell.textContent  = payment.status;
-                        // balanceCell.textContent = payment.balance; // Add remaining balance
-                       
- 
-                        row.appendChild(dateCell);
-                        row.appendChild(amountCell);
-                        row.appendChild(statusCell);
-                        // row.appendChild(balanceCell); // Append balance to the row
-                        tableBody.appendChild(row);
-                    });
- 
-                     // Populate installment process table
-                const installmentTableBody = document.getElementById('installment-details-table-body');
-                installmentTableBody.innerHTML = ''; // Clear existing rows
- 
-                paymentData.installment_process.forEach(detail => {
-                    const row               = document.createElement('tr');
-                    const dateCell          = document.createElement('td');
-                    const amountCell        = document.createElement('td');
-                    const paymentMethodCell = document.createElement('td');
-                    const violationCell     = document.createElement('td');
-                    const commentCell       = document.createElement('td');
- 
-                    dateCell.textContent   = detail.date;
-                    amountCell.textContent = detail.amount;
- 
-                    // Format date for installment details
-                    const installmentDate = new Date(detail.date);
-                    dateCell.textContent  = installmentDate.toLocaleDateString('en-GB', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                    });
                    
-                    paymentMethodCell.textContent = detail.payment_method;
-                    violationCell.textContent     = detail.violation;
-                    commentCell.textContent       = detail.comment;
+                    // Display balance or fully paid message
+                    if (balance === 0) {
+                        document.getElementById('modal-balance').textContent = "Fully Paid";
+                    } else {
+                        document.getElementById('modal-balance').textContent = balance.toLocaleString('en-US', { minimumFractionDigits: 2 });
+                    }
  
-                    row.appendChild(dateCell);
-                    row.appendChild(amountCell);
-                    row.appendChild(paymentMethodCell);
-                    row.appendChild(violationCell);
-                    row.appendChild(commentCell);
-                    installmentTableBody.appendChild(row);
-                });
+                    // Populate payment schedule table
+                    populatePaymentScheduleTable(paymentData.payment_schedule);
  
+                    // Populate installment details table
+                    populateInstallmentDetailsTable(installmentProcess);
  
-                    // Open modal
                     modal.style.display = 'block';
                 })
-                .catch(error => console.error('Error fetching data:', error));
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    handleNoPaymentSchedule();
+                });
         });
     });
  
-    // Close modal
     closeButton.addEventListener('click', function() {
         modal.style.display = 'none';
     });
  
-    // Close modal if outside click
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
     });
+ 
+    function handleNoPaymentSchedule() {
+        document.getElementById('modal-unitprice').textContent = "N/A";
+        document.getElementById('modal-balance').textContent = "N/A";
+        document.getElementById('payment-schedule-table-body').innerHTML = "<tr><td colspan='3'>No payment schedule available.</td></tr>";
+        document.getElementById('installment-details-table-body').innerHTML = "<tr><td colspan='3'>No installment detail available.</td></tr>";
+        modal.style.display = 'block';
+    }
+ 
+    function populatePaymentScheduleTable(paymentSchedule) {
+        const tableBody = document.getElementById('payment-schedule-table-body');
+        tableBody.innerHTML = '';
+        if (paymentSchedule && paymentSchedule.length > 0) {
+            paymentSchedule.forEach(payment => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${payment.date || "N/A"}</td>
+                    <td>${payment.amount || "N/A"}</td>
+                    <td>${payment.status || "N/A"}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        } else {
+            const noPaymentsRow = document.createElement('tr');
+            noPaymentsRow.innerHTML = `<td colspan="3">No payment schedule available for this customer.</td>`;
+            tableBody.appendChild(noPaymentsRow);
+        }
+    }
+ 
+    function populateInstallmentDetailsTable(installmentProcess) {
+        const installmentTableBody = document.getElementById('installment-details-table-body');
+        installmentTableBody.innerHTML = '';
+        if (installmentProcess.length > 0) {
+            installmentProcess.forEach(detail => {
+                const row = document.createElement('tr');
+                const installmentDate = new Date(detail.date).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                row.innerHTML = `
+                    <td>${detail.account_number || "N/A"}</td>
+                    <td>${installmentDate       || "N/A"}</td>
+                    <td>${detail.amount         || "N/A"}</td>
+                    <td>${detail.payment_method || "N/A"}</td>
+                    <td>${detail.violation      || "N/A"}</td>
+                    <td>${detail.comment        || "N/A"}</td>
+                `;
+                installmentTableBody.appendChild(row);
+            });
+        } else {
+            const noInstallmentsRow = document.createElement('tr');
+            noInstallmentsRow.innerHTML = `<td colspan="5">No installment details available for this customer.</td>`;
+            installmentTableBody.appendChild(noInstallmentsRow);
+        }
+    }
 });
-
-
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 // document.addEventListener('DOMContentLoaded', (event) => {
 //     const deleteButtons = document.querySelectorAll('.delete-button');
-
+ 
 //     deleteButtons.forEach(button => {
 //         button.addEventListener('click', function() {
 //             const customerId = this.getAttribute('data-customer-id');
@@ -340,7 +352,7 @@
 //         });
 //     });
 // });
-
+ 
        
         //darkmode
         function toggleDarkModeDashboard() {
@@ -376,8 +388,8 @@
         // Call the function when the page loads
         applySavedDarkModePreferenceFromDB();
  
-  </script> 
-        
+  </script>
+       
         <script src="{{ asset('js/admin/adarchived.js') }}"></script>
         <script src="{{ asset('js/admin/toppsidenav.js') }}"></script>  
     </body>

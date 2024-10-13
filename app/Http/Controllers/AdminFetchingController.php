@@ -257,37 +257,42 @@ class AdminFetchingController extends Controller
 
 // fetching archived customer name to the table
 
-    public function showArchived()
-    {
-
-        $archivedInstallments = InstallmentProcess::where('is_archived', true)->get();
-        // Fetch archived installments along with customer and order data
-        $customers = InstallmentProcess::join('customer_info', 'installment_process.customer_id', '=', 'customer_info.id')
-            ->join('orders', 'installment_process.customer_id', '=', 'orders.customer_id') // Join with orders table to get unitName
-            ->where('installment_process.is_archived', true) // Archived installments
-
-            ->select(
-                'installment_process.*', 
-                'customer_info.name as customer_name', 
-                'customer_info.phone_number as customer_phoneNum', 
-                'orders.*' // Fetch unitName from orders table
-            )
-            ->get();
-            
-
-        // Group by customer and collect unit names in an array
-        $yourSpecificIdsArray = $customers->groupBy('customer_id')->map(function ($customer) {
-            return [
-                'account_number' => $customer->first()->account_number,
-                'customer_name' => $customer->first()->customer_name,
-                'customer_phoneNum' => $customer->first()->customer_phoneNum,
-                'unit_names' => $customer->pluck('unitName')->unique() // Collect all unique unitNames for each customer
-            ];
-        });
-
-        // Return the view with the grouped customer data
-        return view('about.adminnav.adarchived', compact('yourSpecificIdsArray','customers','archivedInstallments'));
-    }
+public function showArchived()
+{
+    $archivedInstallments = InstallmentProcess::where('is_archived', true)->get();
+   
+    // Fetch archived installments along with customer, order, and payment service data
+    $customers = InstallmentProcess::join('customer_info', 'installment_process.customer_id', '=', 'customer_info.id')
+        ->join('orders', 'installment_process.customer_id', '=', 'orders.customer_id') // Join with orders table to get unitName
+        ->leftJoin('payment_service', 'customer_info.id', '=', 'payment_service.customer_id') // Left join with payment_service table
+        ->where('installment_process.is_archived', true) // Archived installments
+        ->select(
+            'installment_process.*',
+            'customer_info.name as customer_name',
+            'customer_info.phone_number as customer_phoneNum',
+            'orders.*', // Fetch unitName from orders table
+            'payment_service.installment', // Include installment status
+            'payment_service.fullypaid' // Include fully paid status
+        )
+        ->get();
+ 
+    // Group by customer and collect unit names in an array
+    $yourSpecificIdsArray = $customers->groupBy('customer_id')->map(function ($customer) {
+        return [
+            'account_number' => $customer->first()->account_number,
+            'customer_name' => $customer->first()->customer_name,
+            'customer_phoneNum' => $customer->first()->customer_phoneNum,
+            'unit_names' => $customer->pluck('unitName')->unique(), // Collect all unique unitNames for each customer
+            'payment_service' => [
+                'is_installment' => $customer->first()->installment ?? false, // Set boolean for installment
+                'is_fully_paid' => $customer->first()->fullypaid ?? false, // Set boolean for fully paid
+            ]
+        ];
+    });
+ 
+    // Return the view with the grouped customer data
+    return view('about.adminnav.adarchived', compact('yourSpecificIdsArray', 'customers', 'archivedInstallments'));
+}
 
 
 // delete button at the archive view
