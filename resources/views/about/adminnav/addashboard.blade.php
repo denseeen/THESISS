@@ -300,7 +300,7 @@ function printSpecificArea() {
     // Remove the "Action" column header and corresponding cells
     const tableHeader = customerListContainer.querySelector('thead tr');
     if (tableHeader) {
-        const actionHeader = tableHeader.querySelector('th:nth-child(5)'); // Assuming "Action" is the 5th column
+        const actionHeader = tableHeader.querySelector('th:nth-child(4)'); // Assuming "Action" is the 5th column
         if (actionHeader) {
             actionHeader.parentNode.removeChild(actionHeader);
         }
@@ -309,7 +309,7 @@ function printSpecificArea() {
     // Remove the corresponding "Action" cells in the table body
     const tableBodyRows = customerListContainer.querySelectorAll('tbody tr');
     tableBodyRows.forEach(row => {
-        const actionCell = row.querySelector('td:nth-child(5)'); // Assuming "Action" is the 5th column
+        const actionCell = row.querySelector('td:nth-child(4)'); // Assuming "Action" is the 5th column
         if (actionCell) {
             actionCell.parentNode.removeChild(actionCell);
         }
@@ -382,10 +382,6 @@ document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('sales-unit-count').textContent = data.sales_unit_count;
         });
 });
-
-
-
-
 
 
 
@@ -502,9 +498,6 @@ window.addEventListener('click', function (event) {
         resultModal.style.display = 'none';
     }
 });
-
-
-
 
 
 

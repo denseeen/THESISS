@@ -68,9 +68,17 @@ public function getCustomer($id)
         return response()->json(['error' => 'Customer not found'], 404);
     }
 
-    // Fetch all unit prices from the orders table for this customer and calculate the total
-    $orders = DB::table('orders')->where('customer_id', $customer->id)->select('unitprice')->get();
+    // Fetch all unit prices and unit names from the orders table for this customer
+    $orders = DB::table('orders')
+        ->where('customer_id', $customer->id)
+        ->select('unitprice', 'unitname') // Include unitname in the selection
+        ->get();
+
+    // Calculate total unit price
     $totalUnitPrice = $orders->sum('unitprice');
+
+    // Concatenate all unit names into a string
+    $unitNames = $orders->pluck('unitname')->implode(', '); // Concatenate unit names
 
     // Fetch the installment records for this customer
     $fullypaidprocess = DB::table('installment_process')
@@ -92,9 +100,12 @@ public function getCustomer($id)
         'unit_price' => $totalUnitPrice > 0 ? $totalUnitPrice : 'N/A', // Total unit price
         'amount' => $totalAmountPaid, // Total amount paid
         'balance' => $balance, // Calculate and return balance
-        'installments' => $fullypaidprocess // Include installment records
+        'installments' => $fullypaidprocess, // Include installment records
+        'unitnames' => $unitNames // Include concatenated unit names
     ]);
 }
+
+
 
 
 

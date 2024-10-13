@@ -4,7 +4,9 @@ body{
     background: #fff;
 }
 
-
+#customer-modal {
+    display: none; /* Hide modal initially */
+}
 .archive-container {
 
     background: #fff;

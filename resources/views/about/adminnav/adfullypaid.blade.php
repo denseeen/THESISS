@@ -164,7 +164,8 @@
 
                 <!-- Transaction Records Section -->
                 <div class="transaction-records">
-                    <h2>Transaction Records</h2>
+                <h2>Order Details</h2>
+                    <p>Unit Name: <span id="modal-unitname"></span></p>
                     <p>Unit Price: <span id="modal-unitprice"></span></p>
                     <p>Balance: <span id="modal-balance"></span></p>
                     <span id="modal-status"></span>
@@ -173,6 +174,7 @@
 
             <!-- Installment Details Table -->
             <div class="table-container">
+            <h2>Transaction Records</h2>
                 <table>
                     <thead>
                         <tr>
@@ -279,6 +281,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     document.getElementById('modal-email').textContent = data.email;
                     document.getElementById('modal-phone').textContent = data.phone_number;
                     document.getElementById('modal-address').textContent = data.address;
+                    document.getElementById('modal-unitname').textContent = data.unitnames; // Updated to use unitnames
                     document.getElementById('modal-unitprice').textContent = data.unit_price; // Update unit price
                     document.getElementById('modal-balance').textContent = data.balance;
 
