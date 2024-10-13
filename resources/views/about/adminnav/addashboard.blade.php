@@ -502,14 +502,19 @@ window.addEventListener('click', function (event) {
 
 
 
-   // Function to fetch and display customers in the table
+
+
+  // Function to fetch and display customers in the table
+
 function loadCustomers() {
+    // Fetch data from your existing Laravel API endpoint
     fetch('/api/customers')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.getElementById('customerTable').querySelector('tbody');
             tableBody.innerHTML = ''; // Clear existing rows
 
+            // Loop through the fetched customer data and create table rows
             data.forEach(customer => {
                 const row = document.createElement('tr');
                 
@@ -518,19 +523,20 @@ function loadCustomers() {
                 nameCell.textContent = customer.name;
                 row.appendChild(nameCell);
 
-                // Balance column
+                // Balance column (fetching from your 'remaining_balance' field)
                 const balanceCell = document.createElement('td');
-                balanceCell.textContent = customer.balance || 'N/A';
+                balanceCell.textContent = customer.remaining_balance || 'N/A';
                 row.appendChild(balanceCell);
 
-                // // Status column
-                // const statusCell = document.createElement('td');
-                // statusCell.textContent = customer.status || '-';
-                // row.appendChild(statusCell);
-
-                // Payment Service column
+                // Payment Service column (displaying installment or fully paid status)
                 const paymentServiceCell = document.createElement('td');
-                paymentServiceCell.textContent = customer.installment ? 'Installment' : customer.fullypaid ? 'Fully Paid' : '-';
+                if (customer.installment) {
+                    paymentServiceCell.textContent = 'Installment';
+                } else if (customer.fullypaid) {
+                    paymentServiceCell.textContent = 'Fully Paid';
+                } else {
+                    paymentServiceCell.textContent = '-';
+                }
                 row.appendChild(paymentServiceCell);
 
                 // Action column
@@ -542,13 +548,13 @@ function loadCustomers() {
                 notifyButton.onclick = () => openModal(customer.id, customer.name);
                 actionCell.appendChild(notifyButton);
 
-
                 row.appendChild(actionCell);
                 tableBody.appendChild(row);
             });
         })
         .catch(error => console.error('Error fetching customers:', error));
 }
+
 
 
 // Open modal and clear feedback

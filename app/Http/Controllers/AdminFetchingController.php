@@ -272,16 +272,18 @@ public function getPaymentSchedule($customerId)
 public function showArchived()
 {
     $archivedInstallments = InstallmentProcess::where('is_archived', true)->get();
-    
+
     // Fetch archived installments along with customer, order, and payment service data
     $customers = InstallmentProcess::join('customer_info', 'installment_process.customer_id', '=', 'customer_info.id')
         ->join('orders', 'installment_process.customer_id', '=', 'orders.customer_id') // Join with orders table to get unitName
         ->leftJoin('payment_service', 'customer_info.id', '=', 'payment_service.customer_id') // Left join with payment_service table
         ->where('installment_process.is_archived', true) // Archived installments
         ->select(
+
             'installment_process.*', 
             'customer_info.name as customer_name', 
             'customer_info.phone_number as customer_phoneNum', 
+            
             'orders.*', // Fetch unitName from orders table
             'payment_service.installment', // Include installment status
             'payment_service.fullypaid' // Include fully paid status
@@ -301,6 +303,7 @@ public function showArchived()
             ]
         ];
     });
+
 
     // Return the view with the grouped customer data
     return view('about.adminnav.adarchived', compact('yourSpecificIdsArray', 'customers', 'archivedInstallments'));

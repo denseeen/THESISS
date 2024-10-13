@@ -324,7 +324,11 @@ document.addEventListener('DOMContentLoaded', function () {
                             unitNameElement.textContent = unit.unitname;
 
                             const unitPriceElement = document.createElement('div');
-                            unitPriceElement.textContent = `₱${parseFloat(unit.unitprice).toFixed(2)}`;
+                            unitPriceElement.textContent = `₱${parseFloat(unit.unitprice).toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                            })}`;
+
 
                             unitnameContainer.appendChild(unitNameElement);
                             unitpriceContainer.appendChild(unitPriceElement);
@@ -341,10 +345,6 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the function to fetch unit details on page load
     fetchUnitDetails();
 });
-
-
-
-
 
 
 
@@ -407,10 +407,16 @@ function fetchPaymentSchedule() {
             // Update billing card values
             document.getElementById('current-monthly-bill').textContent = firstNotPaidAmount ? `₱${firstNotPaidAmount}` : '₱0.00'; // Update with the first not paid amount
             document.getElementById('next-payment-due').textContent = data.nextPaymentDue ? data.nextPaymentDue : 'N/A';
-            document.querySelector('#balance .h3').textContent = `Pesos: ${data.balance.toFixed(2)}`;
+
+           document.querySelector('#balance .h3').textContent = `Pesos: ${Number(data.balance).toLocaleString('en-US', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+            })}`;
 
             // Update any other relevant card values (e.g., total unit price if needed)
-            document.getElementById('unit-price').textContent = `₱${data.unit_price}`;
+            document.getElementById('unit-price').textContent = `₱${data.unit_price}`;  
+
+
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
@@ -420,8 +426,6 @@ function fetchPaymentSchedule() {
 
 // Call the function on page load or wherever appropriate
 fetchPaymentSchedule();
-
-
 
 
 
