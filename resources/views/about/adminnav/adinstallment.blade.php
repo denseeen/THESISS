@@ -118,7 +118,7 @@
  
  
     <td>
-    <input type="number" name="amount" placeholder="Enter Amount">
+    <input type="number" name="amount" placeholder="Enter Amount" step="0.01">
     </td>
  
     <td>
@@ -581,7 +581,12 @@
                     const commentCell = document.createElement('td');
  
                     dateCell.textContent = detail.date;
-                    amountCell.textContent = detail.amount;
+
+                    // Format the amount with commas (e.g., 4,166.77)
+                    amountCell.textContent = Number(detail.amount).toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                    });
  
                     // Format date for installment details
                     const installmentDate = new Date(detail.date);

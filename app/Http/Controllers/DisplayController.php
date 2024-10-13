@@ -47,15 +47,42 @@ public function user_infos_admin()
 // admin customer List
 public function getCustomers()
 {
-     // Fetch customers and their payment service details
-     $customers = DB::table('customer_info')
-     ->leftJoin('payment_service', 'customer_info.id', '=', 'payment_service.customer_id')
-     ->select('customer_info.id', 'customer_info.name', 'payment_service.installment', 'payment_service.fullypaid')
-     ->get();
+    // Fetch customers and their payment service details
+    $customers = DB::table('customer_info')
+        ->leftJoin('payment_service', 'customer_info.id', '=', 'payment_service.customer_id')
+        ->select('customer_info.id', 'customer_info.name', 'payment_service.installment', 'payment_service.fullypaid')
+        ->get();
 
- // Return JSON response with customer data and payment service
- return response()->json($customers);
+    // Iterate through each customer to calculate their balance
+    foreach ($customers as $customer) {
+        // Fetch installment plan, orders, and installment process for the customer
+        $installmentPlan = DB::table('installment_plan')->where('customer_id', $customer->id)->first();
+        $orders = DB::table('orders')->where('customer_id', $customer->id)->first();
+        $installmentProcess = DB::table('installment_process')->where('customer_id', $customer->id)->get();
+
+        // Calculate balance only if all necessary data exists
+        if ($installmentPlan && $orders && $installmentProcess) {
+            $unitPrice = $orders->unitprice;
+            $amountsPaid = $installmentProcess->pluck('amount')->toArray();
+            $remainingBalance = $unitPrice;
+
+            // Calculate total paid
+            foreach ($amountsPaid as $amountPaid) {
+                $remainingBalance -= $amountPaid;
+            }
+
+            // Attach the calculated remaining balance to the customer object
+            $customer->remaining_balance = number_format($remainingBalance, 2);
+        } else {
+            // Set balance to 0 if no data is available
+            $customer->remaining_balance = '0.00';
+        }
+    }
+
+    // Return JSON response with customer data including remaining balance
+    return response()->json($customers);
 }
+
 
 
 // fullypaid and installment modal customer info, + fullypaid balance and invoice.
