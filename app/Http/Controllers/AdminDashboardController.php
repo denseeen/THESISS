@@ -10,19 +10,8 @@ use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
-    // // Display the admin dashboard
-    // public function index()
-    // {
-    // // Fetch data from the database
-    // $customers  = CustomerInfo::all(); // Adjust the query as needed
    
-    // //PASSING THE DATA TO VIEW
-    // return view('about.adminnav.addashboard', compact('customers'));
-    // }
-
-   // Search Customer Method
   // Search Customer Method
-
 public function showEditForm($id)
 {
     $customer = CustomerInfo::find($id);
@@ -33,6 +22,8 @@ public function showEditForm($id)
 
     return response()->json($customer);
 }
+
+// edit customer info 
 public function updateCustomer(Request $request)
 {
     $validatedData = $request->validate([
@@ -59,8 +50,6 @@ public function updateCustomer(Request $request)
 }
 
 
-
-
 // for both customer and installment_process search
 public function searchCustomer(Request $request)
 {
@@ -70,12 +59,7 @@ public function searchCustomer(Request $request)
     return response()->json($customers);
 }
 
-
-
-
-
-
-
+// update button on installment
 public function updateInstallment(Request $request, $id)
 {
     $validatedData = $request->validate([
@@ -100,21 +84,21 @@ public function updateInstallment(Request $request, $id)
 
 
 
-public function getInstallments($customerId)
-{
-    $installments = InstallmentProcess::where('customer_id', $customerId)->get();
-    return response()->json($installments);
-}
+// public function getInstallments($customerId)
+// {
+//     $installments = InstallmentProcess::where('customer_id', $customerId)->get();
+//     return response()->json($installments);
+// }
 
 
-public function getInstallment($installmentId)
-{
-    $installment = InstallmentProcess::find($installmentId);
-    if (!$installment) {
-        return response()->json(['error' => 'Installment not found'], 404);
-    }
-    return response()->json($installment);
-}
+// public function getInstallment($installmentId)
+// {
+//     $installment = InstallmentProcess::find($installmentId);
+//     if (!$installment) {
+//         return response()->json(['error' => 'Installment not found'], 404);
+//     }
+//     return response()->json($installment);
+// }
 
 
 

@@ -30,7 +30,7 @@ class FormController extends Controller
             'facebook'         => 'nullable|string|max:255',
             'gender'           => 'required|string|in:male,female,other',
             'telephone_number' => 'nullable|string|max:15',
-            'customer_id'      => 'required|exists:customer_info,id',
+            // 'customer_id'      => 'required|exists:customer_info,id',
 
             // Orders
             'orderNumber'     => 'nullable|string|max:255',
@@ -93,7 +93,7 @@ class FormController extends Controller
                 'facebook'          => $validatedData['facebook'],
                 'gender'            => $validatedData['gender'],
                 'telephone_number'  => $validatedData['telephone_number'],
-                'customer_id'       => $customerInfo->id,
+                // 'customer_id'       => $customerInfo->id,
             ]);
 
                 // Save to the orders table

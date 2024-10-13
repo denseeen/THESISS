@@ -79,14 +79,15 @@ Route::get('/success', function () {
 Route::get('/customer/perchasehistory',[AuthManager::class, 'customer_perchasehistory'])->name('cuspurchasehistory.show');
 Route::get('/customer/dashboard',[AuthManager::class, 'customer_dashboard'])->name('cusdasboard.show');
 
-// customer_order
+// customer_order/dashboard
 Route::get('/api/unit-details', [CustomerFetchingController::class, 'getUnitDetails']);
+// In web.php or api.php
+Route::get('/api/account-number', [CustomerFetchingController::class, 'getAccountNumber']);
+
 // customer payment_schedule
 Route::get('/payment-schedule/customer', [CustomerFetchingController::class, 'getBillingInfoAndPaymentSchedule'])->middleware('auth');
 // customer transaction
 Route::get('/billing-history', [CustomerFetchingController::class, 'getBillingHistory'])->name('billing.history');
-
-
 
 
 // Route to save the upload avatar
@@ -128,8 +129,6 @@ Route::get('/success-forgotpassword',[SecurityQuestionController::class, 'change
 //Route for DarkMode
 Route::post('/update-dark-mode', [DarkModeController::class, 'updateDarkMode'])->name('update-dark-mode');
 
-// Fetching the Information in customer_info database
-// Route::get('/admin/dashboard', [AdminFetchingController::class, 'AdminDashboardCustomerList'])->name('admin_dashboard.show');
 
 Route::get('/admin/installment', [AdminFetchingController::class, 'InstallmentCustomer'])->name('Installment_Customer.show');
 Route::get('/admin/fullypaid', [AdminFetchingController::class, 'FullyPaidCustomer'])->name('FullyPaid_Customer.show');
@@ -139,10 +138,6 @@ Route::get('/customer/{id}', [AdminFetchingController::class, 'getCustomer']);
 Route::get('/payment-schedule/{customerId}', [AdminFetchingController::class, 'getPaymentSchedule']);
 // In routes/api.php or routes/web.php
 Route::get('/fully-paid-customers', [AdminFetchingController::class, 'getFullyPaidCustomers']);
-
-
-
-
 
 
 // Route for storing new installment_process data
@@ -155,42 +150,31 @@ Route::post('/add-order', [AdminFetchingController::class, 'addOrder'])->name('a
 
 
 
-// Route::post('/installment/archive/{id}', [AdminFetchingController::class, 'archive'])->name('installment.archive');
-// Route::get('/admin/archived', [AdminFetchingController::class, 'showArchived'])->name('installments.archived');
+// Route to fetch customer details by ID, modal in installment
+Route::get('/customer/{id}', [DisplayController::class, 'getCustomer']);
 
-
-
-
-
-
-//Route for dashboard customer list
-Route::get('/admin/dashboard',[DisplayController::class, 'admin_dashboard'])->name('addashboard.show');
-
+// admin customer List -dashboard
 Route::get('/api/customers', [DisplayController::class, 'getCustomers']);
 
 
+// Route::post('/installment/archive/{id}', [AdminFetchingController::class, 'archive'])->name('installment.archive');
+// Route::get('/admin/archived', [AdminFetchingController::class, 'showArchived'])->name('installments.archived');
+//Route for dashboard customer list
+// Route::get('/admin/dashboard',[DisplayController::class, 'admin_dashboard'])->name('addashboard.show');
 //Route for installment customer list
 // Route::get('/admin/installment',[DisplayController::class, 'cusInstallments'])->name('adinstallment.show');
-
-
 //Route for fullypaid customer list
 // Route::get('/admin/fullypaid',[DisplayController::class, 'cusfullypaid'])->name('adfullypaid.show');
-
-
-// Route to fetch customer details by ID, modal
-Route::get('/customer/{id}', [DisplayController::class, 'getCustomer']);
 // Route::get('/payment-schedule/{customerId}', [DisplayController::class, 'getPaymentSchedule']);
+// Fetching the Information in customer_info database
+// Route::get('/admin/dashboard', [AdminFetchingController::class, 'AdminDashboardCustomerList'])->name('admin_dashboard.show');
 
 
 //Route for notification
 Route::post('/send-message', [NotificationController::class, 'sendMessage'])->middleware('auth');
-
-
-// Route to fetch unread notifications for the user
+// Route to fetch unread notifications for the user/customer-dashboard
 Route::get('/api/messages', [NotificationController::class, 'fetchMessages']);
-
-
-// Route for marking a message as read, delete
+// Route for marking a message as read, delete/customer-dashboard
 Route::delete('/api/messages/{id}', [NotificationController::class, 'deleteMessage']);
 
 

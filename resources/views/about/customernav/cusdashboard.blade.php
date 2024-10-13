@@ -83,15 +83,20 @@
             </div>
 
             <div class="nameprice" style="display: flex; justify-content: space-around;">
-                <div class="unitname-section" style="text-align: center;">
-                    <h2 class="unitname-label">Unit Name:</h2> 
-                    <a id="unitname" >[Unit Name Here]</a> <!-- Unit name will be updated here -->
-                </div>
-                <div class="unitprice-section" style="text-align: center;">
-                    <h2 class="unitprice-label">Price:</h2>
-                    <a id="unitprice" >₱0.00</a> <!-- Unit price will be updated here -->
-                </div>
-            </div>
+    <div class="accountnumber-section" style="text-align: center;">
+        <h2 class="accountnumber-label">Account Number:</h2>
+        <a id="accountnumber" style="font-size: 181%; color:black;">[Account Number Here]</a> <!-- account number from installment_process -->
+    </div>
+    <div class="unitname-section" style="text-align: center;">
+        <h2 class="unitname-label">Unit Names:</h2> 
+        <div id="unitname">[Unit Names Here]</div> <!-- Unit names will be updated here -->
+    </div>
+    <div class="unitprice-section" style="text-align: center;">
+        <h2 class="unitprice-label">Prices:</h2>
+        <div id="unitprice">₱0.00</div> <!-- Unit prices will be updated here -->
+    </div>
+</div>
+
         </div>
 
 
@@ -295,15 +300,39 @@
 
 //Customer order display unit&price
 document.addEventListener('DOMContentLoaded', function () {
-    // Function to fetch unit details
+    // Function to fetch unit details and account number
     function fetchUnitDetails() {
         fetch('/api/unit-details')
             .then(response => response.json())
             .then(data => {
                 if (data) {
-                    // Update the unit name and unit price on the page
-                    document.getElementById('unitname').textContent = data.unitname ? data.unitname : '[Unit Name Here]';
-                    document.getElementById('unitprice').textContent = data.unitprice ? `₱${parseFloat(data.unitprice).toFixed(2)}` : '₱0.00';
+                    // Update the account number on the page
+                    document.getElementById('accountnumber').textContent = data.account_number ? data.account_number : '[Account Number Not Available]';
+
+                    // Update the unit names and prices on the page
+                    const unitnameContainer = document.getElementById('unitname');
+                    const unitpriceContainer = document.getElementById('unitprice');
+
+                    if (data.units.length > 0) {
+                        // Clear existing content
+                        unitnameContainer.innerHTML = '';
+                        unitpriceContainer.innerHTML = '';
+
+                        // Loop through each unit and append to the container
+                        data.units.forEach(unit => {
+                            const unitNameElement = document.createElement('div');
+                            unitNameElement.textContent = unit.unitname;
+
+                            const unitPriceElement = document.createElement('div');
+                            unitPriceElement.textContent = `₱${parseFloat(unit.unitprice).toFixed(2)}`;
+
+                            unitnameContainer.appendChild(unitNameElement);
+                            unitpriceContainer.appendChild(unitPriceElement);
+                        });
+                    } else {
+                        unitnameContainer.textContent = '[No Units Available]';
+                        unitpriceContainer.textContent = '₱0.00';
+                    }
                 }
             })
             .catch(error => console.error('Error fetching unit details:', error));
@@ -312,6 +341,10 @@ document.addEventListener('DOMContentLoaded', function () {
     // Call the function to fetch unit details on page load
     fetchUnitDetails();
 });
+
+
+
+
 
 
 

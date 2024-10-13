@@ -162,7 +162,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Balance</th>
-                            <th>Status</th>
+                            <!-- <th>Status</th> -->
                             <th>Payment Service</th>
                             <th>Action</th>
                         </tr>
@@ -530,10 +530,10 @@ function loadCustomers() {
                 balanceCell.textContent = customer.balance || 'N/A';
                 row.appendChild(balanceCell);
 
-                // Status column
-                const statusCell = document.createElement('td');
-                statusCell.textContent = customer.status || '-';
-                row.appendChild(statusCell);
+                // // Status column
+                // const statusCell = document.createElement('td');
+                // statusCell.textContent = customer.status || '-';
+                // row.appendChild(statusCell);
 
                 // Payment Service column
                 const paymentServiceCell = document.createElement('td');

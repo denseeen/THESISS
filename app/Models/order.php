@@ -44,4 +44,9 @@ class order extends Model
         return $this->belongsTo(CustomerInfo::class, 'customer_id');
     }
 
+    public function installmentProcesses()
+    {
+        return $this->hasMany(InstallmentProcess::class, 'customer_id');
+    }
+
 }

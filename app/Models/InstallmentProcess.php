@@ -37,4 +37,9 @@ class InstallmentProcess extends Model
     public function customer() {
         return $this->belongsTo(CustomerInfo::class, 'customer_id');
     }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class, 'customer_id'); // 'customer_id' is the foreign key in the orders table
+    }
 }

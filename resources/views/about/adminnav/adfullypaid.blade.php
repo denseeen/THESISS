@@ -142,62 +142,57 @@
 </div>
 
                
-                <!-- Modal Structure -->
-                <div id="customer-modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <div class="modal-body">
-                            <!-- Flex container for customer info and transaction records -->
-                            <div class="flex-columns">
-                                <div class="customer-info">
-
-                                <div class="btn-print-design">
-                                    <h2>Customer Name:</h2>
-                                    <button class="btn-print" type="button" onclick="printModal('customer-modal')">
-                                    <span class="material-symbols-outlined">print</span>
-                                    </button>
-                                 </div>
-                                   
-                                    <h2><strong id="modal-name"></strong></h2>   
-
-                                    <p>Email: <span id="modal-email"></span></p>
-                                    <p>Phone Number: <span id="modal-phone"></span></p>
-                                    <p>Address: <span id="modal-address"></span></p>
-                                    <a href="#" class="edit-button">Edit</a>
-                                </div>
- 
-                                <div class="transaction-records">
-                                    <h2>Transaction Records</h2>
-                                    <p>Unit Price: ERVS3 59,800</p>
-                                    <p>Balance: 30,500</p>
-                                </div>
-                            </div>
- 
-                            <!-- Table below the customer info and transaction records -->
-                            <div class="table-container">
-                                <table>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                    <tr>
-                                        <td>March 30 2021</td>
-                                        <td>10,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td>April 15 2021</td>
-                                        <td>9,650</td>
-                                    </tr>
-                                    <tr>
-                                        <td>May 15 2021</td>
-                                        <td>9,650</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
+<!-- Modal Structure -->
+<div id="customer-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <div class="modal-body">
+            <div class="flex-columns">
+                <!-- Customer Info Section -->
+                <div class="customer-info">
+                    <div class="btn-print-design">
+                        <h2>Customer Name:</h2>
+                        <button class="btn-print" type="button" onclick="printModal('customer-modal')">
+                            <span class="material-symbols-outlined">print</span>
+                        </button>
                     </div>
+                    <h2><strong id="modal-name"></strong></h2>
+                    <p>Email: <span id="modal-email"></span></p>
+                    <p>Phone Number: <span id="modal-phone"></span></p>
+                    <p>Address: <span id="modal-address"></span></p>
                 </div>
 
+                <!-- Transaction Records Section -->
+                <div class="transaction-records">
+                    <h2>Transaction Records</h2>
+                    <p>Unit Price: <span id="modal-unitprice"></span></p>
+                    <p>Balance: <span id="modal-balance"></span></p>
+                    <span id="modal-status"></span>
+                </div>
+            </div>
+
+            <!-- Installment Details Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Account Number</th>
+                            <th>Date</th>
+                            <th>Amount Paid</th>
+                            <th>Payment Method</th>
+                            <th>Status</th>
+                            <th>Penalty</th>
+                            <th>Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="installment-details-table-body">
+                        <!-- Rows will be added dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
 
        <!-- Add Order Modal -->
@@ -238,7 +233,7 @@
     <script> 
 
      // PrintButton
-     function printModal(modalId) {
+function printModal(modalId) {
     // Get the modal element by its ID
     var modalContent = document.getElementById(modalId).innerHTML;
 
@@ -259,49 +254,76 @@
 }
 
 
-    document.addEventListener('DOMContentLoaded', (event) => {
-        const modal = document.getElementById('customer-modal');
-        const closeButton = document.querySelector('.close');
-        const customerLinks = document.querySelectorAll('.customer-link');
+document.addEventListener('DOMContentLoaded', (event) => {
+    const modal = document.getElementById('customer-modal');
+    const closeButton = document.querySelector('.close');
+    const customerLinks = document.querySelectorAll('.customer-link');
+    const installmentDetailsTableBody = document.getElementById('installment-details-table-body');
 
-        customerLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const customerId = this.getAttribute('data-customer-id');
+    customerLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const customerId = this.getAttribute('data-customer-id');
 
-                // Fetch customer details from the server
-                fetch(`/customer/${customerId}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        // Update modal content with fetched data
-                        document.getElementById('modal-name').textContent = data.name;
-                        document.getElementById('modal-email').textContent = data.email;
-                        document.getElementById('modal-phone').textContent = data.phone_number;
-                        document.getElementById('modal-address').textContent = data.address;
+            // Fetch customer details from the server
+            fetch(`/customer/${customerId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error(data.error); // Handle error appropriately
+                        return;
+                    }
 
-                        // Open modal
-                        modal.style.display = 'block';
-                    })
-                    .catch(error => console.error('Error fetching customer details:', error));
-            });
+                    // Update modal content with fetched data
+                    document.getElementById('modal-name').textContent = data.name;
+                    document.getElementById('modal-email').textContent = data.email;
+                    document.getElementById('modal-phone').textContent = data.phone_number;
+                    document.getElementById('modal-address').textContent = data.address;
+                    document.getElementById('modal-unitprice').textContent = data.unit_price; // Update unit price
+                    document.getElementById('modal-balance').textContent = data.balance;
+
+                    // Clear existing installment details
+                    installmentDetailsTableBody.innerHTML = '';
+
+                    // Populate installment details
+                    data.installments.forEach(installment => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${installment.account_number}</td>
+                            <td>${installment.date}</td>
+                            <td>${installment.amount}</td>
+                            <td>${installment.payment_method}</td>
+                            <td>${installment.status}</td>
+                            <td>${installment.violation}</td>
+                            <td>${installment.comment}</td>
+                        `;
+                        installmentDetailsTableBody.appendChild(row);
+                    });
+
+                    // Open modal
+                    modal.style.display = 'block';
+                })
+                .catch(error => console.error('Error fetching customer details:', error));
         });
-
-        // Close modal
-        closeButton.addEventListener('click', function() {
-            modal.style.display = 'none';
-        });
-
-        // Close modal if outside click
-        window.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-
     });
 
+    // Close modal on click
+    closeButton.addEventListener('click', function() {
+        modal.style.display = 'none';
+    });
 
-    document.addEventListener('DOMContentLoaded', function () {
+    // Close modal if outside click
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
     const addOrderButtons = document.querySelectorAll('.addOrderButton'); // All add buttons
     const modal = document.getElementById('addOrderModal');
     const closeModal = document.getElementById('closeModal');
@@ -328,6 +350,10 @@
         }
     };
 });
+
+
+
+
 
     //darkmode
     function toggleDarkModeDashboard() {

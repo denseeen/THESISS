@@ -17,24 +17,46 @@ class CustomerFetchingController extends Controller
 
 
     public function getUnitDetails()
-    {
-        $userId = Auth::id(); // Get the authenticated user ID
-    
-        // Fetch order details for the customer from the orders table
-        $order = DB::table('orders')
-            ->where('customer_id', function ($query) use ($userId) {
-                $query->select('id')
-                    ->from('customer_info')
-                    ->where('user_id', $userId)
-                    ->limit(1);
-            })
-            ->select('unitName as unitname', 'unitprice')
-            ->first();
-    
-        // Return the data as a JSON response
-        return response()->json($order);
+{
+    $userId = Auth::id(); // Get the authenticated user ID
+
+    // Fetch the customer ID associated with the authenticated user
+    $customer = DB::table('customer_info')
+        ->where('user_id', $userId)
+        ->select('id as customer_id')
+        ->first();
+
+    // If the customer doesn't exist, return an error response
+    if (!$customer) {
+        return response()->json(['error' => 'Customer not found'], 404);
     }
+
+    // Fetch all unit names and prices for the customer from the orders table
+    $units = DB::table('orders')
+        ->where('customer_id', $customer->customer_id) // Use the customer_id obtained
+        ->select('unitName as unitname', 'unitprice')
+        ->get(); // Use get() to fetch all units
+
+    // Fetch the account number from the installment_process table using customer_id
+    $account = DB::table('installment_process')
+        ->where('customer_id', $customer->customer_id) // Use the customer_id obtained
+        ->select('account_number')
+        ->first();
+
+    // Prepare the response data
+    $response = [
+        'units' => $units, // All unit names and prices
+        'account_number' => $account ? $account->account_number : null,
+    ];
+
+    // Return the data as a JSON response
+    return response()->json($response);
+}
+
+
+
     
+
     
 
 

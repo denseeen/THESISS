@@ -197,7 +197,7 @@
                     <p>Email: <span id="modal-email"></span></p>
                     <p>Phone Number: <span id="modal-phone"></span></p>
                     <p>Address: <span id="modal-address"></span></p>
-                    <a href="{{ route('edit.show') }}" class="edit-button">Edit</a>
+                    <!-- <a href="{{ route('edit.show') }}" class="edit-button">Edit</a> -->
                     
                   
                 </div>
