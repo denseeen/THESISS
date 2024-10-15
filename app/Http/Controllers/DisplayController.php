@@ -53,35 +53,42 @@ public function getCustomers()
         ->select('customer_info.id', 'customer_info.name', 'payment_service.installment', 'payment_service.fullypaid')
         ->get();
 
-    // Iterate through each customer to calculate their balance
+    // Iterate through each customer to calculate their balance and unit price sum
     foreach ($customers as $customer) {
-        // Fetch installment plan, orders, and installment process for the customer
+        // Fetch installment plan for the customer
         $installmentPlan = DB::table('installment_plan')->where('customer_id', $customer->id)->first();
-        $orders = DB::table('orders')->where('customer_id', $customer->id)->first();
-        $installmentProcess = DB::table('installment_process')->where('customer_id', $customer->id)->get();
 
-        // Calculate balance only if all necessary data exists
-        if ($installmentPlan && $orders && $installmentProcess) {
-            $unitPrice = $orders->unitprice;
-            $amountsPaid = $installmentProcess->pluck('amount')->toArray();
-            $remainingBalance = $unitPrice;
+        // Fetch the total sum of unit prices from the orders table for the customer
+        $totalUnitPrice = DB::table('orders')
+            ->where('customer_id', $customer->id)
+            ->sum('unitprice');
 
-            // Calculate total paid
-            foreach ($amountsPaid as $amountPaid) {
-                $remainingBalance -= $amountPaid;
-            }
+        // Fetch the total sum of amounts paid from the installment_process table
+        $totalPaidAmount = DB::table('installment_process')
+            ->where('customer_id', $customer->id)
+            ->sum('amount');
 
-            // Attach the calculated remaining balance to the customer object
+        // If the installment plan exists
+        if ($installmentPlan) {
+            // Calculate the remaining balance
+            $remainingBalance = $totalUnitPrice - $totalPaidAmount;
+
+            // Attach the calculated remaining balance and total unit price to the customer object
             $customer->remaining_balance = number_format($remainingBalance, 2);
+            $customer->total_unit_price = number_format($totalUnitPrice, 2);
+            $customer->total_paid_amount = number_format($totalPaidAmount, 2);
         } else {
-            // Set balance to 0 if no data is available
+            // Set balance and unit price to 0 if no data is available
             $customer->remaining_balance = '0.00';
+            $customer->total_unit_price = '0.00';
+            $customer->total_paid_amount = '0.00';
         }
     }
 
-    // Return JSON response with customer data including remaining balance
+    // Return JSON response with customer data including remaining balance, total unit price, and total paid amount
     return response()->json($customers);
 }
+
 
 
 

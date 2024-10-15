@@ -61,7 +61,10 @@
 
 
        
-
+        <div class="installment-design">
+        <img src="/image/installment_bg.jpg" alt="bg-installment" class="bg-image">
+         <h2>Customer Archived</h2>
+        </div>
         
         <div class="archive-container">
     <h2>Archived</h2>

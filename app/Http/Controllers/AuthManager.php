@@ -146,21 +146,15 @@ class AuthManager extends Controller
 
     
 
-
-
-
-
-
-
   //customer view address
-    //   public function customer_profile(){
-    //       return view('about.customernav.cusprofile');
-    //    }
+      public function customer_profile(){
+          return view('about.customernav.cusprofile');
+       }
 
 
             // public function Def() {
-        //     return view('about.layout');
-        //     }
+            // return view('about.layout');
+            // }
     
         //old design
         //   public function customerUI() 

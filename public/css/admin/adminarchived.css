@@ -9,15 +9,15 @@ body{
 }
 .archive-container {
 
-    background: #fff;
-    margin-top: 10%;
-    margin-left: 10%;
+    background-color: #fff;
+    margin-top: 3%;
+    margin-left: 6%;
     color: #000;
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 80%;
+    width: 90%;
 }
 .archive-container h2 {
     margin-top: 0;
@@ -60,6 +60,18 @@ a {
     cursor: pointer;
 }
 
+.dark-mode .archive-container{
+    background-color: #000;
+    color: #fff;
+}
+
+ /* .dark-mode th {
+    background-color: #000;
+    color: #fff;
+}  */
 
 
-
+.dark-mode td {
+    background-color: #000;
+    color: #fff;
+} 

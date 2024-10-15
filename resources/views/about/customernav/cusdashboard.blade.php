@@ -19,9 +19,9 @@
         <!-- Top Navbar -->
         <nav class="top_navbar">
                 <a href="{{ route('cusdasboard.show') }}">
-                    <!-- <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%"> -->
-                    <a class= "des" style="margin-left: -58%;
-    font-variant: unicase;">Billn'WOW</a>
+                    <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
+                    <!-- <a class= "des" style="margin-left: -58%;
+    font-variant: unicase;">Billn'WOW</a> -->
                 </a>
             <div class="icons">
                 <ul class="navigation-menu">
@@ -71,7 +71,7 @@
 
         
         <div class ="viewtitle">
-        <img src="/image/dashbboard_bg.jpg" alt="bg-dashboard" class="bg-image">
+        <!-- <img src="/image/dashbboard_bg.jpg" alt="bg-dashboard" class="bg-image"> -->
             <h1>Dashboard</h1>
         </div>
 
@@ -282,7 +282,7 @@
                                         <th>Date</th>
                                         <th>Amount</th>
                                         <th>Payment Method</th>
-                                        <th>Violation</th>
+                                        <th>Penalty</th>
                                         <th>Comment</th>
                                     </tr>
                                 </thead>

@@ -204,7 +204,7 @@
  
                 <div class="transaction-records">
                     <h2>Orders Details</h2>
-                    <p>Unit Name: <span id="modal-unitname"></span></p> <!-- Corrected from "Unit Unit" to "Unit Name" -->
+                   
                     <p>Unit Price: <span id="modal-unitprice"></span></p>
                     <p>Balance: <span id="modal-balance"></span></p> <!-- Added closing span tag -->
    
@@ -508,7 +508,7 @@
                 .then(paymentData => {
                     // Update unit price and unit name
                     document.getElementById('modal-unitprice').textContent = paymentData.unit_price;
-                    document.getElementById('modal-unitname').textContent = paymentData.unit_name; // Display the unit name
+                    // document.getElementById('modal-unitname').textContent = paymentData.unit_name; // Display the unit name
 
                     // Fetch unit price from paymentData and normalize it
                     const unitPriceString = paymentData.unit_price; // Assume this is in string format
