@@ -55,13 +55,6 @@ class CustomerFetchingController extends Controller
 
 
 
-    
-
-    
-
-
-
-   
 public function getBillingInfoAndPaymentSchedule()
 {
     $userId = Auth::id(); // Get the authenticated user
@@ -73,25 +66,18 @@ public function getBillingInfoAndPaymentSchedule()
         return response()->json(['error' => 'Customer not found'], 404);
     }
 
-    // Get unpaid payments from the payment schedule for the current user
-    $currentPayment = DB::table('installment_process')
-        ->where('customer_id', $customerInfo->id)
-        ->where('status', 'unpaid')
-        ->orderBy('date', 'asc')
-        ->first();
-
     // Calculate the balance
-    $totalUnitprice = DB::table('orders')->where('customer_id', $customerInfo->id)->sum('unitprice');
+    $totalUnitPrice = DB::table('orders')->where('customer_id', $customerInfo->id)->sum('unitprice');
     $totalPaid = DB::table('installment_process')
         ->where('customer_id', $customerInfo->id)
         ->where('status', 'paid')
         ->sum('amount');
-    $balance = $totalUnitprice - $totalPaid;
+    $balance = $totalUnitPrice - $totalPaid;
 
     // Fetch customer's installment plan and orders
     $installmentPlan = DB::table('installment_plan')->where('customer_id', $customerInfo->id)->first();
     $orders = DB::table('orders')->where('customer_id', $customerInfo->id)->first();
-    $installmentProcess = DB::table('installment_process')
+    $installmentProcesses = DB::table('installment_process')
         ->where('customer_id', $customerInfo->id)
         ->orderBy('date', 'asc')
         ->get();
@@ -108,7 +94,7 @@ public function getBillingInfoAndPaymentSchedule()
     } elseif ($installmentPlan->eighteenmonths) {
         $duration = 18;
     } else {
-        return response()->json(['error' => 'No installment plan selected.'], 400);
+        return response()->json(['error' => 'No valid installment plan selected.'], 400);
     }
 
     // Calculate monthly payment
@@ -118,27 +104,45 @@ public function getBillingInfoAndPaymentSchedule()
     $startDate = new \DateTime($orders->dateOrder);
     $startDate->modify('+1 month'); // Move one month ahead
 
+    // Generate payment schedule and determine status
     $paymentSchedule = [];
-    $paymentIndex = 0; // Track which payment we are processing
+    $paymentIndex = 0;
+    $overdueReminder = null;
+    $currentDate = new \DateTime();
 
     // Iterate through the duration to generate the schedule
     foreach (range(0, $duration - 1) as $i) {
         $paymentDate = clone $startDate;
         $paymentDate->modify("+{$i} month");
 
-        // Default status for payments
-        $status = 'not paid';
+        $status = 'not paid'; // Default status
 
-        if (isset($installmentProcess[$paymentIndex])) {
-            $process = $installmentProcess[$paymentIndex];
+        if (isset($installmentProcesses[$paymentIndex])) {
+            $process = $installmentProcesses[$paymentIndex];
             $processDate = new \DateTime($process->date);
 
-            if ($processDate < $paymentDate) {
+            if ($process->status === 'paid') {
+                $overdueThreshold = clone $paymentDate;
+                $overdueThreshold->modify('+15 days');
+                
+                // Check if the payment was late
+                if ($processDate > $overdueThreshold) {
+                    $status = 'overdue-paid';
+                } else {
+                    $status = 'paid';
+                }
+            } elseif ($processDate < $paymentDate) {
                 $status = 'paid in advance';
-            } elseif ($processDate->format('Y-m-d') === $paymentDate->format('Y-m-d')) {
-                $status = $process->status; // 'paid' or 'paid late'
             }
-            $paymentIndex++; // Move to the next payment only if it's marked as paid
+
+            $paymentIndex++;
+        }
+
+        $overdueThreshold = clone $paymentDate;
+        $overdueThreshold->modify('+15 days');
+
+        if ($status === 'not paid' && $currentDate > $overdueThreshold) {
+            $overdueReminder = 'Reminder: The unit is going to be pulled out if payment is not made for the overdue amount.';
         }
 
         $paymentSchedule[] = [
@@ -148,7 +152,7 @@ public function getBillingInfoAndPaymentSchedule()
         ];
     }
 
-    // Get next payment due and its amount
+    // Get next unpaid payment
     $nextPaymentDue = null;
     $nextPaymentAmount = null;
 
@@ -161,16 +165,21 @@ public function getBillingInfoAndPaymentSchedule()
     }
 
     $response = [
-        'currentMonthlyBill' => $currentPayment ? $currentPayment->amount : 0,
+        'currentMonthlyBill' => isset($installmentProcesses[0]) ? number_format($installmentProcesses[0]->amount, 2) : 0,
         'nextPaymentDue' => $nextPaymentDue ?: 'N/A',
         'nextPaymentAmount' => $nextPaymentAmount ?: 0,
-        'balance' => $balance,
+        'balance' => $balance, 2,
         'unit_price' => number_format($orders->unitprice, 2),
         'payment_schedule' => $paymentSchedule,
+        'overdueReminder' => $overdueReminder, // Add overdue reminder if present
     ];
 
     return response()->json($response);
 }
+
+
+
+
 
 
 

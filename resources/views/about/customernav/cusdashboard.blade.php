@@ -78,8 +78,8 @@
         <!-- Content -->
         <div class="Unitname_Unitprice">
             <div class="button-container">
-                <button id="contractBtn" class="button">Contract</button>
-                <button id="rulesBtn" class="button">REFUND/CHANGING TERMS POLICY</button>
+            <button id="contractBtn" class="button">Contract</button>
+            <button id="rulesBtn" class="button">REFUND/CHANGING TERMS POLICY</button>
             </div>
 
             <div class="nameprice" style="display: flex; justify-content: space-around;">
@@ -102,16 +102,13 @@
 
 
 
-            <!-- Error Message -->
-            <div id="error-message" style="display: none; color: red; text-align: center; margin-top: 20px;">
-                An error occurred while fetching notifications. Please try again later.
-            </div>
+            
 
            <!-- Contract Modal -->
-<div id="contractModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h3>CONTRACT/AGREEMENT</h3>
+           <div id="contractModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>CONTRACT/AGREEMENT</h3>
         <p style="text-align: justify;">
             KNOW ALL MEN BY THESE PRESENTS:
             <br><br>
@@ -296,7 +293,174 @@
             </div>
     </div>
 
+
+
+
+
+    
+
+
+<!-- Modal for Unit Pull-out Reminder -->
+<div class="modal" id="pulloutReminderModal" style=" transition: opacity 0.3s ease; opacity: 0; position: fixed;  ; top: 0; width: 100%; height: 100vh; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center;">
+    <div class="modal-content" style="width: 30%;  background-color: white;  box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
+        <div class="modal-header">
+            <h5 class="modal-title" style="color: red;">Important Reminder</h5>
+        </div>
+        <div class="modal-body">
+            Reminder: The unit will be pulled out if payment is not made within 15 days of the due date.
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" style="float: right;" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+
 <script>
+
+  // Get the modal elements
+var contractModal = document.getElementById("contractModal");
+var rulesModal = document.getElementById("rulesModal");
+
+// Get the button elements
+var contractBtn = document.getElementById("contractBtn");
+var rulesBtn = document.getElementById("rulesBtn");
+
+// Get the <span> elements that close the modals
+var closeButtons = document.getElementsByClassName("close");
+
+// Open the contract modal when the contract button is clicked
+contractBtn.onclick = function() {
+    contractModal.style.display = "block";
+}
+
+// Open the rules modal when the rules button is clicked
+rulesBtn.onclick = function() {
+    rulesModal.style.display = "block";
+}
+
+// Close the contract modal
+closeButtons[0].onclick = function() {
+    contractModal.style.display = "none";
+}
+
+// Close the rules modal
+closeButtons[1].onclick = function() {
+    rulesModal.style.display = "none";
+}
+
+// Close the modals when clicking outside of them
+window.onclick = function(event) {
+    if (event.target == contractModal) {
+        contractModal.style.display = "none";
+    }
+    if (event.target == rulesModal) {
+        rulesModal.style.display = "none";
+    }
+}
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch billing information
+    function fetchBillingInfo() {
+        fetch("{{ url('/payment-schedule/customer') }}")
+            .then(response => response.json())
+            .then(data => {
+                console.log('Fetched Data:', data); // Log fetched data
+
+                if (data.error) {
+                    console.error('Error fetching billing info:', data.error);
+                    // Display an error message to the user
+                    alert("Failed to fetch billing information. Please try again later.");
+                    return; // Stop execution if there's an error
+                }
+
+                // Removed populatePaymentSchedule(data.payment_schedule);
+                checkForOverduePayments(data.payment_schedule, data.nextPaymentDue);
+            })
+            .catch(error => {
+                console.error('Error fetching billing info:', error);
+                alert("An unexpected error occurred. Please refresh the page.");
+            });
+    }
+
+    function checkForOverduePayments(paymentSchedule, nextPaymentDue) {
+        if (!nextPaymentDue) {
+            console.warn('No next payment due date provided.');
+            return; // Early return if no due date is available
+        }
+
+        const currentDate = new Date(); // Get the current date
+        const currentDatePhilippines = new Date(currentDate.toLocaleString('en-US', { timeZone: 'Asia/Manila' })); // Convert to Philippine timezone
+        console.log('Current Date (Philippines):', currentDatePhilippines); // Log the current date
+
+        // Convert nextPaymentDue to a Date object
+        const dueDate = new Date(nextPaymentDue);
+        console.log('Parsed Due Date:', dueDate);
+
+        const timeDifference = currentDatePhilippines - dueDate;
+        const daysDifference = timeDifference / (1000 * 3600 * 24); // Convert milliseconds to days
+
+        console.log('Next Payment Due:', nextPaymentDue);
+        console.log('Days Difference:', daysDifference);
+
+        // Check if the status of the most recent payment is 'not paid'
+        const isPaymentNotPaid = paymentSchedule.some(schedule => {
+            console.log('Checking schedule:', schedule); // Log each payment schedule
+            return schedule.date === nextPaymentDue && schedule.status === 'not paid';
+        });
+
+        console.log('Is Payment Not Paid:', isPaymentNotPaid); // Log the result of payment check
+
+        // Show the pullout reminder modal if the conditions are met
+        if (isPaymentNotPaid && daysDifference > 14) {
+    console.log('Conditions met. Showing the modal now.');
+    showModal();
+}
+
+    }
+
+    // Show modal with a smooth transition
+    function showModal() {
+    const reminderModal = document.getElementById('pulloutReminderModal');
+    
+    if (!reminderModal) {
+        console.error('Modal element not found');
+        return;
+    }
+    
+    reminderModal.style.display = 'flex'; // Ensure it's visible
+    setTimeout(() => {
+        reminderModal.style.opacity = '1'; // Smoothly transition to visible
+    }, 10); // Delay to trigger the CSS transition
+
+    console.log('Modal is now showing');
+}
+
+
+    // Close modal with a smooth transition
+   window.closeModal = function() {
+    const reminderModal = document.getElementById('pulloutReminderModal');
+    reminderModal.style.opacity = '0'; // Transition to hidden
+    setTimeout(() => {
+        reminderModal.style.display = 'none'; // Hide after transition completes
+    }, 300); // Match the transition duration (0.3s or 300ms)
+};
+
+
+    // Fetch the billing info when the page loads
+    fetchBillingInfo();
+});
+
+
+
+
+
+
+
 
 //Customer order display unit&price
 document.addEventListener('DOMContentLoaded', function () {
@@ -348,12 +512,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// Payment scheddule and card 1-3
 function fetchPaymentSchedule() {
-    const loadingIndicator = document.getElementById('loading'); // Example loading element
-    loadingIndicator.style.display = 'block'; // Show loading indicator
+    const loadingIndicator = document.getElementById('loading'); 
+    loadingIndicator.style.display = 'block';
 
-    fetch('/payment-schedule/customer') // Adjust the URL as needed
+    fetch('/payment-schedule/customer')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok ' + response.statusText);
@@ -361,72 +524,74 @@ function fetchPaymentSchedule() {
             return response.json();
         })
         .then(data => {
-            loadingIndicator.style.display = 'none'; // Hide loading indicator
+            loadingIndicator.style.display = 'none'; 
 
-            // Log data for debugging
             console.log(data); 
 
             const tableBody = document.getElementById('payment-schedule-table-body');
-            tableBody.innerHTML = ''; // Clear existing table rows
+            tableBody.innerHTML = ''; 
 
-            let firstNotPaidAmount = null; // Variable to store the first "Not Paid" amount
+            let firstNotPaidAmount = null; 
 
-            // Populate the payment schedule table
             data.payment_schedule.forEach(payment => {
                 const row = document.createElement('tr');
                 let statusBadge = '';
 
-               // Determine the status badge
+                const paymentScheduleDate = new Date(payment.date);
+                const actualPaymentDate = payment.actual_payment_date ? new Date(payment.actual_payment_date) : null;
+                const today = new Date();
+
+                // Payment status logic
                 if (payment.status === 'paid') {
                     statusBadge = '<span class="badge" style="background-color: #28a745; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid</span>';
-                } else if (payment.status === 'paid late') {
+                } else if (actualPaymentDate && actualPaymentDate > paymentScheduleDate && payment.status === 'paid late') {
                     statusBadge = '<span class="badge" style="background-color: #ffc107; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid Late</span>';
                 } else if (payment.status === 'paid in advance') {
-                    statusBadge = '<span class="badge" style="background-color: green; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid </span>'; // New badge for advance payment
+                    statusBadge = '<span class="badge" style="background-color: green; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid In Advance</span>';
+                } else if (today > paymentScheduleDate) {
+                    statusBadge = '<span class="badge" style="background-color: #dc3545; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Overdue</span>';
                 } else {
-                    statusBadge = '<span class="badge" style="background-color: #dc3545; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Not Paid</span>';
-                    
-    // Capture the first not paid amount for display in the card
-    if (firstNotPaidAmount === null) {
-        firstNotPaidAmount = payment.amount; // Store the first not paid amount
-    }
-}
+                    statusBadge = '<span class="badge" style="background-color: white; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Not Paid</span>';
+                    if (firstNotPaidAmount === null) {
+                        firstNotPaidAmount = payment.amount; 
+                    }
+                }
 
+                // Format payment date for display
+                const formattedPaymentDate = paymentScheduleDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
 
-                // Build the table row with payment details
                 row.innerHTML = `
-                    <td>${payment.date}</td>
+                    <td>${formattedPaymentDate}</td>
                     <td>₱${payment.amount}</td>
                     <td>${statusBadge}</td>
                 `;
-
-                // Append the new row to the table body
                 tableBody.appendChild(row);
             });
 
             // Update billing card values
-            document.getElementById('current-monthly-bill').textContent = firstNotPaidAmount ? `₱${firstNotPaidAmount}` : '₱0.00'; // Update with the first not paid amount
+            document.getElementById('current-monthly-bill').textContent = firstNotPaidAmount ? `₱${firstNotPaidAmount}` : '₱0.00'; 
             document.getElementById('next-payment-due').textContent = data.nextPaymentDue ? data.nextPaymentDue : 'N/A';
 
-           document.querySelector('#balance .h3').textContent = `Pesos: ${Number(data.balance).toLocaleString('en-US', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2
+            // Validate and format the balance to avoid NaN issues
+            const balance = isNaN(Number(data.balance)) ? 0 : Number(data.balance); 
+            document.querySelector('#balance .h3').textContent = `Pesos: ${balance.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
             })}`;
 
-            // Update any other relevant card values (e.g., total unit price if needed)
-            document.getElementById('unit-price').textContent = `₱${data.unit_price}`;  
-
-
+            document.getElementById('unit-price').textContent = `₱${data.unit_price}`; 
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
-            loadingIndicator.style.display = 'none'; // Hide loading indicator in case of error
+            loadingIndicator.style.display = 'none'; 
         });
 }
 
-// Call the function on page load or wherever appropriate
 fetchPaymentSchedule();
-
 
 
 // transaction history
@@ -533,45 +698,7 @@ function formatDate(dateString) {
         applySavedDarkModePreferenceFromDB();
 
 
-        // Get the modal elements
-        var contractModal = document.getElementById("contractModal");
-        var rulesModal = document.getElementById("rulesModal");
-
-        // Get the button elements
-        var contractBtn = document.getElementById("contractBtn");
-        var rulesBtn = document.getElementById("rulesBtn");
-
-        // Get the <span> elements that close the modals
-        var closeButtons = document.getElementsByClassName("close");
-
-        // Open the contract modal when the contract button is clicked
-        contractBtn.onclick = function() {
-            contractModal.style.display = "block";
-        }
-
-        // Open the rules modal when the rules button is clicked
-        rulesBtn.onclick = function() {
-            rulesModal.style.display = "block";
-        }
-
-        // Close the modals when the close buttons are clicked
-        for (let i = 0; i < closeButtons.length; i++) {
-            closeButtons[i].onclick = function() {
-                contractModal.style.display = "none";
-                rulesModal.style.display = "none";
-            }
-        }
-
-        // Close the modal when clicking outside of it
-        window.onclick = function(event) {
-            if (event.target == contractModal) {
-                contractModal.style.display = "none";
-            }
-            if (event.target == rulesModal) {
-                rulesModal.style.display = "none";
-            }
-        }
-
+       
 
 </script>
 
