@@ -21,7 +21,7 @@
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
-        <li style="font-size: 128%; margin-leftt: 11%; margin-left: 80%; display: block; color: aliceblue;">Anonas Branch</li>
+        <li>Anonas Branch</li>
             <a href="{{ route('addashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
             </a>
@@ -507,34 +507,60 @@
                 .then(response => response.json())
                 .then(paymentData => {
                     // Update unit price and unit name
-                    document.getElementById('modal-unitprice').textContent = paymentData.unit_price;
-                    // document.getElementById('modal-unitname').textContent = paymentData.unit_name; // Display the unit name
-
-                    // Fetch unit price from paymentData and normalize it
                     const unitPriceString = paymentData.unit_price; // Assume this is in string format
                     const unitPrice = parseFloat(unitPriceString.replace(/,/g, '')) || 0; // Remove commas before parsing
+                    document.getElementById('modal-unitprice').textContent = unitPrice;
 
-                    console.log("Unit Price: ", unitPrice); // Log to check the value
+                    // Initialize total penalties and flags
+                    let totalPaid = 0;
+                    let totalPenalties = 0;
+                    let discountApplied = false;
 
-                    // Calculate total amount paid from installment process
-                    const totalPaid = paymentData.installment_process.reduce((sum, payment) => {
-                        return sum + (parseFloat(payment.amount) || 0); // Ensure each amount is a number
-                    }, 0);
+                    // Loop through the installment process and compare dates for penalties
+                    paymentData.installment_process.forEach((installment, index) => {
+                        const paymentAmount = parseFloat(installment.amount) || 0;
+                        totalPaid += paymentAmount; // Sum up the total amount paid
 
-                    console.log("Total Paid: ", totalPaid); // Log to check the total paid
+                        // Get the related payment schedule date
+                        const paymentScheduleDate = new Date(paymentData.payment_schedule[index]?.date);
+                        const installmentProcessDate = new Date(installment.date);
 
-                    // Calculate remaining balance
-                    const balance = Math.max(0, unitPrice - totalPaid);
-                    console.log("Remaining Balance: ", balance); // Log to check the remaining balance
+                        // Calculate the difference in days between the installment process date and the payment schedule date
+                        const timeDifference = installmentProcessDate - paymentScheduleDate; // Difference in milliseconds
+                        const daysDifference = timeDifference / (1000 * 60 * 60 * 24); // Convert to days
 
-                    // Format balance to include commas and two decimal places
-                    const formattedBalance = new Intl.NumberFormat('en-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                    }).format(balance);
+                        // Apply a discount of 100 if installment is made before the payment schedule date
+                        if (installmentProcessDate < paymentScheduleDate) { 
+                            console.log(`Payment made before due date. Applying discount of 100.`);
+                            discountApplied = true; // Set discount flag to true
+                        } 
+                        // Apply a 10% penalty if the installment was made more than 3 days after the payment schedule
+                        else if (daysDifference > 3) {
+                            const penalty = paymentAmount * 0.10; // Apply 10% penalty
+                            totalPenalties += penalty; // Add the penalty to total penalties
+                            console.log(`Late Payment Detected: ${daysDifference.toFixed(0)} days late. Penalty: ${penalty}`);
+                        } else {
+                            console.log(`Payment is on time or within grace period. No penalty applied.`);
+                        }
+                    });
 
-                    // Update balance in modal
-                    document.getElementById('modal-balance').textContent = formattedBalance; // Format to currency
+                    // Log the results
+                    console.log("Total Paid: ", totalPaid);
+                    console.log("Total Penalties: ", totalPenalties);
+
+                    // Calculate the balance with penalties and discounts
+                    const discountAmount = discountApplied ? 100 : 0; // Set discount amount
+                    const balanceWithPenalties = Math.max(0, unitPrice - totalPaid + totalPenalties - discountAmount); // Ensure the balance is not negative
+
+                    // Log discount status
+                    console.log(discountApplied ? "Discount: 100 applied" : "Discount: 0");
+
+                    // Log balance with penalties and discount
+                    console.log("Balance with Penalties and Discount: ", balanceWithPenalties);
+
+                      
+                    // Update balance in the modal
+                    document.getElementById('modal-balance').textContent = balanceWithPenalties.toFixed(2); // Format to 2 decimal places
 
                     // Populate payment schedule table
                     const tableBody = document.getElementById('payment-schedule-table-body');
@@ -608,6 +634,9 @@
         }
     });
 });
+
+
+
 
         
             

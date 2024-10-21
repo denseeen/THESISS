@@ -1,4 +1,4 @@
-/* TopNav */
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -406,10 +406,6 @@ button:hover {
     text-align: right;
 }
 
-.modal-footer button {
-    margin-left: 10px;
-}
-
 
 .dark-mode .viewtitle{
     color: #ddd;
@@ -734,6 +730,27 @@ button:hover {
 /* tablet */
 @media (max-width: 769px) {
 
+    .dashboard-design {
+        position: relative;
+        text-align: center;
+        color: white;
+        margin: 0px 21%;
+        margin-top: 14%;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        width: 144%;
+        overflow: hidden;
+    }
+
+    .sale-print {
+        display: flex;
+        display: end;
+        font-size: 62%;
+        margin-left: 5%;
+    }
+
     .viewtitle {
         width: 25%;
         padding-top: 44px;
@@ -853,6 +870,46 @@ button:hover {
 
 @media (max-width: 426px) {
 
+    .col {
+        flex: 0 0 auto;
+        margin-right: 0px;
+        width: 40%;
+    }
+.modal-content {
+    font-size: 20px;
+    padding: 17px;
+    margin-right: 6px;
+}
+
+    .search-bar #searchName {
+        width: 30%;
+        margin-left: 52%;
+        font-size: 81%;
+    }
+
+    .sale-print {
+        font-size: 7px;
+        margin-left: 35%;
+    }
+   
+
+    .btn-print{
+        margin-left: 171%;
+    }
+
+    .dashboard-design {
+        position: relative;
+        text-align: center;
+        color: white;
+        margin: 0px 22%;
+        margin-top: 14%;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        width: 141%;
+        overflow: hidden;
+    }
     .viewtitle {
         width: 25%;
         padding-top: 39px;
@@ -862,15 +919,15 @@ button:hover {
         margin-left: 366px;
     }
 
-    .row{
-        margin-left: 100px;
+    .row {
+        margin-left: 62px;
     }
 
     .card {
         margin-left: 26px;
         margin: 0 0%;
         min-width: 0;
-        width: 116px;
+        width: 90px;
         font-size: 10px;
         height: 55px;
     }
@@ -908,18 +965,13 @@ button:hover {
         margin-left: 2px;
     }
 
-    .col {
-        flex: 0 0 auto;
-        margin-right: 1px;
-        width: 40%;
-    
-    }
+  
 
     .application-list {
         margin-top: 24px;
         width: 154%;
         padding: 10px;
-        margin-left: 81px;
+        margin-left: 61px;
     }
 
     th, td {
