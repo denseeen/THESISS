@@ -22,7 +22,7 @@
     <body>
         <!-- Top Navbar -->
         <nav class="top_navbar">
-        <li style="font-size: 120%;  margin-left: 80%; display: block; color: aliceblue;">Anonas Branch</li>
+        <li >Anonas Branch</li>
             <a href="{{ route('addashboard.show') }}">
                 <img src="/image/logoBillnWow3.png" class="TopNav-BillnWoWlogo" alt="BillnWoWLogo" style="margin-top:-1.3%">
                
@@ -72,13 +72,11 @@
         </div>
 
         <div class="sale-print" >
+            <h3 style="margin-left:7%; color:gray;">Sale Reports:</h3>
 
-        <h3 style="margin-left:7%; color:gray;">Sales & Reports:</h3>
-
-        <button class="btn-print" type="button" onclick="printSpecificArea()">
-    <span class="material-symbols-outlined">print</span>
-</button>
-
+            <button class="btn-print" type="button" onclick="printSpecificArea()">
+                <span class="material-symbols-outlined">print</span>
+            </button>
         </div>
         <!-- Content -->
         <!-- Billing Cards Section (Wrap with a div for printing) -->
@@ -184,7 +182,7 @@
         </div>
         <div class="modal-body">
             <input type="hidden" id="recipientId" /> <!-- Hidden field to store recipient ID -->
-            <textarea id="messageBox" rows="4" style="width: 100%; padding: 10px;" placeholder="Type your message here..."></textarea>
+            <textarea id="messageBox" rows="4" style="width: 95%; padding: 10px;" placeholder="Type your message here..."></textarea>
             <div id="modalFeedback" style="margin-top: 10px;"></div> <!-- Feedback message area -->
         </div>
         <div class="modal-footer">

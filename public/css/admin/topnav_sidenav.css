@@ -4,6 +4,14 @@ body {
     padding: 0;
   }
 
+
+  .top_navbar li{
+    font-size: 128%; 
+    margin-left: 80%;
+    display: block; 
+    color: aliceblue;
+  }
+
   .top_navbar {
     background: radial-gradient(circle at 10% 50%, rgb(188, 9, 9) 0%, rgb(8, 8, 180) 100%);
     /* background-color:  whitesmoke; */
@@ -193,4 +201,94 @@ height: 30px;
 
 .dark-mode .sidebar ul li a {
   color: #ffffff;
+}
+
+
+
+@media (max-width: 2561px){}
+@media (max-width: 2000px) {}
+
+@media (max-width: 1441px){}
+@media (max-width: 1025px)
+{
+  .top_navbar li {
+    font-size: 128%;
+    margin-left: 73%;
+    display: block;
+    color: aliceblue;
+}
+}
+@media (max-width: 769px) 
+{
+  
+  .top_navbar li {
+    font-size: 114%;
+    margin-left: 66%;
+    display: block;
+    color: aliceblue;
+}
+}
+@media (max-width: 426px) 
+{
+  .top_navbar {
+    height: 5%;
+    width: 100%;
+    font-size: 12%;
+}
+
+.top_navbar li{
+  margin-left: 70%;
+}
+
+.icon img {
+  width: 17px;
+  height: 16px;
+}
+
+.top_navbar .icon {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.top_navbar .icons {
+  display: flex;
+  margin-right: 4%;
+  align-items: center;
+}
+
+.dropdown-menu a {
+  
+  padding: 3px 13px;
+ 
+}
+
+.dropdown-menu {
+  top: 33px;
+  width: 15%;
+  right: 11%;
+  font-size: 8px;
+  height: 120%;
+}
+
+
+.sidebar ul li a {
+  display: block;
+  padding: 5px 5px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 10px;
+  margin-left: 15px;
+}
+.hover_collapse .sidebar {
+  top:17px;
+  width: 45px;
+}
+
+.sidebar ul li a {
+  margin-left: 12px;
+}
+
+.sidebar_inner {
+  padding-top: 36px;
+}
 }

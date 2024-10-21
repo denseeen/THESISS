@@ -612,6 +612,20 @@ button:hover {
 /* laptop */
 @media (max-width: 1025px)
 {
+
+    .application-design {
+        margin: 0px 17%;
+        margin-top: 10%;
+        padding: 13px;
+        width: 70%;
+    }
+    .application-design h2 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        padding: 3px;
+        font-size: 75%;
+    }
     
     h2 {
         font-size: 15px ;
@@ -730,47 +744,77 @@ button:hover {
 
 }
 /* tablet */
-@media (max-width: 769px) {}
+@media (max-width: 769px) {
+
+    .application-design {
+        margin: 0px 18%;
+        margin-top: 12%;
+        padding: 7px;
+        width: 70%;
+    }
+    .application-design h2 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        padding: 3px;
+        font-size: 73%;
+    }
+}
 /* phone */
 @media (max-width: 426px) 
 {
 
+    .application-design {
+        margin: 0 20%;
+        margin-top: 12%;
+        padding: 4px;
+        width: 70%;
+    }
+    .application-design h2 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        padding: 3px;
+        font-size: 52%;
+    }
     h2 {
         font-size: 15px ;
         margin-left: 10%;
         margin-top: 15%;
     } 
+    
+    .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group input[name="name"], .form-group input[type="emailad"] {
+        padding: 2px;
+        border: 1px solid #050404;
+        border-radius: 5px;
+        width: 77%;
+        font-size: 12px;
+        margin-left: 20%;
+    }
 
-.form-group input[type="text"], .form-group input[type="date"], .form-group input[type="number"], .form-group input[name="name"], .form-group input[type="emailad"] {
-    padding: 5px;
-    border: 1px solid #050404;
-    border-radius: 5px;
-    width: 96%;
-    font-size: 12px;
-    margin-left: 10%;
-}
+   
+    .form-group input.short-input, .form-group select {
+        padding: 1px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        width: 79%;
+        font-size: 12px;
+        margin-left: 20%;
+    }
 
 .form-group label {
-    font-size: 12px;
-    margin-left: 10%;
+    font-size: 10px;
+    margin-left: 15%;
 }
 
-.form-group input.short-input, .form-group select {
-    padding: 5px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    width: 100%;
-    font-size: 12px;
-    margin-left: 10%;
-}
 
 #date_of_birth{
-    width: 96%;
+    width: 78%;
 }
 
 #unitDescription {
-    width: 97%;
-    margin-left: 10%;
+    width: 77%;
+    margin-left: 20%;
 }
 
 #unitDescriptionLabel{
@@ -790,20 +834,22 @@ button:hover {
     transform: scale(1);
     margin-right: 10px;
 }
+.checkbox-group label {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    margin-right: 0%;
+}
 
 .checkbox-group label {
-    margin-right: 20px; /* Adds margin to the right of each label */
+    margin-right: 0px; /* Adds margin to the right of each label */
 }
 
 #installmentOptions{
     margin-left: 20%;
 }
 
-.checkbox-group label {
-    display: inline-flex;
-    align-items: center;
-    font-size: 12px;
-}
+
 
 .account-creation {
     display: flex;
@@ -834,6 +880,11 @@ button:hover {
     margin-left: 58%;
 }
 
+option {
+    font-size: 10px;
+    padding: 0;
+    height: 20%;
+}
 
 
 }
