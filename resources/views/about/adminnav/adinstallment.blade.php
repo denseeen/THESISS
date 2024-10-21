@@ -118,7 +118,7 @@
  
  
     <td>
-    <input type="number" name="amount" placeholder="Enter Amount">
+    <input type="number" name="amount" placeholder="Enter Amount" step="0.01">
     </td>
  
     <td>

@@ -24,7 +24,9 @@ class InstallmentProcess extends Model
         'status', 
         'violation',
         'comment',
-        'is_archived', // Newly added column for archiving
+        'is_archived',
+        'penalty',  
+        'rebate',
     ];
 
 

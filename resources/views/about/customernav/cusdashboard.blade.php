@@ -378,13 +378,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     return; // Stop execution if there's an error
                 }
 
-                // Removed populatePaymentSchedule(data.payment_schedule);
+                // Check for overdue reminder
+                if (data.overdueReminder) {
+                    showOverdueReminder(data.overdueReminder);
+                }
+
+                // Check for overdue payments
                 checkForOverduePayments(data.payment_schedule, data.nextPaymentDue);
             })
             .catch(error => {
                 console.error('Error fetching billing info:', error);
                 alert("An unexpected error occurred. Please refresh the page.");
             });
+    }
+
+    function showOverdueReminder(reminder) {
+        // You can show the reminder in a modal, alert, or any UI element you prefer
+        alert(reminder); // Example using an alert
+        // Alternatively, you can use a modal to show the reminder more elegantly
+        // displayReminderInModal(reminder);
     }
 
     function checkForOverduePayments(paymentSchedule, nextPaymentDue) {
@@ -417,43 +429,41 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Show the pullout reminder modal if the conditions are met
         if (isPaymentNotPaid && daysDifference > 14) {
-    console.log('Conditions met. Showing the modal now.');
-    showModal();
-}
-
+            console.log('Conditions met. Showing the modal now.');
+            showModal();
+        }
     }
 
     // Show modal with a smooth transition
     function showModal() {
-    const reminderModal = document.getElementById('pulloutReminderModal');
-    
-    if (!reminderModal) {
-        console.error('Modal element not found');
-        return;
+        const reminderModal = document.getElementById('pulloutReminderModal');
+        
+        if (!reminderModal) {
+            console.error('Modal element not found');
+            return;
+        }
+        
+        reminderModal.style.display = 'flex'; // Ensure it's visible
+        setTimeout(() => {
+            reminderModal.style.opacity = '1'; // Smoothly transition to visible
+        }, 10); // Delay to trigger the CSS transition
+
+        console.log('Modal is now showing');
     }
-    
-    reminderModal.style.display = 'flex'; // Ensure it's visible
-    setTimeout(() => {
-        reminderModal.style.opacity = '1'; // Smoothly transition to visible
-    }, 10); // Delay to trigger the CSS transition
-
-    console.log('Modal is now showing');
-}
-
 
     // Close modal with a smooth transition
-   window.closeModal = function() {
-    const reminderModal = document.getElementById('pulloutReminderModal');
-    reminderModal.style.opacity = '0'; // Transition to hidden
-    setTimeout(() => {
-        reminderModal.style.display = 'none'; // Hide after transition completes
-    }, 300); // Match the transition duration (0.3s or 300ms)
-};
+    window.closeModal = function() {
+        const reminderModal = document.getElementById('pulloutReminderModal');
+        reminderModal.style.opacity = '0'; // Transition to hidden
+        setTimeout(() => {
+            reminderModal.style.display = 'none'; // Hide after transition completes
+        }, 300); // Match the transition duration (0.3s or 300ms)
+    };
 
-
-    // Fetch the billing info when the page loads
+    // Initial call to fetch billing information
     fetchBillingInfo();
 });
+
 
 
 
@@ -512,8 +522,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
+
 function fetchPaymentSchedule() {
-    const loadingIndicator = document.getElementById('loading'); 
+    const loadingIndicator = document.getElementById('loading');
     loadingIndicator.style.display = 'block';
 
     fetch('/payment-schedule/customer')
@@ -524,37 +535,91 @@ function fetchPaymentSchedule() {
             return response.json();
         })
         .then(data => {
-            loadingIndicator.style.display = 'none'; 
-
-            console.log(data); 
+            loadingIndicator.style.display = 'none';
 
             const tableBody = document.getElementById('payment-schedule-table-body');
-            tableBody.innerHTML = ''; 
+            tableBody.innerHTML = '';
 
-            let firstNotPaidAmount = null; 
+            let totalOverdue = 0; // Initialize total overdue
+            let currentMonthlyBill = 0; // Initialize current monthly bill
+            let totalBalance = 0; // Initialize total balance
+            let foundNextDue = false; // Flag to find the next unpaid due date
 
             data.payment_schedule.forEach(payment => {
                 const row = document.createElement('tr');
                 let statusBadge = '';
 
                 const paymentScheduleDate = new Date(payment.date);
-                const actualPaymentDate = payment.actual_payment_date ? new Date(payment.actual_payment_date) : null;
                 const today = new Date();
+                const actualPaymentDate = payment.actual_payment_date ? new Date(payment.actual_payment_date) : null;
 
+                let amount = parseFloat(payment.amount.toString().replace(/,/g, '')); // Remove commas and convert to float
+                const originalAmount = amount; // Keep the original amount for calculations
+
+                // Apply a 3-day grace period before marking the payment as overdue
+                let gracePeriodDate = new Date(paymentScheduleDate);
+                gracePeriodDate.setDate(gracePeriodDate.getDate() + 3); // Add 3 days to the payment due date
+
+                // Determine if payment is overdue
+                if (today > gracePeriodDate && payment.status !== 'paid') {
+                    const penaltyAmount = originalAmount * 0.10; // Calculate 10% penalty
+                    amount += penaltyAmount; // Add penalty to the amount
+                    totalOverdue += originalAmount; // Add the original amount to total overdue
+                }
+
+                
                 // Payment status logic
-                if (payment.status === 'paid') {
-                    statusBadge = '<span class="badge" style="background-color: #28a745; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid</span>';
-                } else if (actualPaymentDate && actualPaymentDate > paymentScheduleDate && payment.status === 'paid late') {
-                    statusBadge = '<span class="badge" style="background-color: #ffc107; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid Late</span>';
-                } else if (payment.status === 'paid in advance') {
+            if (payment.status === 'paid') {
+                if (today && today < paymentScheduleDate) {
+                    // Payment settled earlier (in advance), apply a rebate of -100
                     statusBadge = '<span class="badge" style="background-color: green; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid In Advance</span>';
-                } else if (today > paymentScheduleDate) {
-                    statusBadge = '<span class="badge" style="background-color: #dc3545; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Overdue</span>';
-                } else {
-                    statusBadge = '<span class="badge" style="background-color: white; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Not Paid</span>';
-                    if (firstNotPaidAmount === null) {
-                        firstNotPaidAmount = payment.amount; 
+                    amount -= 100; // Retain penalty in paid amount
+                } 
+                else if (today > gracePeriodDate) {
+                    // If the payment was overdue and is now paid, retain the penalty
+                    statusBadge = '<span class="badge" style="background-color: #28a745; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid</span>';
+                    amount += originalAmount * 0.10; // Retain penalty in paid amount
+                } 
+                else {
+                    // Regular payment, no penalty or rebate
+                    statusBadge = '<span class="badge" style="background-color: #28a745; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid</span>';
+                }
+                    totalBalance -= amount; // Deduct paid amount from total balance
+                    } else if (actualPaymentDate && actualPaymentDate > paymentScheduleDate && payment.status === 'paid late') {
+                        statusBadge = '<span class="badge" style="background-color: #ffc107; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid Late</span>';
+                        totalBalance -= amount; // Deduct late payment amount from total balance
+                    } else if (payment.status === 'paid in advance') {
+                        statusBadge = '<span class="badge" style="background-color: green; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid In Advance</span>';
+                        totalBalance -= amount; // Deduct advance payment amount from total balance
+                    } else if (today > gracePeriodDate) {
+                        // Check if the payment is overdue
+                        statusBadge = '<span class="badge" style="background-color: #dc3545; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Overdue</span>';
+                        totalOverdue += originalAmount; // Add the original overdue amount to total overdue
+                    } else {
+                        // Payment is not paid yet
+                        statusBadge = '<span class="badge" style="background-color: white; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Not Paid</span>';
+                        
+                    
+
+                    // Add unpaid amount to the current monthly bill if it's the first unpaid payment
+                    if (!foundNextDue) {
+                        if (today > gracePeriodDate) {
+                            // If overdue, apply a penalty
+                            const penaltyAmount = originalAmount * 0.10; // Apply the 10% penalty if overdue
+                            amount += penaltyAmount; // Add penalty to the amount
+                            currentMonthlyBill += amount; // Include the penalty-adjusted amount for the current monthly bill
+                        } else if (today.toDateString() === paymentScheduleDate.toDateString()) {
+                            // If today is the payment due date, use the original amount (no rebate)
+                            currentMonthlyBill += originalAmount; // Add the original amount for today's payment
+                        } else {
+                            // If the payment is not due yet, apply a rebate if needed
+                            amount -= 100; // Apply rebate
+                            currentMonthlyBill += amount; // Add the rebate-adjusted amount for the current monthly bill
+                        }
+
+                        foundNextDue = true; // Set the flag to true to prevent adding future unpaid amounts
                     }
+                            
                 }
 
                 // Format payment date for display
@@ -566,32 +631,40 @@ function fetchPaymentSchedule() {
 
                 row.innerHTML = `
                     <td>${formattedPaymentDate}</td>
-                    <td>₱${payment.amount}</td>
+                    <td>₱${amount.toFixed(2)}</td>
                     <td>${statusBadge}</td>
                 `;
                 tableBody.appendChild(row);
+
+                // Add the adjusted amount to total balance
+                totalBalance += amount; // Sum the adjusted amounts for total balance calculation
             });
+            
 
             // Update billing card values
-            document.getElementById('current-monthly-bill').textContent = firstNotPaidAmount ? `₱${firstNotPaidAmount}` : '₱0.00'; 
+            document.getElementById('current-monthly-bill').textContent = `₱${currentMonthlyBill.toFixed(2)}`; // Total current monthly bill
+
             document.getElementById('next-payment-due').textContent = data.nextPaymentDue ? data.nextPaymentDue : 'N/A';
 
-            // Validate and format the balance to avoid NaN issues
-            const balance = isNaN(Number(data.balance)) ? 0 : Number(data.balance); 
-            document.querySelector('#balance .h3').textContent = `Pesos: ${balance.toLocaleString('en-US', {
+            // Update balance to reflect total amounts
+            document.querySelector('#balance .h3').textContent = `Pesos: ${totalBalance.toLocaleString('en-US', {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             })}`;
 
-            document.getElementById('unit-price').textContent = `₱${data.unit_price}`; 
+            document.getElementById('unit-price').textContent = `₱${(data.unit_price).toFixed(2)}`; // No need to multiply unit price by 100
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
-            loadingIndicator.style.display = 'none'; 
+            loadingIndicator.style.display = 'none';
         });
 }
 
 fetchPaymentSchedule();
+
+
+
+
 
 
 // transaction history

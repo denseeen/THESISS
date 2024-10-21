@@ -187,3 +187,117 @@ public function getCustomer($id)
 
 
 ?>
+
+
+
+
+
+
+function fetchPaymentSchedule() {
+    const loadingIndicator = document.getElementById('loading');
+    loadingIndicator.style.display = 'block';
+
+    fetch('/payment-schedule/customer')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            loadingIndicator.style.display = 'none';
+
+            const tableBody = document.getElementById('payment-schedule-table-body');
+            tableBody.innerHTML = '';
+
+            let totalOverdue = 0; // Initialize total overdue
+            let currentMonthlyBill = 0; // Initialize current monthly bill
+            let totalBalance = 0; // Initialize total balance
+            let firstNotPaidAmount = null; // Initialize the first not paid amount
+
+            data.payment_schedule.forEach(payment => {
+                const row = document.createElement('tr');
+                let statusBadge = '';
+
+                const paymentScheduleDate = new Date(payment.date);
+                const today = new Date();
+                const actualPaymentDate = payment.actual_payment_date ? new Date(payment.actual_payment_date) : null;
+
+                let amount = parseFloat(payment.amount.toString().replace(/,/g, '')); // Remove commas and convert to float
+                const originalAmount = amount; // Keep the original amount for display
+
+                // Payment status logic
+                if (payment.status === 'paid') {
+                    statusBadge = '<span class="badge" style="background-color: #28a745; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid</span>';
+                } else if (actualPaymentDate && actualPaymentDate > paymentScheduleDate && payment.status === 'paid late') {
+                    statusBadge = '<span class="badge" style="background-color: #ffc107; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid Late</span>';
+                } else if (payment.status === 'paid in advance') {
+                    statusBadge = '<span class="badge" style="background-color: green; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Paid In Advance</span>';
+                } else if (today > paymentScheduleDate) {
+                    // Check if the payment is overdue
+                    statusBadge = '<span class="badge" style="background-color: #dc3545; color: white; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Overdue</span>';
+                    const penaltyAmount = originalAmount * 0.10; // Calculate 10% penalty
+                    amount += penaltyAmount; // Add penalty to amount for display
+                    totalOverdue += originalAmount; // Add the original overdue amount to total overdue
+                } else {
+                    // Payment is not paid yet
+                    statusBadge = '<span class="badge" style="background-color: white; color: black; padding: 0.5em 1em; border-radius: 0.5em; font-weight: bold;">Not Paid</span>';
+                    if (firstNotPaidAmount === null) {
+                        firstNotPaidAmount = payment.amount; // Store the first not paid amount
+                    }
+                    amount -= 100; // Deduct the rebate from the amount for future due
+                }
+
+                // Format payment date for display
+                const formattedPaymentDate = paymentScheduleDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                row.innerHTML = `
+                    <td>${formattedPaymentDate}</td>
+                    <td>₱${amount.toFixed(2)}</td>
+                    <td>${statusBadge}</td>
+                `;
+                tableBody.appendChild(row);
+
+                // Add amount to current monthly bill only for overdue payments (including penalties)
+                if (today > paymentScheduleDate) {
+                    currentMonthlyBill += originalAmount; // Include the original overdue amount for the current bill
+                }
+
+                // Add the adjusted amount to total balance
+                totalBalance += amount; // Sum the adjusted amounts for total balance calculation
+            });
+
+            // Update billing card values
+            document.getElementById('current-monthly-bill').textContent = `₱${(totalOverdue * 1.1).toFixed(2)}`; // Total overdue with penalties
+            document.getElementById('next-payment-due').textContent = data.nextPaymentDue ? data.nextPaymentDue : 'N/A';
+
+            // Update balance to reflect total amounts
+            document.querySelector('#balance .h3').textContent = `Pesos: ${totalBalance.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            })}`;
+            
+            document.getElementById('unit-price').textContent = `₱${(data.unit_price).toFixed(2)}`; // No need to multiply unit price by 100
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+            loadingIndicator.style.display = 'none';
+        });
+}
+
+fetchPaymentSchedule();
+
+
+
+
+let foundNextDue = false; // Flag to find the next unpaid due date
+
+
+if (!foundNextDue) {
+                        currentMonthlyBill += originalAmount; // Add the unpaid amount for the current monthly bill
+                        foundNextDue = true; // Set the flag to true to prevent adding future unpaid amounts
+                    }
