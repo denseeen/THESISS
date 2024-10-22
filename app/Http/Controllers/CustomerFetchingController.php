@@ -72,6 +72,7 @@ public function getBillingInfoAndPaymentSchedule()
         ->where('customer_id', $customerInfo->id)
         ->where('status', 'paid')
         ->sum('amount');
+        
     $balance = $totalUnitPrice - $totalPaid;
 
     // Fetch customer's installment plan and orders
