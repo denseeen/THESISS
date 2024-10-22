@@ -57,27 +57,27 @@
                 </div>
             </div>
         </div>
-
-        
+ 
+       
         <div class="installment-design">
         <img src="/image/installment_bg.jpg" alt="bg-installment" class="bg-image">
          <h2>INSTALLMENT PROCESS</h2>
         </div>
-        
-
+       
+ 
 <div class="installment-container">
-
-
+ 
+ 
         <div class="container" style="margin-bottom: 1%;">
-
+ 
             <form id="searchCustomerForm"  style="width:50%; display:flex;">
-            
+           
                 <input type="text" id="customerName" placeholder="Search by name..." required>
                 <button type="submit">Search</button>
                 <div id="searchStatusMessage" class="status-message"> </div>
             </form>
         </div>
-
+ 
         <table>
     <thead>
         <tr>
@@ -99,51 +99,51 @@
             <td>
                 <a href="#" class="customer-link" data-customer-id="{{ $installment['id'] }}">{{ $installment['name'] }}</a>
             </td>
-
+ 
             <!-- Form for updating the installment -->
             <form action="{{ route('installment.store') }}" method="POST">
                 @csrf
                 <input type="hidden" name="customer_id" value="{{ $installment['id'] }}"> <!-- Pass the customer ID here -->
-
+ 
                 <td>
                     <input type="number" name="account_number" placeholder="Enter Account Number" required>
                 </td>
-
+ 
                 <td>
                     <select id="payment_method" name="payment_method" required>
                         <option value="otc">OTC</option>
                         <option value="online">Online</option>
                     </select>
                 </td>
-
+ 
                 <td>
                     <input type="number" name="amount" placeholder="Enter Amount" required>
                 </td>
-
+ 
                 <td>
                     <input type="date" name="date" required>
                 </td>
-
+ 
                 <td>
                     <select id="status" name="status" required>
                         <option value="paid">Paid</option>
                         <option value="not_paid">Not Paid</option>
                     </select>
                 </td>
-
+ 
                 <td>
                     <input type="text" name="violation" placeholder="Enter Violation">
                 </td>
-
+ 
                 <td>
                     <input type="text" name="comment" placeholder="Enter Comment">
                 </td>
-
+ 
                 <td>
                     <button type="submit">UPDATE</button>
                 </td>
             </form>
-
+ 
             <!-- Form for archiving the installment -->
             <form action="{{ route('installment.archive') }}" method="POST" style="display:inline;">
                 @csrf
@@ -156,12 +156,12 @@
         @endforeach
     </tbody>
 </table>
-
+ 
 </div>
  
  
-
-
+ 
+ 
  <!-- Modal for search/edit transaction -->
  <div id="searchResultsModal" class="modal">
         <div class="modal-content">
@@ -171,9 +171,9 @@
         </div>
     </div>
 </div>
-
-
-
+ 
+ 
+ 
  
  <!-- Modal Structure -->
 <div id="customer-modal" class="modal">
@@ -183,23 +183,23 @@
             <!-- Flex container for customer info and transaction records -->
             <div class="flex-columns">
                 <div class="customer-info">
-
+ 
                     <div class="btn-print-design">
                         <h2>Customer Name:</h2>
                         <button class="btn-print" type="button" onclick="printModal('customer-modal')">
                         <span class="material-symbols-outlined">print</span>
                         </button>
                     </div>
-            
-
+           
+ 
                     <h2><strong id="modal-name"></strong></h2>
-
+ 
                     <p>Email: <span id="modal-email"></span></p>
                     <p>Phone Number: <span id="modal-phone"></span></p>
                     <p>Address: <span id="modal-address"></span></p>
                     <!-- <a href="{{ route('edit.show') }}" class="edit-button">Edit</a> -->
-                    
-                  
+                   
+                 
                 </div>
  
                 <div class="transaction-records">
@@ -253,14 +253,14 @@
  
  
 <script>
-
+ 
         // Search customer and display installment processes
         document.getElementById('searchCustomerForm').addEventListener('submit', function(event) {
             event.preventDefault();
-
+ 
             const name = document.getElementById('customerName').value;
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
+ 
             fetch(`/search-customer?name=${encodeURIComponent(name)}`, {
                 method: 'GET',
                 headers: {
@@ -277,13 +277,13 @@
             .then(data => {
                 const resultsDiv = document.getElementById('searchResults');
                 resultsDiv.innerHTML = ''; // Clear previous results
-
+ 
                 if (data.length === 0) {
                     resultsDiv.innerHTML = '<p>No customers found.</p>';
                     showModal(); // Show modal even if no results found
                     return;
                 }
-
+ 
                 data.forEach(customer => {
                     resultsDiv.innerHTML += `
                         <div>
@@ -292,7 +292,7 @@
                             <div id="installments-${customer.id}"></div>
                         </div>
                     `;
-
+ 
                     // Fetch the customer's installment processes
                     fetch(`/get-installments/${customer.id}`, {
                         method: 'GET',
@@ -326,7 +326,7 @@
                         console.error('Error fetching installments:', error);
                     });
                 });
-
+ 
                 showModal(); // Show modal with results
             })
             .catch(error => {
@@ -336,28 +336,28 @@
                 statusMessage.className = 'status-message status-error';
             });
         });
-
+ 
         // Function to show modal
         function showModal() {
             const modal = document.getElementById("searchResultsModal");
             modal.style.display = "block";
         }
-
+ 
         // Function to hide modal
         function hideModal() {
             const modal = document.getElementById("searchResultsModal");
             modal.style.display = "none";
         }
-
+ 
         // Close the modal when the user clicks on <span> (x)
         document.querySelector('.close-button').addEventListener('click', hideModal);
-
+ 
         // Use event delegation to handle edit button clicks dynamically
         document.getElementById('searchResults').addEventListener('click', function(event) {
             if (event.target.classList.contains('editButton')) {
                 const installmentId = event.target.dataset.installmentId;
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
+ 
                 fetch(`/update-installment/${installmentId}`, {
                     method: 'GET',
                     headers: {
@@ -376,42 +376,42 @@
                     const formHTML = `
                         <form class="updateInstallmentForm" data-installment-id="${installment.id}">
                             <h2>Update Installment Process</h2>
-
+ 
                             <div class="form-group">
                                 <label for="payment_method">Payment Method:</label>
                                 <input type="text" name="payment_method" value="${installment.payment_method}" required>
                             </div>
-
+ 
                             <div class="form-group">
                                 <label for="amount">Amount:</label>
                                 <input type="number" name="amount" value="${installment.amount}" required>
                             </div>
-
+ 
                             <div class="form-group">
                                 <label for="date">Date:</label>
                                 <input type="date" name="date" value="${installment.date}" required>
                             </div>
-
+ 
                             <div class="form-group">
                                 <label for="status">Status:</label>
                                 <input type="text" name="status" value="${installment.status}" required>
                             </div>
-
+ 
                             <div class="form-group">
                                 <label for="violation">Violation:</label>
                                 <input type="text" name="violation" value="${installment.violation || ''}" required>
                             </div>
-
+ 
                             <div class="form-group">
                                 <label for="comment">Comment:</label>
                                 <input type="text" name="comment" value="${installment.comment || ''}" required>
                             </div>
-
+ 
                             <button type="submit" class="update-button">Update Installment Process</button>
                             <div class="status-message"></div>
                         </form>
                     `;
-
+ 
                     // Insert the form into the clicked installment
                     const installmentDiv = event.target.closest('.installment');
                     installmentDiv.innerHTML = formHTML + installmentDiv.innerHTML;
@@ -421,7 +421,7 @@
                 });
             }
         });
-
+ 
         // Handle installment update form submission
         document.getElementById('searchResults').addEventListener('submit', function(event) {
             if (event.target.classList.contains('updateInstallmentForm')) {
@@ -430,7 +430,7 @@
                 const installmentId = form.dataset.installmentId;
                 const formData = new FormData(form);
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
+ 
                 fetch(`/update-installment/${installmentId}`, {
                     method: 'POST',
                     headers: {
@@ -458,39 +458,39 @@
                 });
             }
         });
-
-
+ 
+ 
             // PrintButton
         function printModal(modalId) {
             // Get the modal element by its ID
             var modalContent = document.getElementById(modalId).innerHTML;
-
+ 
             // Save the current page's content
             var originalContent = document.body.innerHTML;
-
+ 
             // Replace the page's content with the modal's content
             document.body.innerHTML = modalContent;
-
+ 
             // Trigger the print function
             window.print();
-
+ 
             // Restore the original page content after printing
             document.body.innerHTML = originalContent;
-
+ 
             // Re-run any scripts or JavaScript necessary to reset the page's functionality
             window.location.reload();
         }
-
+ 
         document.addEventListener('DOMContentLoaded', (event) => {
     const modal = document.getElementById('customer-modal');
     const closeButton = document.querySelector('.close');
     const customerLinks = document.querySelectorAll('.customer-link');
-
+ 
     customerLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
             const customerId = this.getAttribute('data-customer-id');
-
+ 
             // Fetch customer details and payment schedule from the server
             fetch(`/customer/${customerId}`)
                 .then(response => response.json())
@@ -500,7 +500,7 @@
                     document.getElementById('modal-email').textContent = customerData.email;
                     document.getElementById('modal-phone').textContent = customerData.phone_number;
                     document.getElementById('modal-address').textContent = customerData.address;
-
+ 
                     // Fetch payment schedule
                     return fetch(`/payment-schedule/${customerId}`);
                 })
@@ -510,30 +510,30 @@
                     const unitPriceString = paymentData.unit_price; // Assume this is in string format
                     const unitPrice = parseFloat(unitPriceString.replace(/,/g, '')) || 0; // Remove commas before parsing
                     document.getElementById('modal-unitprice').textContent = unitPrice;
-
+ 
                     // Initialize total penalties and flags
                     let totalPaid = 0;
                     let totalPenalties = 0;
                     let discountApplied = false;
-
+ 
                     // Loop through the installment process and compare dates for penalties
                     paymentData.installment_process.forEach((installment, index) => {
                         const paymentAmount = parseFloat(installment.amount) || 0;
                         totalPaid += paymentAmount; // Sum up the total amount paid
-
+ 
                         // Get the related payment schedule date
                         const paymentScheduleDate = new Date(paymentData.payment_schedule[index]?.date);
                         const installmentProcessDate = new Date(installment.date);
-
+ 
                         // Calculate the difference in days between the installment process date and the payment schedule date
                         const timeDifference = installmentProcessDate - paymentScheduleDate; // Difference in milliseconds
                         const daysDifference = timeDifference / (1000 * 60 * 60 * 24); // Convert to days
-
+ 
                         // Apply a discount of 100 if installment is made before the payment schedule date
-                        if (installmentProcessDate < paymentScheduleDate) { 
+                        if (installmentProcessDate < paymentScheduleDate) {
                             console.log(`Payment made before due date. Applying discount of 100.`);
                             discountApplied = true; // Set discount flag to true
-                        } 
+                        }
                         // Apply a 10% penalty if the installment was made more than 3 days after the payment schedule
                         else if (daysDifference > 3) {
                             const penalty = paymentAmount * 0.10; // Apply 10% penalty
@@ -543,49 +543,49 @@
                             console.log(`Payment is on time or within grace period. No penalty applied.`);
                         }
                     });
-
+ 
                     // Log the results
                     console.log("Total Paid: ", totalPaid);
                     console.log("Total Penalties: ", totalPenalties);
-
+ 
                     // Calculate the balance with penalties and discounts
                     const discountAmount = discountApplied ? 100 : 0; // Set discount amount
                     const balanceWithPenalties = Math.max(0, unitPrice - totalPaid + totalPenalties - discountAmount); // Ensure the balance is not negative
-
+ 
                     // Log discount status
                     console.log(discountApplied ? "Discount: 100 applied" : "Discount: 0");
-
+ 
                     // Log balance with penalties and discount
                     console.log("Balance with Penalties and Discount: ", balanceWithPenalties);
-
-                      
+ 
+                     
                     // Update balance in the modal
                     document.getElementById('modal-balance').textContent = balanceWithPenalties.toFixed(2); // Format to 2 decimal places
-
+ 
                     // Populate payment schedule table
                     const tableBody = document.getElementById('payment-schedule-table-body');
                     tableBody.innerHTML = ''; // Clear existing rows
-
+ 
                     paymentData.payment_schedule.forEach(payment => {
                         const row = document.createElement('tr');
                         const dateCell = document.createElement('td');
                         const amountCell = document.createElement('td');
                         const statusCell = document.createElement('td');
-
+ 
                         dateCell.textContent = payment.date;
                         amountCell.textContent = payment.amount;
                         statusCell.textContent = payment.status;
-
+ 
                         row.appendChild(dateCell);
                         row.appendChild(amountCell);
                         row.appendChild(statusCell);
                         tableBody.appendChild(row);
                     });
-
+ 
                     // Populate installment process table
                     const installmentTableBody = document.getElementById('installment-details-table-body');
                     installmentTableBody.innerHTML = ''; // Clear existing rows
-
+ 
                     paymentData.installment_process.forEach(detail => {
                         const row = document.createElement('tr');
                         const dateCell = document.createElement('td');
@@ -593,7 +593,7 @@
                         const paymentMethodCell = document.createElement('td');
                         const violationCell = document.createElement('td');
                         const commentCell = document.createElement('td');
-
+ 
                         // Format date for installment details
                         const installmentDate = new Date(detail.date);
                         dateCell.textContent = installmentDate.toLocaleDateString('en-GB', {
@@ -601,12 +601,12 @@
                             month: 'long',
                             year: 'numeric'
                         });
-
+ 
                         amountCell.textContent = detail.amount;
                         paymentMethodCell.textContent = detail.payment_method;
                         violationCell.textContent = detail.violation;
                         commentCell.textContent = detail.comment;
-
+ 
                         row.appendChild(dateCell);
                         row.appendChild(amountCell);
                         row.appendChild(paymentMethodCell);
@@ -614,19 +614,19 @@
                         row.appendChild(commentCell);
                         installmentTableBody.appendChild(row);
                     });
-
+ 
                     // Open modal
                     modal.style.display = 'block';
                 })
                 .catch(error => console.error('Error fetching data:', error));
         });
     });
-
+ 
     // Close modal
     closeButton.addEventListener('click', function() {
         modal.style.display = 'none';
     });
-
+ 
     // Close modal if outside click
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
@@ -634,18 +634,18 @@
         }
     });
 });
-
-
-
-
-        
-            
+ 
+ 
+ 
+ 
+       
+           
                 //darkmode
                 function toggleDarkModeDashboard() {
                     document.body.classList.toggle('dark-mode');
-        
+       
                     let darkModeEnabled = document.body.classList.contains('dark-mode');
-        
+       
                     // Send AJAX request to update dark mode preference in the database
                     fetch('/update-dark-mode', {
                         method: 'POST',
@@ -661,19 +661,19 @@
                         }
                     });
                 }
-        
+       
                 // Apply saved dark mode preference from the database when the page loads
                 function applySavedDarkModePreferenceFromDB() {
                     const darkMode = {{ Auth::user()->dark_mode ? 'true' : 'false' }};
-        
+       
                     if (darkMode) {
                         document.body.classList.add('dark-mode');
                     }
                 }
-        
+       
                 // Call the function when the page loads
                 applySavedDarkModePreferenceFromDB();
-        
+       
 </script>      
             <script src="{{ asset('js/admin/adinstallment.js') }}"></script>
             <script src="{{ asset('js/admin/toppsidenav.js') }}"></script>  
