@@ -78,9 +78,9 @@
 
                             <button class="change-avatar-btn" id="change-avatar-btn"></button>
                 </div>
-                    <div class="name-title">
-                        <h2 id="profile-name">{{ Auth::user()->name }}</h2>
-                    </div>
+                <div class="name-title">
+                    <h2 id="profile-name">{{ $infos->name }}</h2> <!-- Use decrypted name from $infos -->
+            </div>
             </div>
            
             <div class="profile-body">
@@ -88,22 +88,20 @@
                         <h3>Information</h3>
                        
                         @if($infos)
-                        <p><strong>Gender:</strong> <span id="gender">{{ $infos->gender}}</span></p>
-                       
-                        <p><strong>Birthday:</strong> <span id="profile-birthday">{{ $infos->date_of_birth}}</span></p>
-                        <hr>
-                        <p><strong>Email:</strong> <span id="profile-email">{{ Auth::user()->email }}</span></p>
-                        <p><strong>Facebook:</strong> <span id="profile-facebook"></span>{{ $infos->facebook}}</p>
-                        <hr>
-                        <p><strong>Telephone:</strong> <span id="profile-telephone"></span>{{ $infos->telephone_number}}</p>
-                        <p><strong>Mobile:</strong> <span id="profile-mobile"></span>{{ $infos->phone_number}}</p>
-                            <div class="field">
-                                <p><strong>Address:</strong> <span id="profile-address"></span>{{ $infos->streetaddress}}</p>
-                            </div>
-                         
-                            @else
-                                <p>No information available.</p>
-                            @endif
+            <p><strong>Gender:</strong> <span id="gender">{{ $infos->gender }}</span></p>
+            <p><strong>Birthday:</strong> <span id="profile-birthday">{{ $infos->date_of_birth }}</span></p>
+            <hr>
+            <p><strong>Email:</strong> <span id="profile-email">{{ $infos->email }}</span></p> <!-- Use decrypted email -->
+            <p><strong>Facebook:</strong> <span id="profile-facebook">{{ $infos->facebook }}</span></p>
+            <hr>
+            <p><strong>Telephone:</strong> <span id="profile-telephone">{{ $infos->telephone_number }}</span></p>
+            <p><strong>Mobile:</strong> <span id="profile-mobile">{{ $infos->phone_number }}</span></p>
+            <div class="field">
+                <p><strong>Address:</strong> <span id="profile-address">{{ $infos->streetaddress }}</span></p>
+            </div>
+        @else
+            <p>No information available.</p>
+        @endif
                     </div>
                   
                     <div class="password-edit">

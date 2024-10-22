@@ -387,18 +387,26 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 // Search functionality
+// Search functionality
 document.getElementById('searchButton').addEventListener('click', function () {
-    const name = document.getElementById('searchName').value;
+    const name = document.getElementById('searchName').value; // Get the input value
 
-    fetch(`/search-customer?name=${name}`)
-        .then(response => response.json())
+    // Make the fetch request to the search-customer route
+    fetch(`/search-customer?name=${encodeURIComponent(name)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok'); // Handle HTTP errors
+            }
+            return response.json(); // Parse the JSON response
+        })
         .then(data => {
-            const resultBody = document.getElementById('resultBody');
+            const resultBody = document.getElementById('resultBody'); // Get the table body element
             resultBody.innerHTML = ''; // Clear previous results
 
             if (data.length > 0) {
+                // Iterate over each customer in the response data
                 data.forEach(customer => {
-                    const row = document.createElement('tr');
+                    const row = document.createElement('tr'); // Create a new row for each customer
                     row.innerHTML = `
                         <td>${customer.name}</td>
                         <td>${customer.email}</td>
@@ -407,16 +415,18 @@ document.getElementById('searchButton').addEventListener('click', function () {
                             <button class="edit-btn" onclick="editCustomer(${customer.id})">Edit</button>
                         </td>
                     `;
-                    resultBody.appendChild(row);
+                    resultBody.appendChild(row); // Append the new row to the table body
                 });
             } else {
-                resultBody.innerHTML = '<tr><td colspan="4">No customers found</td></tr>';
+                resultBody.innerHTML = '<tr><td colspan="4">No customers found</td></tr>'; // Message for no results
             }
             // Show the search results modal
-            document.getElementById('resultModal').style.display = 'block';
+            document.getElementById('resultModal').style.display = 'block'; // Display the modal
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error:', error)); // Log any errors
 });
+
+
 
 // Edit customer functionality
 function editCustomer(id) {
@@ -425,6 +435,7 @@ function editCustomer(id) {
         .then(response => response.json())
         .then(data => {
             if (!data.error) {
+                // Populate the edit form with customer data
                 document.getElementById('customerId').value = data.id;
                 document.getElementById('name').value = data.name;
                 document.getElementById('email').value = data.email;
@@ -444,6 +455,7 @@ function editCustomer(id) {
         })
         .catch(error => console.error('Error:', error));
 }
+
 
 // Form submission for updating customer
 document.getElementById('editCustomerForm').addEventListener('submit', function (event) {

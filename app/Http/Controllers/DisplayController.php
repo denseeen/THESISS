@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\CustomerInfo;
 use App\Models\AdminInfo;
 use App\Models\User;
-
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,16 +17,39 @@ use Illuminate\Support\Facades\DB;
 class DisplayController extends Controller
 {
 
-// customer profile
+// customer profile decrypted
 public function user_infos()
 {
     $userId = Auth::id(); // Get the current user's ID
-    $infos = DB::table('customer_info')
-    ->join('users', 'customer_info.user_id', '=', 'users.id')
-    ->select('customer_info.*', 'users.name', 'users.email') // Select fields you need
-    ->where('customer_info.user_id', $userId)
-    ->first();
 
+    // Fetch user info and related customer data
+    $infos = DB::table('customer_info')
+        ->join('users', 'customer_info.user_id', '=', 'users.id')
+        ->select('customer_info.*', 'users.email') // Select fields you need, including email from users table
+        ->where('customer_info.user_id', $userId)
+        ->first();
+
+    // Check if user info is found
+    if ($infos) {
+        // Decrypt fields with error handling
+        $fieldsToDecrypt = ['name', 'facebook', 'streetaddress', 'phone_number', 'gender', 'telephone_number', 'email'];
+
+        foreach ($fieldsToDecrypt as $field) {
+            try {
+                if (isset($infos->$field)) {
+                    // Attempt to decrypt each field
+                    $infos->$field = Crypt::decryptString($infos->$field);
+                }
+            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+                // Log the error
+                \Log::error("Decryption failed for field '{$field}' of user ID: {$userId}. Error: " . $e->getMessage());
+                // Optionally assign a placeholder for fields that fail to decrypt
+                $infos->$field = 'Decryption Failed';
+            }
+        }
+    }
+
+    // Return the view with the decrypted infos
     return view('about.customernav.cusprofile')->with('infos', $infos);
 }
 
@@ -41,6 +65,42 @@ public function user_infos_admin()
 
     return view('about.adminnav.adprofile')->with('info', $info); 
 }
+// admin profile decrypted
+// public function user_infos_admin()
+// {
+//     $userId = Auth::id(); // Get the current user's ID
+
+//     // Fetch user info and related admin data
+//     $info = DB::table('admin_info')
+//         ->join('users', 'admin_info.user_id', '=', 'users.id')
+//         ->select('admin_info.*', 'users.name', 'users.email') // Select fields you need, including name and email from users table
+//         ->where('admin_info.user_id', $userId)
+//         ->first();
+
+//     // Check if user info is found
+//     if ($info) {
+//         // Decrypt fields with error handling
+//         $fieldsToDecrypt = ['name', 'email', 'address', 'phone_number', 'facebook', 'gender', 'telephone_number'];
+
+//         foreach ($fieldsToDecrypt as $field) {
+//             try {
+//                 if (isset($info->$field)) {
+//                     // Attempt to decrypt each field
+//                     $info->$field = Crypt::decryptString($info->$field);
+//                 }
+//             } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+//                 // Log the error
+//                 \Log::error("Decryption failed for field '{$field}' of admin ID: {$userId}. Error: " . $e->getMessage());
+//                 // Optionally assign a placeholder for fields that fail to decrypt
+//                 $info->$field = 'Decryption Failed';
+//             }
+//         }
+//     }
+
+//     // Return the view with the decrypted info
+//     return view('about.adminnav.adprofile')->with('info', $info); 
+// }
+
 
 
 
@@ -55,6 +115,16 @@ public function getCustomers()
 
     // Iterate through each customer to calculate their balance and unit price sum
     foreach ($customers as $customer) {
+        // Attempt to decrypt the name
+        try {
+            $customer->name = Crypt::decryptString($customer->name);
+        } catch (DecryptException $e) {
+            // Log the error and retain the original name if decryption fails
+            \Log::error('Decryption failed for customer ID: ' . $customer->id . ' - Error: ' . $e->getMessage());
+            // Optionally, you could set a placeholder if desired
+            // $customer->name = 'Decryption Failed'; // Uncomment if needed
+        }
+
         // Fetch installment plan for the customer
         $installmentPlan = DB::table('installment_plan')->where('customer_id', $customer->id)->first();
 
@@ -92,7 +162,8 @@ public function getCustomers()
 
 
 
-// fullypaid and installment modal customer info, + fullypaid balance and invoice.
+
+
 public function getCustomer($id)
 {
     // Fetch customer details by ID
@@ -100,6 +171,25 @@ public function getCustomer($id)
 
     if (!$customer) {
         return response()->json(['error' => 'Customer not found'], 404);
+    }
+
+    // Initialize an array to hold decrypted values
+    $decryptedData = [];
+
+    // List of fields to check for encryption
+    $fieldsToCheck = ['email', 'phone_number', 'streetaddress','name']; // Add any other fields you want to check
+
+    foreach ($fieldsToCheck as $field) {
+        $originalValue = $customer->$field; // Get the original value
+
+        try {
+            // Attempt decryption
+            $decryptedValue = Crypt::decryptString($originalValue);
+            $decryptedData[$field] = $decryptedValue; // Use the decrypted value if successful
+        } catch (DecryptException $e) {
+            // If decryption fails, use the original value
+            $decryptedData[$field] = $originalValue;
+        }
     }
 
     // Fetch all unit prices and unit names from the orders table for this customer
@@ -127,10 +217,10 @@ public function getCustomer($id)
     $balance = $totalUnitPrice - $totalAmountPaid;
 
     return response()->json([
-        'name' => $customer->name,
-        'email' => $customer->email,
-        'phone_number' => $customer->phone_number,
-        'address' => $customer->streetaddress,
+        'name' => $decryptedData['name'], 
+        'email' => $decryptedData['email'], // Use the decrypted email
+        'phone_number' => $decryptedData['phone_number'], // Use the decrypted phone number
+        'address' => $decryptedData['streetaddress'], // Use the decrypted address
         'unit_price' => $totalUnitPrice > 0 ? $totalUnitPrice : 'N/A', // Total unit price
         'amount' => $totalAmountPaid, // Total amount paid
         'balance' => $balance, // Calculate and return balance
@@ -138,6 +228,10 @@ public function getCustomer($id)
         'unitnames' => $unitNames // Include concatenated unit names
     ]);
 }
+
+
+
+
 
 
 

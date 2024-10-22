@@ -78,85 +78,85 @@
             </form>
         </div>
 
-    <table>
-           <thead>
-               <tr>
-                 
-                <th>Name</th>
-                <th>Account Number</th>
-                <th>Payment Method</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Violation</th>
-                <th>Comment</th>
-                <th>Update</th>
-                <th>Archive</th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach($installments as $installment)
-    <tr>
+        <table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Account Number</th>
+            <th>Payment Method</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Violation</th>
+            <th>Comment</th>
+            <th>Update</th>
+            <th>Archive</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($finalInstallments as $installment)
+        <tr>
             <td>
-                <a href="#" class="customer-link" data-customer-id="{{ $installment->id }}">{{ $installment->name }}</a>
+                <a href="#" class="customer-link" data-customer-id="{{ $installment['id'] }}">{{ $installment['name'] }}</a>
             </td>
- 
+
+            <!-- Form for updating the installment -->
             <form action="{{ route('installment.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="customer_id" value="{{ $installment->id }}"> <!-- Pass the customer ID here -->
+                @csrf
+                <input type="hidden" name="customer_id" value="{{ $installment['id'] }}"> <!-- Pass the customer ID here -->
 
-            <td>
-            <input type="number" name="account_number" placeholder="Enter Account Number">
-            </td>
- 
-            <td>      
-    <select id="payment_method" name="payment_method">
-        <option value="otc">OTC</option>
-        <option value="online">Online</option>
-    </select>
-    </td>
- 
- 
-    <td>
-    <input type="number" name="amount" placeholder="Enter Amount" step="0.01">
-    </td>
- 
-    <td>
-    <input type="date" name="date">
-    </td>
- 
-    <td>
-    <select id="status" name="status">
-        <option value="paid">Paid</option>
-        <option value="not_paid">Not Paid</option>
-    </select>
-    </td>
- 
-    <td>
-    <input type="text" name="violation" placeholder="Enter Violation">
-    </td>
- 
-    <td>
-    <input type="text" name="comment" placeholder="Enter Comment">
-    </td>
- 
-    <td>
-    <button type="submit">UPDATE</button>
-    </td>
-</form>
- <!-- Form for archiving installment -->
-<form action="{{ route('installment.archive') }}" method="POST" style="display:inline;">
-    @csrf
-    <input type="hidden" name="customer_id" value="{{ $installment->id }}">
-    <td>
-    <button type="submit">ARCHIVE</button>
-    </td>
-</form>
-    </tr>
-    @endforeach
-</tbody>
+                <td>
+                    <input type="number" name="account_number" placeholder="Enter Account Number" required>
+                </td>
 
-    </table>
+                <td>
+                    <select id="payment_method" name="payment_method" required>
+                        <option value="otc">OTC</option>
+                        <option value="online">Online</option>
+                    </select>
+                </td>
+
+                <td>
+                    <input type="number" name="amount" placeholder="Enter Amount" required>
+                </td>
+
+                <td>
+                    <input type="date" name="date" required>
+                </td>
+
+                <td>
+                    <select id="status" name="status" required>
+                        <option value="paid">Paid</option>
+                        <option value="not_paid">Not Paid</option>
+                    </select>
+                </td>
+
+                <td>
+                    <input type="text" name="violation" placeholder="Enter Violation">
+                </td>
+
+                <td>
+                    <input type="text" name="comment" placeholder="Enter Comment">
+                </td>
+
+                <td>
+                    <button type="submit">UPDATE</button>
+                </td>
+            </form>
+
+            <!-- Form for archiving the installment -->
+            <form action="{{ route('installment.archive') }}" method="POST" style="display:inline;">
+                @csrf
+                <input type="hidden" name="customer_id" value="{{ $installment['id'] }}">
+                <td>
+                    <button type="submit">ARCHIVE</button>
+                </td>
+            </form>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
 </div>
  
  

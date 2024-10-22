@@ -82,61 +82,65 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($fullpaids as $fullpaid)
+                                @foreach($finalFullPaids as $fullpaid)
                 <tr>
-                    <td><a href="#" class="customer-link" data-customer-id="{{ $fullpaid->id }}">{{ $fullpaid->name }}</a></td>
+                    <!-- Accessing array values using ['key'] notation -->
+                    <td><a href="#" class="customer-link" data-customer-id="{{ $fullpaid['id'] }}">{{ $fullpaid['name'] }}</a></td>
+                    
                     <form action="{{ route('installment.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="customer_id" value="{{ $fullpaid->id }}"> <!-- Pass the customer ID here -->
-            <td>
-            <input type="number" name="account_number" placeholder="Enter Account Number">
-            </td>
- 
-            <td>      
-    <select id="payment_method" name="payment_method">
-        <option value="otc">OTC</option>
-        <option value="online">Online</option>
-    </select>
-    </td>
- 
- 
-    <td>
-    <input type="number" name="amount" placeholder="Enter Amount" step="0.01">
-    </td>
- 
-    <td>
-    <input type="date" name="date">
-    </td>
- 
-    <td>
-    <select id="status" name="status">
-        <option value="fully_paid">Fully Paid</option>
-        <option value="paid">Paid</option>
-        <option value="not_paid">Not Paid</option>
-    </select>
-    </td>
+                        @csrf
+                        <input type="hidden" name="customer_id" value="{{ $fullpaid['id'] }}"> <!-- Pass the customer ID here -->
+                        
+                        <td>
+                            <input type="number" name="account_number" placeholder="Enter Account Number">
+                        </td>
 
-    <input type="hidden" type="text" name="violation" placeholder="Enter Violation">
-    <input type="hidden" type="text" name="comment" placeholder="Enter Comment">
-    
-                    <td>
-                        <button type="submit">UPDATE</button>
-                    </td>
+                        <td>      
+                            <select id="payment_method" name="payment_method">
+                                <option value="otc">OTC</option>
+                                <option value="online">Online</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            <input type="number" name="amount" placeholder="Enter Amount" step="0.01">
+                        </td>
+
+                        <td>
+                            <input type="date" name="date">
+                        </td>
+
+                        <td>
+                            <select id="status" name="status">
+                                <option value="fully_paid">Fully Paid</option>
+                                <option value="paid">Paid</option>
+                                <option value="not_paid">Not Paid</option>
+                            </select>
+                        </td>
+
+                        <input type="hidden" name="violation" value="" placeholder="Enter Violation">
+                        <input type="hidden" name="comment" value="" placeholder="Enter Comment">
+
+                        <td>
+                            <button type="submit">UPDATE</button>
+                        </td>
                     </form>
+
                     <td>
-                        <button id="addOrderButton"  class="addOrderButton" data-customer-id="{{ $fullpaid->id }}">Add Order</button>
+                        <button id="addOrderButton" class="addOrderButton" data-customer-id="{{ $fullpaid['id'] }}">Add Order</button>
                     </td>
                     
-                 <!-- Form for archiving installment -->
-<form action="{{ route('installment.archive') }}" method="POST" style="display:inline;">
-    @csrf
-    <input type="hidden" name="customer_id" value="{{ $fullpaid->id }}">
-                    <td>
-                        <button type="submit">ARCHIVE</button>
-                    </td>
+                    <!-- Form for archiving installment -->
+                    <form action="{{ route('installment.archive') }}" method="POST" style="display:inline;">
+                        @csrf
+                        <input type="hidden" name="customer_id" value="{{ $fullpaid['id'] }}">
+                        <td>
+                            <button type="submit">ARCHIVE</button>
+                        </td>
                     </form>
                 </tr>
-                @endforeach
+            @endforeach
+
         </tbody>
     </table>
 </div>
