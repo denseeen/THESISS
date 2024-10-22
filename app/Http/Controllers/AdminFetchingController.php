@@ -398,10 +398,11 @@ public function showArchived()
         }
  
         // Attempt to decrypt the customer phone number
+        
         try {
-            $customerData['customer_phoneNum'] = Crypt::decryptString($customer->first()->customer_phoneNum); // Set the decrypted phone number
+            $customerData['account_number'] = Crypt::decryptString($customer->first()->account_number); // Set the decrypted phone number
         } catch (DecryptException $e) {
-            $customerData['customer_phoneNum'] = $customer->first()->customer_phoneNum; // Use original phone number if decryption fails
+            $customerData['account_number'] = $customer->first()->account_number; // Use original phone number if decryption fails
         }
  
         return $customerData; // Return the customer data with decrypted name and phone number

@@ -7,6 +7,8 @@ use App\Models\CustomerInfo;
 use App\Models\PaymentService;
 use App\Models\Order;
 use App\Models\InstallmentProcess;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -184,22 +186,64 @@ public function getBillingInfoAndPaymentSchedule()
 public function getBillingHistory()
 {
     $userId = Auth::id(); // Get the currently authenticated user
- 
+
     // Fetch the customer information
     $customerInfo = DB::table('customer_info')->where('user_id', $userId)->first();
- 
+
     if (!$customerInfo) {
         return response()->json(['error' => 'Customer not found'], 404);
     }
- 
+
     // Get the customer's installment process (billing history)
     $billingHistory = DB::table('installment_process')
                         ->where('customer_id', $customerInfo->id)
                         ->select('customer_id', 'date', 'amount', 'payment_method', 'violation', 'comment')
                         ->orderBy('date', 'asc')
                         ->get();
- 
-    return response()->json($billingHistory);
+
+    // Initialize an array to hold the decrypted billing history
+    $finalBillingHistory = [];
+
+    // Decrypt the 'payment_method', 'violation', and 'comment' fields for each billing history entry
+    foreach ($billingHistory as $entry) {
+        // Initialize an array to hold the decrypted billing data
+        $decryptedEntry = [
+            'customer_id' => $entry->customer_id,
+            'date' => $entry->date,
+            'amount' => $entry->amount,
+            'payment_method' => null, // Placeholder for decrypted payment_method
+            'violation' => null, // Placeholder for decrypted violation
+            'comment' => null, // Placeholder for decrypted comment
+        ];
+
+        // Attempt to decrypt the payment method
+        try {
+            $decryptedEntry['payment_method'] = $entry->payment_method ? Crypt::decryptString($entry->payment_method) : null;
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            $decryptedEntry['payment_method'] = $entry->payment_method; // Use original if decryption fails
+        }
+
+        // Attempt to decrypt the violation
+        try {
+            $decryptedEntry['violation'] = $entry->violation ? Crypt::decryptString($entry->violation) : null;
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            $decryptedEntry['violation'] = $entry->violation; // Use original if decryption fails
+        }
+
+        // Attempt to decrypt the comment
+        try {
+            $decryptedEntry['comment'] = $entry->comment ? Crypt::decryptString($entry->comment) : null;
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            $decryptedEntry['comment'] = $entry->comment; // Use original if decryption fails
+        }
+
+        // Add the decrypted entry to the final array
+        $finalBillingHistory[] = $decryptedEntry;
+    }
+
+    // Return the JSON response with the decrypted billing history
+    return response()->json($finalBillingHistory);
 }
+
  
 }
