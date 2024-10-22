@@ -12,6 +12,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB; // Correct DB facade import
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -58,8 +60,8 @@ class FormController extends Controller
 
         // Save to the users table
         $save = User::create([
-            'name'       => $request->input('name'),
-            'email'      => $request->input('email'),
+            'name'       => Crypt::encryptString($request->input('name')),
+            'email'      => Crypt::encryptString($request->input('email')),  // Encrypt email
             'password'   => Hash::make($request->input('password')),
             'user_roles' => $validatedData['user_roles'],
             'dark_mode'  => false
@@ -71,7 +73,7 @@ class FormController extends Controller
             AdminInfo::create([
                 'user_id'           => $save->id,
                 'name'              => $validatedData['name'],
-                'email'             => $validatedData['email'],
+                'email'      => Crypt::encryptString($request->input('email')),  // Encrypt email
                 'streetaddress'     => $validatedData['streetaddress'],
                 'phone_number'      => $validatedData['phone_number'],
                 'date_of_birth'     => $validatedData['date_of_birth'],
@@ -84,15 +86,15 @@ class FormController extends Controller
             // Save to the customer_info table
             $customerInfo = CustomerInfo::create([
                 'user_id'           => $save->id,
-                'name'              => $validatedData['name'],
-                'email'             => $validatedData['email'],
-                'streetaddress'     => $validatedData['streetaddress'],
-                'phone_number'      => $validatedData['phone_number'],
+                'name'              => Crypt::encryptString($request->input('name')),
+                'email'             => Crypt::encryptString($request->input('email')),  // Encrypt email
+                'streetaddress'     => Crypt::encryptString($request->input('streetaddress')),
+                'phone_number'      => Crypt::encryptString($request->input('phone_number')),
                 'date_of_birth'     => $validatedData['date_of_birth'],
                 'age'               => $validatedData['age'],
-                'facebook'          => $validatedData['facebook'],
-                'gender'            => $validatedData['gender'],
-                'telephone_number'  => $validatedData['telephone_number'],
+                'facebook'          => Crypt::encryptString($request->input('facebook')),
+                'gender'            => Crypt::encryptString($request->input('gender')),
+                'telephone_number'  => Crypt::encryptString($request->input('telephone_number')),
                 // 'customer_id'       => $customerInfo->id,
             ]);
 
@@ -128,42 +130,76 @@ class FormController extends Controller
 
     public function LoginEntry(Request $request)
     {
-        // Validate the login credentials
+        // Validate the login credentials to ensure they meet the required format
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email' => ['required', 'email'], // Email is required and must be a valid email format
+            'password' => ['required'], // Password is required
         ]);
-
-        // Attempt to authenticate the user with the provided credentials
-        if (Auth::attempt($credentials)) {
-            // Retrieve the authenticated user
-            $user = Auth::user();
-
-            // Check user role and return the appropriate view
-            switch ($user->user_roles) {
+    
+        // Fetch all users
+        $users = DB::table('users')->get();
+    
+        // Variable to hold the authenticated user
+        $authenticatedUser = null;
+    
+        // Loop through each user and check if their email matches
+        foreach ($users as $user) {
+            // Initialize a variable to store the email to check
+            $emailToCheck = $user->email;
+    
+            // Attempt to decrypt the email
+            try {
+                // Attempt decryption
+                $decryptedEmail = Crypt::decryptString($user->email);
+                // If successful, use the decrypted email for checking
+                $emailToCheck = $decryptedEmail;
+            } catch (DecryptException $e) {
+                // If decryption fails, this indicates that the email is in plain text
+                // We can ignore the error and continue
+            }
+    
+            // Check if the email matches and password is correct
+            if ($emailToCheck === $credentials['email'] && Hash::check($credentials['password'], $user->password)) {
+                // If a match is found, set the authenticated user
+                $authenticatedUser = $user;
+                break; // Exit the loop once we find the user
+            }
+        }
+    
+        // Check if an authenticated user was found
+        if ($authenticatedUser) {
+            // Log in the user using their ID
+            Auth::loginUsingId($authenticatedUser->id);
+    
+            // Check the user's role to determine which view to return
+            switch ($authenticatedUser->user_roles) {
                 case '1':
-                    // Admin view
-                    return view('about.adminnav.addashboard', ['user' => $user]);
-
+                    // If the user is an admin (role 1), return the admin dashboard view
+                    return view('about.adminnav.addashboard', ['user' => $authenticatedUser]);
+    
                 case '2':
-                   
-                // Fetch customer information from the customer_info table
-                $customerInfo = DB::table('customer_info')
-                ->where('email', $user->email) // Use the authenticated user's email
-                ->first();
-
-                    // Customer view
-                    return view('about.customernav.cusdashboard', ['user' => $user]);
-
+                    // If the user is a customer (role 2)
+    
+                    // Fetch customer information from the customer_info table
+                    $customerInfo = DB::table('customer_info')
+                        ->where('email', $authenticatedUser->email) // Use the authenticated user's email
+                        ->first(); // Fetch the first matching record
+    
+                    // Customer view; this can be modified to include $customerInfo if needed
+                    return view('about.customernav.cusdashboard', ['user' => $authenticatedUser]);
+    
                 default:
                     // Handle other roles or redirect with an error if the role is unauthorized
                     return redirect()->route('login')->withErrors(['email' => 'Unauthorized role']);
             }
         }
-
-        // If authentication fails, return back with an error
+    
+        // If authentication fails, return back to the login form with an error message
         return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+            'email' => 'The provided credentials do not match our records.', // Error message if credentials are invalid
+        ])->onlyInput('email'); // Only retain the email input for user convenience
     }
+    
+    
+
 }
