@@ -142,11 +142,11 @@ public function searchCustomer(Request $request)
     return response()->json(array_values($filteredCustomers));
 }
  
- 
- 
-// update button on installment
-public function updateInstallment(Request $request, $id)
+
+
+public function updateInstallment(Request $request, $installmentId)
 {
+    // Validate the input from the form
     $validatedData = $request->validate([
         'payment_method' => 'required|string|max:15',
         'amount' => 'required|numeric',
@@ -155,35 +155,74 @@ public function updateInstallment(Request $request, $id)
         'violation' => 'nullable|string|max:255',
         'comment' => 'nullable|string|max:255',
     ]);
- 
-    $installment = InstallmentProcess::find($id);  // Fetch the correct installment by its ID
- 
+
+    // Find the installment by ID
+    $installment = InstallmentProcess::find($installmentId);
+
+    // Check if the installment exists
     if (!$installment) {
         return response()->json(['error' => 'Installment process not found'], 404);
     }
- 
-    $installment->update($validatedData);
- 
-    return response()->json(['success' => 'Installment updated successfully!']);
+
+    // Encrypt specific fields before updating
+    $installment->payment_method = Crypt::encryptString($request->input('payment_method')); 
+    $installment->amount = $validatedData['amount'];
+    $installment->date = $validatedData['date'];
+    $installment->status = Crypt::encryptString($request->input('status')); 
+    $installment->violation = Crypt::encryptString($request->input('violation'));
+    $installment->comment = Crypt::encryptString($request->input('comment'));
+
+    // Save the updated installment
+    $installment->save();
+
+    // Return only the success message
+    return response()->json(['message' => 'Successfully updated']);
 }
- 
- 
- 
+
+
 public function getInstallments($customerId)
 {
     $installments = InstallmentProcess::where('customer_id', $customerId)->get();
+
+    // Decrypt relevant fields for readability
+    foreach ($installments as $installment) {
+        $installment->payment_method = $this->decryptField($installment->payment_method);
+        $installment->status = $this->decryptField($installment->status);
+        $installment->violation = $this->decryptField($installment->violation);
+        $installment->comment = $this->decryptField($installment->comment);
+    }
+
     return response()->json($installments);
 }
- 
- 
+
+private function decryptField($field)
+{
+    try {
+        return Crypt::decryptString($field);
+    } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+        return $field; // Return original if decryption fails
+    }
+}
+
 public function getInstallment($installmentId)
 {
     $installment = InstallmentProcess::find($installmentId);
+    
     if (!$installment) {
         return response()->json(['error' => 'Installment not found'], 404);
     }
+
+    // Decrypt fields for readability
+    $installment->payment_method = $this->decryptField($installment->payment_method);
+    $installment->status = $this->decryptField($installment->status);
+    $installment->violation = $this->decryptField($installment->violation);
+    $installment->comment = $this->decryptField($installment->comment);
+    $installment->amount = $installment->amount; // Assuming amount is stored as plain
+    $installment->date = $installment->date; // Assuming date is stored as plain
+
     return response()->json($installment);
 }
+
  
  
  

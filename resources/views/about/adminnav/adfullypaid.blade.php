@@ -176,7 +176,7 @@
                 </div>
             </div>
 
-            <!-- Installment Details Table -->
+            <!-- invoice Details Table -->
             <div class="table-container">
             <h2>Transaction Records</h2>
                 <table>
@@ -187,8 +187,7 @@
                             <th>Amount Paid</th>
                             <th>Payment Method</th>
                             <th>Status</th>
-                            <th>Penalty</th>
-                            <th>Comment</th>
+                            
                         </tr>
                     </thead>
                     <tbody id="installment-details-table-body">
@@ -301,8 +300,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             <td>${installment.amount}</td>
                             <td>${installment.payment_method}</td>
                             <td>${installment.status}</td>
-                            <td>${installment.violation}</td>
-                            <td>${installment.comment}</td>
+                           
                         `;
                         installmentDetailsTableBody.appendChild(row);
                     });

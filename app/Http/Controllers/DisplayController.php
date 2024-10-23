@@ -163,25 +163,25 @@ public function getCustomers()
  
  
  
- 
+//  fullypaid process
 public function getCustomer($id)
 {
     // Fetch customer details by ID
     $customer = DB::table('customer_info')->where('id', $id)->first();
- 
+
     if (!$customer) {
         return response()->json(['error' => 'Customer not found'], 404);
     }
- 
+
     // Initialize an array to hold decrypted values
     $decryptedData = [];
- 
+
     // List of fields to check for encryption
-    $fieldsToCheck = ['email', 'phone_number', 'streetaddress','name']; // Add any other fields you want to check
- 
+    $fieldsToCheck = ['email', 'phone_number', 'streetaddress', 'name']; // Add any other fields you want to check
+
     foreach ($fieldsToCheck as $field) {
         $originalValue = $customer->$field; // Get the original value
- 
+
         try {
             // Attempt decryption
             $decryptedValue = Crypt::decryptString($originalValue);
@@ -191,31 +191,58 @@ public function getCustomer($id)
             $decryptedData[$field] = $originalValue;
         }
     }
- 
+
     // Fetch all unit prices and unit names from the orders table for this customer
     $orders = DB::table('orders')
         ->where('customer_id', $customer->id)
         ->select('unitprice', 'unitname') // Include unitname in the selection
         ->get();
- 
+
     // Calculate total unit price
     $totalUnitPrice = $orders->sum('unitprice');
- 
+
     // Concatenate all unit names into a string
     $unitNames = $orders->pluck('unitname')->implode(', '); // Concatenate unit names
- 
+
     // Fetch the installment records for this customer
     $fullypaidprocess = DB::table('installment_process')
         ->where('customer_id', $customer->id)
         ->select('account_number', 'date', 'amount', 'payment_method', 'status', 'violation', 'comment')
         ->get();
- 
+
+    // Initialize an array for decrypted installment data
+    $decryptedInstallments = [];
+
+    // List of fields to check for encryption in installment process
+    $installmentFieldsToCheck = ['account_number', 'payment_method', 'status', 'violation', 'comment'];
+
+    // Decrypt installment process records
+    foreach ($fullypaidprocess as $installment) {
+        $decryptedInstallment = (array) $installment; // Convert object to array for easier manipulation
+
+        foreach ($installmentFieldsToCheck as $field) {
+            $originalValue = $installment->$field; // Get the original value for each field
+
+            try {
+                // Attempt decryption
+                $decryptedValue = Crypt::decryptString($originalValue);
+                $decryptedInstallment[$field] = $decryptedValue; // Use the decrypted value if successful
+            } catch (DecryptException $e) {
+                // If decryption fails, use the original value
+                $decryptedInstallment[$field] = $originalValue;
+            }
+        }
+
+        // Add decrypted installment record to the array
+        $decryptedInstallments[] = $decryptedInstallment;
+    }
+
     // Calculate total amount paid from the fetched installment records
     $totalAmountPaid = $fullypaidprocess->sum('amount');
- 
+
     // Calculate balance
     $balance = $totalUnitPrice - $totalAmountPaid;
- 
+
     return response()->json([
         'name' => $decryptedData['name'],
         'email' => $decryptedData['email'], // Use the decrypted email
@@ -224,10 +251,11 @@ public function getCustomer($id)
         'unit_price' => $totalUnitPrice > 0 ? $totalUnitPrice : 'N/A', // Total unit price
         'amount' => $totalAmountPaid, // Total amount paid
         'balance' => $balance, // Calculate and return balance
-        'installments' => $fullypaidprocess, // Include installment records
+        'installments' => $decryptedInstallments, // Include decrypted installment records
         'unitnames' => $unitNames // Include concatenated unit names
     ]);
 }
+
  
  
  

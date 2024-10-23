@@ -253,15 +253,50 @@
  
  
 <script>
- 
-        // Search customer and display installment processes
-        document.getElementById('searchCustomerForm').addEventListener('submit', function(event) {
-            event.preventDefault();
- 
-            const name = document.getElementById('customerName').value;
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
- 
-            fetch(`/search-customer?name=${encodeURIComponent(name)}`, {
+ document.getElementById('searchCustomerForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('customerName').value;
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    console.log(`Searching for customer: ${name}`); // Debugging statement
+
+    fetch(`/search-customer?name=${encodeURIComponent(name)}`, {
+        method: 'GET',
+        headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json',
+        },
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok: ' + response.statusText);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(`Customer search results:`, data); // Debugging statement
+        const resultsDiv = document.getElementById('searchResults');
+        resultsDiv.innerHTML = '';
+
+        if (data.length === 0) {
+            resultsDiv.innerHTML = '<p>No customers found.</p>';
+            showModal(); // Show modal even if no results
+            return;
+        }
+
+        data.forEach(customer => {
+            resultsDiv.innerHTML += `
+                <div>
+                    <h3>${customer.name}</h3>
+                    <h4>Installment Processes:</h4>
+                    <div id="installments-${customer.id}"></div>
+                </div>
+            `;
+
+            console.log(`Fetching installments for customer ID: ${customer.id}`); // Debugging statement
+
+            // Fetch installments for each customer
+            fetch(`/get-installments/${customer.id}`, {
                 method: 'GET',
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
@@ -274,214 +309,221 @@
                 }
                 return response.json();
             })
-            .then(data => {
-                const resultsDiv = document.getElementById('searchResults');
-                resultsDiv.innerHTML = ''; // Clear previous results
- 
-                if (data.length === 0) {
-                    resultsDiv.innerHTML = '<p>No customers found.</p>';
-                    showModal(); // Show modal even if no results found
+            .then(installments => {
+                console.log(`Installments for customer ID ${customer.id}:`, installments); // Debugging statement
+                const installmentsDiv = document.getElementById(`installments-${customer.id}`);
+                installmentsDiv.innerHTML = ''; // Clear previous installment details
+
+                if (installments.length === 0) {
+                    installmentsDiv.innerHTML = '<p>No installments found.</p>';
                     return;
                 }
- 
-                data.forEach(customer => {
-                    resultsDiv.innerHTML += `
-                        <div>
-                            <h3>${customer.name}</h3>
-                            <h4>Installment Processes:</h4>
-                            <div id="installments-${customer.id}"></div>
+
+                installments.forEach(installment => {
+                    installmentsDiv.innerHTML += `
+                        <div class="installment">
+                            <h3>Installment Details</h3>
+                            <p><strong>Payment Method:</strong> ${installment.payment_method}</p>
+                            <p><strong>Amount:</strong> ${installment.amount}</p>
+                            <p><strong>Date:</strong> ${installment.date}</p>
+                            <p><strong>Status:</strong> ${installment.status}</p>
+                            <button class="editButton" data-installment-id="${installment.id}">Edit</button>
                         </div>
                     `;
- 
-                    // Fetch the customer's installment processes
-                    fetch(`/get-installments/${customer.id}`, {
-                        method: 'GET',
-                        headers: {
-                            'X-CSRF-TOKEN': csrfToken,
-                            'Accept': 'application/json',
-                        },
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok: ' + response.statusText);
-                        }
-                        return response.json();
-                    })
-                    .then(installments => {
-                        const installmentsDiv = document.getElementById(`installments-${customer.id}`);
-                        installments.forEach(installment => {
-                            installmentsDiv.innerHTML += `
-                            <div class="installment">
-                                    <h3>Installment Details</h3>
-                                    <p><strong>Payment Method:</strong> ${installment.payment_method}</p>
-                                    <p><strong>Amount:</strong> ${installment.amount}</p>
-                                    <p><strong>Date:</strong> ${installment.date}</p>
-                                    <p><strong>Status:</strong> ${installment.status}</p>
-                                    <button class="editButton" data-installment-id="${installment.id}">Edit</button>
-                                </div>
-                            `;
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error fetching installments:', error);
-                    });
                 });
- 
-                showModal(); // Show modal with results
             })
             .catch(error => {
-                console.error('Error fetching customers:', error);
-                const statusMessage = document.getElementById('searchStatusMessage');
-                statusMessage.innerText = 'An error occurred: ' + error.message;
-                statusMessage.className = 'status-message status-error';
+                console.error('Error fetching installments:', error);
             });
         });
- 
-        // Function to show modal
-        function showModal() {
-            const modal = document.getElementById("searchResultsModal");
-            modal.style.display = "block";
-        }
- 
-        // Function to hide modal
-        function hideModal() {
-            const modal = document.getElementById("searchResultsModal");
-            modal.style.display = "none";
-        }
- 
-        // Close the modal when the user clicks on <span> (x)
-        document.querySelector('.close-button').addEventListener('click', hideModal);
- 
-        // Use event delegation to handle edit button clicks dynamically
-        document.getElementById('searchResults').addEventListener('click', function(event) {
-            if (event.target.classList.contains('editButton')) {
-                const installmentId = event.target.dataset.installmentId;
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
- 
-                fetch(`/update-installment/${installmentId}`, {
-                    method: 'GET',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Accept': 'application/json',
-                    },
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok: ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(installment => {
-                    // Populate a form with the installment data
-                    const formHTML = `
-                        <form class="updateInstallmentForm" data-installment-id="${installment.id}">
-                            <h2>Update Installment Process</h2>
- 
-                            <div class="form-group">
-                                <label for="payment_method">Payment Method:</label>
-                                <input type="text" name="payment_method" value="${installment.payment_method}" required>
-                            </div>
- 
-                            <div class="form-group">
-                                <label for="amount">Amount:</label>
-                                <input type="number" name="amount" value="${installment.amount}" required>
-                            </div>
- 
-                            <div class="form-group">
-                                <label for="date">Date:</label>
-                                <input type="date" name="date" value="${installment.date}" required>
-                            </div>
- 
-                            <div class="form-group">
-                                <label for="status">Status:</label>
-                                <input type="text" name="status" value="${installment.status}" required>
-                            </div>
- 
-                            <div class="form-group">
-                                <label for="violation">Violation:</label>
-                                <input type="text" name="violation" value="${installment.violation || ''}" required>
-                            </div>
- 
-                            <div class="form-group">
-                                <label for="comment">Comment:</label>
-                                <input type="text" name="comment" value="${installment.comment || ''}" required>
-                            </div>
- 
-                            <button type="submit" class="update-button">Update Installment Process</button>
-                            <div class="status-message"></div>
-                        </form>
-                    `;
- 
-                    // Insert the form into the clicked installment
-                    const installmentDiv = event.target.closest('.installment');
-                    installmentDiv.innerHTML = formHTML + installmentDiv.innerHTML;
-                })
-                .catch(error => {
-                    console.error('Error fetching installment:', error);
-                });
+
+        showModal(); // Show modal with results
+    })
+    .catch(error => {
+        console.error('Error fetching customers:', error);
+        const statusMessage = document.getElementById('searchStatusMessage');
+        statusMessage.innerText = 'An error occurred: ' + error.message;
+        statusMessage.className = 'status-message status-error';
+    });
+});
+
+function showModal() {
+    const modal = document.getElementById("searchResultsModal");
+    modal.style.display = "block";
+}
+
+function hideModal() {
+    const modal = document.getElementById("searchResultsModal");
+    modal.style.display = "none";
+}
+
+// Close the modal when the user clicks on <span> (x)
+document.querySelector('.close-button').addEventListener('click', hideModal);
+
+// Use event delegation to handle edit button clicks dynamically
+document.getElementById('searchResults').addEventListener('click', function(event) {
+    if (event.target.classList.contains('editButton')) {
+        const installmentId = event.target.dataset.installmentId;
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        console.log(`Fetching details for installment ID: ${installmentId}`); // Debugging statement
+
+        // Fetch installment data
+        fetch(`/get-installment/${installmentId}`, {
+            method: 'GET',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
             }
-        });
- 
-        // Handle installment update form submission
-        document.getElementById('searchResults').addEventListener('submit', function(event) {
-            if (event.target.classList.contains('updateInstallmentForm')) {
-                event.preventDefault();
-                const form = event.target;
-                const installmentId = form.dataset.installmentId;
-                const formData = new FormData(form);
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
- 
-                fetch(`/update-installment/${installmentId}`, {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'Accept': 'application/json',
-                    },
-                    body: formData,
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok: ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const statusMessage = form.querySelector('.status-message');
-                    statusMessage.innerText = data.success || 'Installment updated successfully!';
-                    statusMessage.className = 'status-message status-success';
-                })
-                .catch(error => {
-                    console.error('Error updating installment:', error);
-                    const statusMessage = form.querySelector('.status-message');
-                    statusMessage.innerText = 'An error occurred: ' + error.message;
-                    statusMessage.className = 'status-message status-error';
-                });
+            return response.json();
+        })
+        .then(installment => {
+            console.log(`Installment details for ID ${installmentId}:`, installment); // Debugging statement
+            // Check if the form already exists to avoid duplicates
+            const installmentDiv = event.target.closest('.installment');
+            const existingForm = installmentDiv.querySelector('.updateInstallmentForm');
+
+            // Remove existing form if it's already there
+            if (existingForm) {
+                existingForm.remove();
             }
+
+            // Build the form HTML
+            const formHTML = `
+                <form class="updateInstallmentForm" data-installment-id="${installmentId}">
+                    <h2>Update Installment Process</h2>
+                    <div class="form-group">
+                        <label for="payment_method">Payment Method:</label>
+                        <input type="text" name="payment_method" value="${installment.payment_method}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Amount:</label>
+                        <input type="number" name="amount" value="${installment.amount}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" name="date" value="${installment.date}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status:</label>
+                        <input type="text" name="status" value="${installment.status}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="violation">Violation:</label>
+                        <input type="text" name="violation" value="${installment.violation || ''}">
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment:</label>
+                        <textarea name="comment">${installment.comment || ''}</textarea>
+                    </div>
+                    <button type="submit" class="update-button">Update Installment Process</button>
+                    <div class="status-message"></div>
+                </form>
+            `;
+
+            // Append the form below the clicked installment entry
+            installmentDiv.insertAdjacentHTML('beforeend', formHTML);
+        })
+        .catch(error => {
+            console.error('Error fetching installment:', error);
         });
- 
- 
-            // PrintButton
-        function printModal(modalId) {
-            // Get the modal element by its ID
-            var modalContent = document.getElementById(modalId).innerHTML;
- 
-            // Save the current page's content
-            var originalContent = document.body.innerHTML;
- 
-            // Replace the page's content with the modal's content
-            document.body.innerHTML = modalContent;
- 
-            // Trigger the print function
-            window.print();
- 
-            // Restore the original page content after printing
-            document.body.innerHTML = originalContent;
- 
-            // Re-run any scripts or JavaScript necessary to reset the page's functionality
-            window.location.reload();
+    }
+});
+
+// Handle installment update form submission
+// Handle installment update form submission
+document.getElementById('searchResults').addEventListener('submit', function(event) {
+    if (event.target.classList.contains('updateInstallmentForm')) {
+        event.preventDefault();
+        const form = event.target;
+        const installmentId = form.dataset.installmentId; // Getting the ID here
+        const formData = new FormData(form);
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        console.log(`Updating installment with ID: ${installmentId}`); // Log the ID for debugging
+
+        fetch(`/update-installment/${installmentId}`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json',
+            },
+            body: formData,
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+    console.log('Update response:', data); // Log the entire response object
+
+    // Check if the message is in the response
+    if (data.message) {
+        const statusMessage = form.querySelector('.status-message');
+        statusMessage.innerText = data.message; // Display only the success message
+        statusMessage.className = 'status-message status-success';
+    } else {
+        console.error('Unexpected response structure:', data);
+        const statusMessage = form.querySelector('.status-message');
+        statusMessage.innerText = 'An error occurred: installment details not found.';
+        statusMessage.className = 'status-message status-error';
+    }
+})
+        .catch(error => {
+            console.error('Error updating installment:', error);
+            const statusMessage = form.querySelector('.status-message');
+            statusMessage.innerText = 'An error occurred: ' + error.message;
+            statusMessage.className = 'status-message status-error';
+        });
+    }
+});
+
+
+
+// PrintButton
+function printModal(modalId) {
+    // Get the modal element by its ID
+    var modalContent = document.getElementById(modalId).innerHTML;
+
+    // Save the current page's content
+    var originalContent = document.body.innerHTML;
+
+    // Replace the page's content with the modal's content
+    document.body.innerHTML = modalContent;
+
+    // Trigger the print function
+    window.print();
+
+    // Restore the original page content after printing
+    document.body.innerHTML = originalContent;
+
+    // Re-run any scripts or JavaScript necessary to reset the page's functionality
+    window.location.reload();
+}
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const modal = document.getElementById("searchResultsModal");
+    const closeButton = modal.querySelector('.close-button');
+
+    closeButton.addEventListener('click', hideModal);
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            hideModal();
         }
- 
-        document.addEventListener('DOMContentLoaded', (event) => {
+    });
+});
+
+
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
     const modal = document.getElementById('customer-modal');
     const closeButton = document.querySelector('.close');
     const customerLinks = document.querySelectorAll('.customer-link');
