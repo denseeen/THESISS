@@ -63,7 +63,6 @@ Route::post('/update-customer', [AdminDashboardController::class, 'updateCustome
 // customer intallment_process edit
 Route::get('/get-installments/{customerId}', [AdminDashboardController::class, 'getInstallments']);
 Route::get('/get-installment/{installmentId}', [AdminDashboardController::class, 'getInstallment']);
-Route::get('/update-installment/{installmentId}', [AdminDashboardController::class, 'getInstallment']); // This route uses the same method as /get-installment
 Route::post('/update-installment/{installmentId}', [AdminDashboardController::class, 'updateInstallment']);
 
 
