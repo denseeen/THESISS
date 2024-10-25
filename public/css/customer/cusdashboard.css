@@ -145,6 +145,25 @@ body .button-container{
 }
 
 
+#pulloutReminderModal {
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Modal starts hidden */
+    justify-content: center;
+    align-items: center;
+}
+
+#pulloutReminderModal .modal-content {
+    width: 30%;
+    background-color: white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
 .nav {
     display: flex;
     border-bottom: 1px solid #e9ecef;

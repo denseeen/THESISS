@@ -72,15 +72,15 @@ class FormController extends Controller
             // Save to the admin_info table
             AdminInfo::create([
                 'user_id'           => $save->id,
-                'name'              => $validatedData['name'],
-                'email'      => Crypt::encryptString($request->input('email')),  // Encrypt email
-                'streetaddress'     => $validatedData['streetaddress'],
-                'phone_number'      => $validatedData['phone_number'],
+                'name'              => Crypt::encryptString($request->input('name')),
+                'email'             => Crypt::encryptString($request->input('email')),  // Encrypt email
+                'streetaddress'     => Crypt::encryptString($request->input('streetaddress')),
+                'phone_number'      => Crypt::encryptString($request->input('phone_number')),
                 'date_of_birth'     => $validatedData['date_of_birth'],
                 'age'               => $validatedData['age'],
-                'facebook'          => $validatedData['facebook'],
-                'gender'            => $validatedData['gender'],
-                'telephone_number'  => $validatedData['telephone_number'],
+                'facebook'          => Crypt::encryptString($request->input('facebook')),
+                'gender'            => Crypt::encryptString($request->input('gender')),
+                'telephone_number'  => Crypt::encryptString($request->input('telephone_number')),
             ]);
         } elseif ($validatedData['user_roles'] == 2) {
             // Save to the customer_info table
