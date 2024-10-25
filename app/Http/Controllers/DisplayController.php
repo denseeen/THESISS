@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 class DisplayController extends Controller
 {
  
-// customer profile decrypted
+// customer profile decrypted//den
 public function user_infos()
 {
     $userId = Auth::id(); // Get the current user's ID
