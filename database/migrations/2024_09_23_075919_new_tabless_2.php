@@ -14,10 +14,10 @@ return new class extends Migration
          // Create users table
          Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
+            $table->varchar('name', 255);
+            $table->varchar('email', 255)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->varchar('password', 255);
             $table->string('avatar')->nullable(); // Adding avatar field
             $table->unsignedTinyInteger('user_roles'); // Adding user_roles field
             $table->rememberToken();
@@ -45,15 +45,15 @@ return new class extends Migration
         // Create customer_info table
         Schema::create('customer_info', function (Blueprint $table) {
             $table->id(); // Primary key
-            $table->string('name', 244);
-            $table->string('email', 255);
-            $table->string('streetaddress', 255);
-            $table->unsignedBigInteger('phone_number'); // Changed to BigInt
+            $table->varchar('name', 244);
+            $table->varchar('email', 255);
+            $table->varchar('streetaddress', 255);
+            $table->varchar('phone_number', 255); // Changed to BigInt
             $table->date('date_of_birth');
             $table->unsignedTinyInteger('age'); // Changed to unsignedTinyInteger
-            $table->string('facebook')->nullable();
-            $table->string('gender');
-            $table->unsignedBigInteger('telephone_number'); // Changed to BigInt
+            $table->varchar('facebook', 255)->nullable();
+            $table->varchar('gender', 255);
+            $table->longtext('telephone_number'); // Changed to BigInt
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
@@ -63,16 +63,16 @@ return new class extends Migration
 
         // Create admin_info table
         Schema::create('admin_info', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 244);
-            $table->string('email', 255);
-            $table->string('streetaddress', 255);
-            $table->unsignedBigInteger('phone_number'); // Changed to BigInt
+            $table->id(); // Primary key
+            $table->varchar('name', 244);
+            $table->varchar('email', 255);
+            $table->varchar('streetaddress', 255);
+            $table->varchar('phone_number', 255); // Changed to BigInt
             $table->date('date_of_birth');
             $table->unsignedTinyInteger('age'); // Changed to unsignedTinyInteger
-            $table->string('facebook')->nullable();
-            $table->string('gender');
-            $table->unsignedBigInteger('telephone_number'); // Changed to BigInt
+            $table->varchar('facebook', 255)->nullable();
+            $table->varchar('gender', 255);
+            $table->longtext('telephone_number'); // Changed to BigInt
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
@@ -158,13 +158,13 @@ return new class extends Migration
                 ->references('id')
                 ->on('customer_info')
                 ->onDelete('set null'); // Use set null on delete to avoid orphan records
-            $table->unsignedBigInteger('account_number'); // Added BigInt account_number
-            $table->string('payment_method', 15)->nullable();
-            $table->decimal('amount', 10, 2)->nullable(); 
+            $table->longtext('account_number'); // Added BigInt account_number
+            $table->varchar('payment_method', 288)->nullable();
+            $table->longtext('amount')->nullable(); 
             $table->date('date')->nullable();
-            $table->string('status', 15)->nullable();
-            $table->string('violation', 255)->nullable();
-            $table->string('comment', 255)->nullable();
+            $table->longtext('status')->nullable();
+            $table->varchar('violation', 255)->nullable();
+            $table->varchar('comment', 255)->nullable();
         });
     
     }

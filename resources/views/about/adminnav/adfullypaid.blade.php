@@ -160,10 +160,10 @@
                             <span class="material-symbols-outlined">print</span>
                         </button>
                     </div>
-                    <h2><strong id="modal-name"></strong></h2>
-                    <p>Email: <span id="modal-email"></span></p>
-                    <p>Phone Number: <span id="modal-phone"></span></p>
-                    <p>Address: <span id="modal-address"></span></p>
+                        <h2><strong id="modal-name"></strong></h2>
+                        <p>Email: <span id="modal-email"></span></p>
+                        <p>Phone Number: <span id="modal-phone"></span></p>
+                        <p>Address: <span id="modal-address"></span></p>
                 </div>
 
                 <!-- Transaction Records Section -->
@@ -178,22 +178,22 @@
 
             <!-- invoice Details Table -->
             <div class="table-container">
-            <h2>Transaction Records</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Account Number</th>
-                            <th>Date</th>
-                            <th>Amount Paid</th>
-                            <th>Payment Method</th>
-                            <th>Status</th>
-                            
-                        </tr>
-                    </thead>
-                    <tbody id="installment-details-table-body">
-                        <!-- Rows will be added dynamically -->
-                    </tbody>
-                </table>
+                <h2>Transaction Records</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Account Number</th>
+                                <th>Date</th>
+                                <th>Amount Paid</th>
+                                <th>Payment Method</th>
+                                <th>Status</th>     
+                            </tr>
+                        </thead>
+                        
+                        <tbody id="installment-details-table-body">
+                            <!-- Rows will be added dynamically -->
+                        </tbody>
+                    </table>
             </div>
         </div>
     </div>

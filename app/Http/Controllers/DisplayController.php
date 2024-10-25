@@ -29,42 +29,85 @@ public function user_infos()
         ->where('customer_info.user_id', $userId)
         ->first();
  
-    // Check if user info is found
-    if ($infos) {
-        // Decrypt fields with error handling
-        $fieldsToDecrypt = ['name', 'facebook', 'streetaddress', 'phone_number', 'gender', 'telephone_number', 'email'];
- 
-        foreach ($fieldsToDecrypt as $field) {
-            try {
-                if (isset($infos->$field)) {
-                    // Attempt to decrypt each field
-                    $infos->$field = Crypt::decryptString($infos->$field);
+        if ($info) {
+            // Log the raw encrypted info for debugging
+            \Log::info("Raw encrypted admin info: ", (array)$info);
+        
+            // Decrypt fields with error handling
+            $fieldsToDecrypt = ['name', 'email', 'facebook', 'streetaddress', 'phone_number', 'gender', 'telephone_number'];
+        
+            foreach ($fieldsToDecrypt as $field) {
+                try {
+                    if (isset($info->$field)) {
+                        // Attempt to decrypt each field
+                        $info->$field = Crypt::decryptString($info->$field);
+                        \Log::info("Decrypted field '{$field}': " . $info->$field);
+                    }
+                } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+                    // Log the error and the value that failed to decrypt
+                    \Log::error("Decryption failed for field '{$field}' of user ID: {$userId}. Encrypted value: " . $info->$field . ". Error: " . $e->getMessage());
+                    // Optionally assign a placeholder for fields that fail to decrypt
+                    $info->$field = 'Decryption Failed';
                 }
-            } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-                // Log the error
-                \Log::error("Decryption failed for field '{$field}' of user ID: {$userId}. Error: " . $e->getMessage());
-                // Optionally assign a placeholder for fields that fail to decrypt
-                $infos->$field = 'Decryption Failed';
             }
+        } else {
+            \Log::warning("No admin info found for user ID: {$userId}.");
         }
-    }
+        
  
     // Return the view with the decrypted infos
     return view('about.customernav.cusprofile')->with('infos', $infos);
 }
- 
-// admin profile
+
+
+
 public function user_infos_admin()
 {
-    $userId = Auth::id(); // Get the current user's ID
-    $info = DB::table('admin_info')
-    ->join('users', 'admin_info.user_id', '=', 'users.id')
-    ->select('admin_info.*', 'users.name', 'users.email') // Select fields you need
-    ->where('admin_info.user_id', $userId)
-    ->first();
- 
+    // Get the current user's ID
+    $userId = Auth::id();
+
+    // Check if the user is authenticated
+    if (!$userId) {
+        \Log::warning("Attempted to fetch admin info without an authenticated user.");
+        return redirect()->route('login')->withErrors('You need to be logged in to access this page.');
+    }
+
+    // Fetch admin info based on the user ID
+    $info = DB::table('admin_info')->where('user_id', $userId)->first();
+
+    // Check if $info is null
+    if ($info === null) {
+        \Log::warning("No admin info found for user ID: {$userId}.");
+        return view('about.adminnav.adprofile')->with('info', null);
+    }
+
+    // Log the fetched info for debugging
+    \Log::info("Fetched admin info: ", (array)$info);
+
+    // Decrypt fields with error handling
+    $fieldsToDecrypt = ['name', 'email', 'facebook', 'streetaddress', 'phone_number', 'gender', 'telephone_number'];
+
+    foreach ($fieldsToDecrypt as $field) {
+        try {
+            if (isset($info->$field)) {
+                // Attempt to decrypt each field
+                $info->$field = Crypt::decryptString($info->$field);
+                \Log::info("Decrypted field '{$field}': " . $info->$field);
+            }
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            // Log the error and the value that failed to decrypt
+            \Log::error("Decryption failed for field '{$field}' of user ID: {$userId}. Encrypted value: " . $info->$field . ". Error: " . $e->getMessage());
+            // Optionally assign a placeholder for fields that fail to decrypt
+            $info->$field = 'Decryption Failed';
+        }
+    }
+
+    // Return the view with the admin info
     return view('about.adminnav.adprofile')->with('info', $info);
 }
+
+
+
 // admin profile decrypted
 // public function user_infos_admin()
 // {

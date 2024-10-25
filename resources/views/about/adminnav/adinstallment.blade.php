@@ -223,8 +223,7 @@
                         </tr>
                     </thead>
                     <tbody id="payment-schedule-table-body">
-                        <!-- Dynamic rows go here -->
-                         
+                        <!-- Dynamic rows go here -->  
                     </tbody>
                 </table>
             </div>
@@ -242,8 +241,8 @@
                         </tr>
                     </thead>
                     <tbody id="installment-details-table-body">
-        <!-- Rows will be added dynamically -->
-    </tbody>
+                        <!-- Rows will be added dynamically -->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -548,61 +547,59 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 })
                 .then(response => response.json())
                 .then(paymentData => {
-                    // Update unit price and unit name
+                    // Update unit price
+                    document.getElementById('modal-unitprice').textContent = paymentData.unit_price;
+
+                //    // Fetch unit price from paymentData and normalize it
+                //     const unitPriceString = paymentData.unit_price; // Assume this is in string format
+                //     const unitPrice = parseFloat(unitPriceString.replace(/,/g, '')) || 0; // Remove commas before parsing
+
+                //     console.log("Unit Price: ", unitPrice); // Log to check the value
+
+                //     // Calculate total amount paid from installment process
+                //     const totalPaid = paymentData.installment_process.reduce((sum, payment) => {
+                //     return sum + (parseFloat(payment.amount) || 0); // Ensure each amount is a number
+                //     }, 0);
+
+                //     console.log("Total Paid: ", totalPaid); // Log to check the total paid
+
+                //     // Calculate remaining balance
+                //     const balance = Math.max(0, unitPrice - totalPaid);
+                //     console.log("Remaining Balance: ", balance); // Log to check the remaining balance
+
+                //     // Update balance in modal
+                //     document.getElementById('modal-balance').textContent = balance.toFixed(2); // Format to 2 decimal places
+
+                
+
+                    // Fetch unit price from paymentData and normalize it
                     const unitPriceString = paymentData.unit_price; // Assume this is in string format
                     const unitPrice = parseFloat(unitPriceString.replace(/,/g, '')) || 0; // Remove commas before parsing
-                    document.getElementById('modal-unitprice').textContent = unitPrice;
- 
-                    // Initialize total penalties and flags
-                    let totalPaid = 0;
-                    let totalPenalties = 0;
-                    let discountApplied = false;
- 
-                    // Loop through the installment process and compare dates for penalties
-                    paymentData.installment_process.forEach((installment, index) => {
-                        const paymentAmount = parseFloat(installment.amount) || 0;
-                        totalPaid += paymentAmount; // Sum up the total amount paid
- 
-                        // Get the related payment schedule date
-                        const paymentScheduleDate = new Date(paymentData.payment_schedule[index]?.date);
-                        const installmentProcessDate = new Date(installment.date);
- 
-                        // Calculate the difference in days between the installment process date and the payment schedule date
-                        const timeDifference = installmentProcessDate - paymentScheduleDate; // Difference in milliseconds
-                        const daysDifference = timeDifference / (1000 * 60 * 60 * 24); // Convert to days
- 
-                        // Apply a discount of 100 if installment is made before the payment schedule date
-                        if (installmentProcessDate < paymentScheduleDate) {
-                            console.log(`Payment made before due date. Applying discount of 100.`);
-                            discountApplied = true; // Set discount flag to true
-                        }
-                        // Apply a 10% penalty if the installment was made more than 3 days after the payment schedule
-                        else if (daysDifference > 3) {
-                            const penalty = paymentAmount * 0.10; // Apply 10% penalty
-                            totalPenalties += penalty; // Add the penalty to total penalties
-                            console.log(`Late Payment Detected: ${daysDifference.toFixed(0)} days late. Penalty: ${penalty}`);
-                        } else {
-                            console.log(`Payment is on time or within grace period. No penalty applied.`);
-                        }
-                    });
- 
-                    // Log the results
-                    console.log("Total Paid: ", totalPaid);
-                    console.log("Total Penalties: ", totalPenalties);
- 
-                    // Calculate the balance with penalties and discounts
-                    const discountAmount = discountApplied ? 100 : 0; // Set discount amount
-                    const balanceWithPenalties = Math.max(0, unitPrice - totalPaid + totalPenalties - discountAmount); // Ensure the balance is not negative
- 
-                    // Log discount status
-                    console.log(discountApplied ? "Discount: 100 applied" : "Discount: 0");
- 
-                    // Log balance with penalties and discount
-                    console.log("Balance with Penalties and Discount: ", balanceWithPenalties);
- 
-                     
-                    // Update balance in the modal
-                    document.getElementById('modal-balance').textContent = balanceWithPenalties.toFixed(2); // Format to 2 decimal places
+
+                    console.log("Unit Price: ", unitPrice); // Log to check the value
+
+                    // Calculate total amount paid from installment process
+                    const totalPaid = paymentData.installment_process.reduce((sum, payment) => {
+                    return sum + (parseFloat(payment.amount) || 0); // Ensure each amount is a number
+                    }, 0);
+
+                    console.log("Total Paid: ", totalPaid); // Log to check the total paid
+
+                    // Calculate remaining balance
+                    const balance = Math.max(0, unitPrice - totalPaid);
+                    console.log("Remaining Balance: ", balance); // Log to check the remaining balance
+
+                    // Format balance to include commas and two decimal places
+                    const formattedBalance = new Intl.NumberFormat('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                    }).format(balance);
+
+                    // Update balance in modal
+                    document.getElementById('modal-balance').textContent = formattedBalance; // Format to currency
+
+
+       
  
                     // Populate payment schedule table
                     const tableBody = document.getElementById('payment-schedule-table-body');
@@ -613,49 +610,56 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         const dateCell = document.createElement('td');
                         const amountCell = document.createElement('td');
                         const statusCell = document.createElement('td');
+                        // const balanceCell = document.createElement('td'); // New cell for balance
  
                         dateCell.textContent = payment.date;
                         amountCell.textContent = payment.amount;
                         statusCell.textContent = payment.status;
+                        // balanceCell.textContent = payment.balance; // Add remaining balance
+                       
  
                         row.appendChild(dateCell);
                         row.appendChild(amountCell);
                         row.appendChild(statusCell);
+                        // row.appendChild(balanceCell); // Append balance to the row
                         tableBody.appendChild(row);
                     });
  
-                    // Populate installment process table
-                    const installmentTableBody = document.getElementById('installment-details-table-body');
-                    installmentTableBody.innerHTML = ''; // Clear existing rows
+                     // Populate installment process table
+                const installmentTableBody = document.getElementById('installment-details-table-body');
+                installmentTableBody.innerHTML = ''; // Clear existing rows
  
-                    paymentData.installment_process.forEach(detail => {
-                        const row = document.createElement('tr');
-                        const dateCell = document.createElement('td');
-                        const amountCell = document.createElement('td');
-                        const paymentMethodCell = document.createElement('td');
-                        const violationCell = document.createElement('td');
-                        const commentCell = document.createElement('td');
+                paymentData.installment_process.forEach(detail => {
+                    const row = document.createElement('tr');
+                    const dateCell = document.createElement('td');
+                    const amountCell = document.createElement('td');
+                    const paymentMethodCell = document.createElement('td');
+                    const violationCell = document.createElement('td');
+                    const commentCell = document.createElement('td');
  
-                        // Format date for installment details
-                        const installmentDate = new Date(detail.date);
-                        dateCell.textContent = installmentDate.toLocaleDateString('en-GB', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric'
-                        });
+                    dateCell.textContent = detail.date;
+                    amountCell.textContent = detail.amount;
  
-                        amountCell.textContent = detail.amount;
-                        paymentMethodCell.textContent = detail.payment_method;
-                        violationCell.textContent = detail.violation;
-                        commentCell.textContent = detail.comment;
- 
-                        row.appendChild(dateCell);
-                        row.appendChild(amountCell);
-                        row.appendChild(paymentMethodCell);
-                        row.appendChild(violationCell);
-                        row.appendChild(commentCell);
-                        installmentTableBody.appendChild(row);
+                    // Format date for installment details
+                    const installmentDate = new Date(detail.date);
+                    dateCell.textContent = installmentDate.toLocaleDateString('en-GB', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
                     });
+                   
+                    paymentMethodCell.textContent = detail.payment_method;
+                    violationCell.textContent = detail.violation;
+                    commentCell.textContent = detail.comment;
+ 
+                    row.appendChild(dateCell);
+                    row.appendChild(amountCell);
+                    row.appendChild(paymentMethodCell);
+                    row.appendChild(violationCell);
+                    row.appendChild(commentCell);
+                    installmentTableBody.appendChild(row);
+                });
+ 
  
                     // Open modal
                     modal.style.display = 'block';
@@ -676,6 +680,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
     });
 });
+  
  
  
  
