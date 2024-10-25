@@ -55,10 +55,11 @@ class User extends Authenticatable
         return $this->hasOne(CustomerInfo::class); // Define the relationship with CustomerInfo
     }
 
-    public function adminInfo()
-    {
-        return $this->hasOne(AdminInfo::class); // Define the relationship with AdminInfo
-    }
+    // In User.php model
+public function adminInfo() {
+    return $this->hasOne(AdminInfo::class, 'user_id'); // adjust 'user_id' to your foreign key
+}
+
 
     public function messages()
 {
