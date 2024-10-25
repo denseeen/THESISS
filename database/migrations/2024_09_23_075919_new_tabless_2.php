@@ -1,9 +1,9 @@
 <?php
-
+ 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+ 
 return new class extends Migration
 {
     /**
@@ -24,14 +24,14 @@ return new class extends Migration
             $table->boolean('dark_mode')->default(false); // Adding dark_mode field
             $table->timestamps();
         });
-
+ 
         // Create password_reset_tokens table
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
-
+ 
         // Create sessions table
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
@@ -41,7 +41,7 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
-
+ 
         // Create customer_info table
         Schema::create('customer_info', function (Blueprint $table) {
             $table->id(); // Primary key
@@ -60,7 +60,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
         });
-
+ 
         // Create admin_info table
         Schema::create('admin_info', function (Blueprint $table) {
             $table->id(); // Primary key
@@ -79,7 +79,7 @@ return new class extends Migration
                 ->on('users')
                 ->onDelete('cascade');
         });
-
+ 
         // Create orders table
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
@@ -91,7 +91,7 @@ return new class extends Migration
             $table->decimal('unitprice', 10, 2)->nullable();
             $table->text('unitDescription')->nullable();
         });
-
+ 
         // Create payment_service table
         Schema::create('payment_service', function (Blueprint $table) {
             $table->id();
@@ -100,7 +100,7 @@ return new class extends Migration
             $table->boolean('installment')->nullable();
             $table->boolean('fullypaid')->nullable();
         });
-
+ 
         // Create installment_plan table
         Schema::create('installment_plan', function (Blueprint $table) {
             $table->id();
@@ -109,19 +109,19 @@ return new class extends Migration
             $table->boolean('sixmonths')->nullable();
             $table->boolean('twelvemonths')->nullable();
             $table->boolean('eighteenmonths')->nullable();
-
-      
+ 
+     
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-        }); 
-
-
+        });
+ 
+ 
         // Create predefined_security_questions table
         Schema::create('predefined_security_questions', function (Blueprint $table) {
             $table->id();
             $table->string('question'); // The security question
             $table->timestamps(); // Timestamps for created_at and updated_at
         });
-
+ 
         // Insert predefined questions
         DB::table('predefined_security_questions')->insert([
             ['question' => "What is your mother's maiden name?"],
@@ -129,7 +129,7 @@ return new class extends Migration
             ['question' => "What is the name of the street you grew up on?"],
             ['question' => "What is your favorite food?"],
         ]);
-
+ 
         // Create security_questions table
         Schema::create('security_questions', function (Blueprint $table) {
             $table->id();
@@ -138,9 +138,9 @@ return new class extends Migration
             $table->string('answer'); // The answer to the security question
             $table->timestamps(); // Timestamps for created_at and updated_at
         });
-
-    
-
+ 
+   
+ 
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('sender_id')->constrained('admin_info')->onDelete('cascade'); // Reference to admin_info
@@ -149,7 +149,7 @@ return new class extends Migration
             $table->boolean('is_read')->default(false); // Add the is_read column
             $table->timestamps();
         });
-
+ 
         // Create installment_process table
         Schema::create('installment_process', function (Blueprint $table) {
             $table->id();
@@ -160,15 +160,15 @@ return new class extends Migration
                 ->onDelete('set null'); // Use set null on delete to avoid orphan records
             $table->longtext('account_number'); // Added BigInt account_number
             $table->varchar('payment_method', 288)->nullable();
-            $table->longtext('amount')->nullable(); 
+            $table->longtext('amount')->nullable();
             $table->date('date')->nullable();
             $table->longtext('status')->nullable();
             $table->varchar('violation', 255)->nullable();
             $table->varchar('comment', 255)->nullable();
         });
-    
+   
     }
-
+ 
     /**
      * Reverse the migrations.
      */
