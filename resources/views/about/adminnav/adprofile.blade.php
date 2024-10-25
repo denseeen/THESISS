@@ -43,53 +43,59 @@
         </nav>
         
         
-        <!-- Profile Content -->
-    <div class="profile-card">
-            <div class="profile-header">
-                <div class="avatar-container">
-                        @if(Auth::user()->avatar)
-                            <img src="{{ asset('storage/images/' . Auth::user()->avatar) }}" alt="Avatar" class="avatar" id="current-avatar">
-                        @else
-                            <img src="/image/avatar1.jpg" alt="Avatar" class="avatar" id="current-avatar">
-                        @endif
-
-                            <button class="change-avatar-btn" id="change-avatar-btn"></button>
-                </div>
-                    <div class="name-title">
-                        <h2 id="profile-name">{{ Auth::user()->name }}</h2>
-                    </div>
-            </div>
-
-            <div class="profile-body">
-                    <div class="info">
-                        <h3>Information</h3>
-                        <hr>
-                        @if($info)
-                        <p><strong>Gender:</strong> <span id="gender">{{ $info->gender}}</span></p>
-                       
-                        <p><strong>Birthday:</strong> <span id="profile-birthday">{{ $info->date_of_birth}}</span></p>
-                        <hr>
-                        <p><strong>Email:</strong> <span id="profile-email">{{ Auth::user()->email }}</span></p>
-                        <p><strong>Facebook:</strong> <span id="profile-facebook"></span>{{ $info->facebook}}</p>
-                        <hr>
-                        <p><strong>Telephone:</strong> <span id="profile-telephone"></span>{{ $info->telephone_number}}</p>
-                        <p><strong>Mobile:</strong> <span id="profile-mobile"></span>{{ $info->phone_number}}</p>
-                     
-                        <p><strong>Address:</strong> <span id="profile-address"></span>{{ $info->streetaddress}}</p>
-                        <hr>  
-                         
-                            @else
-                                <p>No information available.</p>
-                            @endif
-                    </div>
-
-                    <div class="password-edit">
-                        <label for="password"><strong>Password:</strong></label>
-                        <a href="#" id="password-link">{{ str_repeat('*', 8) }}</a>
-                        <button class="edit-button" id="change-password-btn">Edit</button>
-                    </div>
-            </div>
+       <!-- Profile Content -->
+<div class="profile-card">
+    <div class="profile-header">
+        <div class="avatar-container">
+            @if(Auth::user()->avatar)
+                <img src="{{ asset('storage/images/' . Auth::user()->avatar) }}" alt="Avatar" class="avatar" id="current-avatar">
+            @else
+                <img src="/image/avatar1.jpg" alt="Avatar" class="avatar" id="current-avatar">
+            @endif
+            <button class="change-avatar-btn" id="change-avatar-btn"></button>
+        </div>
+        <div class="name-title">
+            <h2 id="profile-name">{{ $info->name ?? 'Not Available' }}</h2>
+        </div>
     </div>
+    
+
+    <div class="profile-body">
+        <div class="info">
+            <h3>Information</h3>
+            <hr>
+            @if($info)
+                <p><strong>Gender:</strong> <span id="gender">{{ $info->gender ?? 'Not Available' }}</span></p>
+                <p><strong>Birthday:</strong> <span id="profile-birthday">{{ $info->date_of_birth ?? 'Not Available' }}</span></p>
+                <hr>
+                <p><strong>Email:</strong> <span id="profile-email">{{ $info->email ?? 'Not Available' }}</span></p>
+                <p><strong>Facebook:</strong> <span id="profile-facebook">{{ $info->facebook ?? 'Not Available' }}</span></p>
+                <hr>
+                <p><strong>Telephone:</strong> <span id="profile-telephone">{{ $info->telephone_number ?? 'Not Available' }}</span></p>
+                <p><strong>Mobile:</strong> <span id="profile-mobile">{{ $info->phone_number ?? 'Not Available' }}</span></p>
+                <p><strong>Address:</strong> <span id="profile-address">{{ $info->streetaddress ?? 'Not Available' }}</span></p>
+                <hr>  
+            @else
+                <p>No information available.</p>
+            @endif
+        </div>
+    
+
+
+
+    <div class="password-edit">
+        <label for="password"><strong>Password:</strong></label>
+        <a href="#" id="password-link">{{ str_repeat('*', 8) }}</a>
+        <button class="edit-button" id="change-password-btn">Edit</button>
+    </div>
+</div>
+
+<script>
+    // Log the variables to the console
+    console.log("Admin Info:", @json($info));
+    console.log("User Email:", "{{ Auth::user()->email }}");
+    console.log("User Info:", userInfo);
+</script>
 
     <!-- Avatar Modal -->
     <div id="avatarModal" class="modal">

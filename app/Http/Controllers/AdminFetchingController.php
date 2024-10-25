@@ -125,7 +125,6 @@ public function FullyPaidCustomer()
  
  
  
-//  installment view only ,generate monthly schedule
 public function getPaymentSchedule($customerId)
 {
     // Fetch customer's installment plan
@@ -137,120 +136,72 @@ public function getPaymentSchedule($customerId)
     $orders = DB::table('orders')
         ->where('customer_id', $customerId)
         ->first();
- 
+
     // Fetch customer's installment process
     $installmentProcess = DB::table('installment_process')
         ->where('customer_id', $customerId)
         ->get();
  
-    // Decrypt encrypted fields from the installment process before checking for existence
-    $decryptedInstallmentProcess = $installmentProcess->map(function ($process) {
-        try {
-            $process->account_number = Crypt::decryptString($process->account_number);
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            // If decryption fails, keep the encrypted value
-        }
- 
-        try {
-            $process->violation = $process->violation ? Crypt::decryptString($process->violation) : null;
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            // If decryption fails, keep the encrypted value
-        }
- 
-        try {
-            $process->comment = $process->comment ? Crypt::decryptString($process->comment) : null;
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            // If decryption fails, keep the encrypted value
-        }
- 
-        try {
-            $process->status = $process->status ? Crypt::decryptString($process->status) : null;
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            // If decryption fails, keep the encrypted value
-        }
- 
-        try {
-            $process->payment_method = $process->payment_method? Crypt::decryptString($process->payment_method) : null;
-        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
-            // If decryption fails, keep the encrypted value
-        }
- 
-        return $process;
-    });
- 
-    // If there are no orders, installment plan, or installment process, provide a default response
-    if (!$orders || !$installmentPlan || $decryptedInstallmentProcess->isEmpty()) {
-        return response()->json([
-            'error' => 'No order or installment plan found for this customer.',
-            'payment_schedule' => [],
-            'installment_process' => [],
-            'unit_price' => null,
-            'remaining_balance' => null,
-        ], 200); // Respond with a 200 status to indicate no schedule but not an error
+    // Check if the order exists
+    if (!$orders || !$installmentPlan || !$installmentProcess) {
+        return response()->json(['error' => 'No order or installment plan found for this customer.'], 404);
     }
  
-    // Proceed with processing decrypted installment process data...
-    $unitPrice = $orders->unitprice;
-    $statuses = $decryptedInstallmentProcess->pluck('status')->toArray();
-    $amountsPaid = $decryptedInstallmentProcess->pluck('amount')->toArray();
- 
+    $unitPrice = $orders->unitprice; // Assuming you have a unit price in the orders
+    $statuses = $installmentProcess->pluck('status')->toArray(); // Fetch all statuses into an array
+    $amountsPaid = $installmentProcess->pluck('amount')->toArray(); // Fetch all amounts paid
+
     $paymentSchedule = [];
-    $remainingBalance = $unitPrice;
+    $remainingBalance = $unitPrice; // Initialize remaining balance with unit price 
  
     // Determine the installment duration and calculate payments
-    $duration = 0;
     if ($installmentPlan->sixmonths) {
         $duration = 6;
     } elseif ($installmentPlan->twelvemonths) {
         $duration = 12;
     } elseif ($installmentPlan->eighteenmonths) {
         $duration = 18;
+    } else {
+        return response()->json(['error' => 'No installment plan selected.'], 400);
     }
  
-    if ($duration === 0) {
-        return response()->json([
-            'error' => 'No installment plan selected for this customer.',
-            'payment_schedule' => [],
-            'installment_process' => [],
-            'unit_price' => number_format($unitPrice, 2),
-            'remaining_balance' => number_format($remainingBalance, 2),
-        ], 200); // Return a 200 status instead of error to indicate no plan but continue normally
-    }
- 
+    // Calculate the monthly payment amount
     $monthlyPayment = $unitPrice / $duration;
  
+    // Start date: one month before the order date
     $startDate = new \DateTime($orders->dateOrder);
-    $startDate->modify('+1 month');
+    $startDate->modify('+1 month'); // Move to one month before
  
+    // Generate the payment schedule
     for ($i = 0; $i < $duration; $i++) {
+        // Clone the start date and add months
         $paymentDate = clone $startDate;
         $paymentDate->modify("+{$i} month");
- 
+        
+        // Assign status from installment_process (or default to 'not_paid' if no status exists)
         $status = isset($statuses[$i]) ? $statuses[$i] : 'not paid';
-        $amountPaid = isset($amountsPaid[$i]) ? $amountsPaid[$i] : 0;
- 
-        // Accumulate amounts paid and update the remaining balance
+
+         // Get the amount paid for this installment or default to 0
+         $amountPaid = isset($amountsPaid[$i]) ? $amountsPaid[$i] : 0;
+
+         // Subtract the amount paid from the remaining balance
         $remainingBalance -= $amountPaid;
  
+        // Format the payment date and add to schedule
         $paymentSchedule[] = [
-            'date' => $paymentDate->format('F j, Y'),
-            'amount' => number_format($monthlyPayment, 2),
-            'amount_paid' => number_format($amountPaid, 2),
-            'status' => $status,
-            'balance' => number_format($remainingBalance, 2),
+            'date' => $paymentDate->format('F j, Y'), // e.g., "April 5, 2024"
+            'amount' => number_format($monthlyPayment, 2), // Format to 2 decimal places
+            'amount_paid' => number_format($amountPaid, 2), // Amount paid
+            'status' => $status, // Add the corresponding status for the month
+            'balance' => number_format($remainingBalance, 2), // Remaining balance after payment
         ];
-    }
- 
-    // If the remaining balance is zero, it means the customer is fully paid
-    if ($remainingBalance <= 0) {
-        $remainingBalance = 0; // Ensure we show a clean zero for fully paid customers
     }
  
     return response()->json([
         'unit_price' => number_format($unitPrice, 2),
         'payment_schedule' => $paymentSchedule,
-        'remaining_balance' => number_format($remainingBalance, 2),
-        'installment_process' => $decryptedInstallmentProcess,
+        'remaining_balance' => number_format($remainingBalance, 2), // Include remaining balance overall
+        'installment_process' => $installmentProcess, // Include installment process data
     ]);
 }
  

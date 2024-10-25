@@ -183,30 +183,3 @@ Route::get('/api/payment-received', [AdminFetchingController::class, 'getPayment
 Route::get('/api/installment-count', [AdminFetchingController::class, 'getInstallmentCount']);
 Route::get('/api/fully-paid-count', [AdminFetchingController::class, 'getFullyPaidCount']);
 Route::get('/api/sales-unit-count', [AdminFetchingController::class, 'getSalesUnitCount']);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

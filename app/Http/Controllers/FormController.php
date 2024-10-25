@@ -70,7 +70,7 @@ class FormController extends Controller
         // Save to the appropriate info tables
         if ($validatedData['user_roles'] == 1) {
             // Save to the admin_info table
-            AdminInfo::create([
+            $adminInfo = AdminInfo::create([
                 'user_id'           => $save->id,
                 'name'              => Crypt::encryptString($request->input('name')),
                 'email'             => Crypt::encryptString($request->input('email')),  // Encrypt email
@@ -175,6 +175,10 @@ class FormController extends Controller
             switch ($authenticatedUser->user_roles) {
                 case '1':
                     // If the user is an admin (role 1), return the admin dashboard view
+                    // Fetch customer information from the customer_info table
+                    $adminInfo = DB::table('admin_info')
+                        ->where('email', $authenticatedUser->email) // Use the authenticated user's email
+                        ->first(); // Fetch the first matching record
                     return view('about.adminnav.addashboard', ['user' => $authenticatedUser]);
    
                 case '2':
