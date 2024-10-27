@@ -57,8 +57,8 @@
                         <li><a href="{{ route('addashboard.show') }}"><span class="icon"><i class="fa fa-qrcode"></i></span><span class="text">Dashboard</span></a></li>
                         <li><a href="{{ route('adrequest.show') }}"><span class="icon"><i class="fa fa-link"></i></span><span class="text">Application</span></a></li>
                         <li><a href="{{ route('Installment_Customer.show') }}"><span class="icon"><i class="fa fa-eye"></i></span><span class="text">Installment</span></a></li>
-                        <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Fully Paid</span></a></li>
-                        <li><a href="{{ route('installments.archived') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Archived</span></a></li>
+                        <li><a href="{{ route('FullyPaid_Customer.show') }}"><span class="icon"><i class="fa fa-book"></i></span><span class="text">Cash</span></a></li>
+                        <li><a href="{{ route('installments.archived') }}"><span class="icon"><i class="fa fa-question-circle"></i></span><span class="text">Fully Paid</span></a></li>
                     </ul>
                 </div>
             </div>
@@ -535,7 +535,7 @@ function loadCustomers() {
 
                 // Balance column (fetching from your 'remaining_balance' field)
                 const balanceCell = document.createElement('td');
-                balanceCell.textContent = customer.remaining_balance || 'N/A';
+                balanceCell.textContent = customer.overall_balance  || 'N/A';
                 row.appendChild(balanceCell);
 
                 // Payment Service column (displaying installment or fully paid status)

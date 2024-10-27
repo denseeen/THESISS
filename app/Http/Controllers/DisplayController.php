@@ -155,7 +155,7 @@ public function getCustomers()
         ->leftJoin('payment_service', 'customer_info.id', '=', 'payment_service.customer_id')
         ->select('customer_info.id', 'customer_info.name', 'payment_service.installment', 'payment_service.fullypaid')
         ->get();
- 
+
     // Iterate through each customer to calculate their balance and unit price sum
     foreach ($customers as $customer) {
         // Attempt to decrypt the name
@@ -164,44 +164,109 @@ public function getCustomers()
         } catch (DecryptException $e) {
             // Log the error and retain the original name if decryption fails
             \Log::error('Decryption failed for customer ID: ' . $customer->id . ' - Error: ' . $e->getMessage());
-            // Optionally, you could set a placeholder if desired
-            // $customer->name = 'Decryption Failed'; // Uncomment if needed
         }
- 
+
         // Fetch installment plan for the customer
         $installmentPlan = DB::table('installment_plan')->where('customer_id', $customer->id)->first();
- 
+
         // Fetch the total sum of unit prices from the orders table for the customer
         $totalUnitPrice = DB::table('orders')
             ->where('customer_id', $customer->id)
             ->sum('unitprice');
- 
+
         // Fetch the total sum of amounts paid from the installment_process table
         $totalPaidAmount = DB::table('installment_process')
             ->where('customer_id', $customer->id)
             ->sum('amount');
- 
+
+        // Initialize variables for overall balance calculation
+        $discount = 0;
+        $penalty = 0;
+
         // If the installment plan exists
         if ($installmentPlan) {
-            // Calculate the remaining balance
+            // Determine the installment duration
+            $duration = $installmentPlan->sixmonths ? 6 : ($installmentPlan->twelvemonths ? 12 : ($installmentPlan->eighteenmonths ? 18 : 0));
+
+            // Generate payment schedule dates based on the duration
+            $payment_schedule = [];
+            for ($i = 0; $i < $duration; $i++) {
+                $payment_schedule[] = now()->addMonths($i); // Create payment dates
+            }
+
+            // Initialize remaining balance and status
             $remainingBalance = $totalUnitPrice - $totalPaidAmount;
- 
-            // Attach the calculated remaining balance and total unit price to the customer object
+            $status = 'paid'; // Default status
+
+            // Calculate penalties and discounts
+            foreach ($payment_schedule as $scheduleDate) {
+                // Fetch installment processes for each payment schedule date
+                $installmentProcesses = DB::table('installment_process')
+                    ->where('customer_id', $customer->id)
+                    ->whereDate('date', $scheduleDate) // Fetch processes for the exact scheduled date
+                    ->get();
+
+                // Initialize a flag for the status in this iteration
+                $iterationStatus = 'paid'; // Default status for this iteration
+
+                foreach ($installmentProcesses as $process) {
+                    $installmentDate = new \Carbon\Carbon($process->date); // Date when the customer made the payment
+                    $gracePeriodEnd = (new \Carbon\Carbon($scheduleDate))->addDays(3); // 3-day grace period
+
+                    // Determine the status based on the process date
+                    if ($installmentDate < $scheduleDate) {
+                        // Paid in advance: Apply discount
+                        $discountAmount = 100; // Discount amount
+                        $remainingBalance = max(0, $remainingBalance - $discountAmount); // Update balance
+                        $iterationStatus = 'paid advance'; // Update status to paid in advance
+                    } elseif ($installmentDate->isSameDay($scheduleDate)) {
+                        // Paid exactly on time: No discount or penalty
+                        $iterationStatus = 'paid'; // No changes
+                    } elseif ($installmentDate > $gracePeriodEnd) {
+                        // Late payment by more than 3 days: Apply penalty
+                        $penaltyAmount = ($totalUnitPrice / $duration) * 0.10; // 10% of the installment amount
+                        $remainingBalance += $penaltyAmount; // Update balance with penalty
+                        $iterationStatus = 'paid late'; // Update status to paid late
+                    } else {
+                        // Paid within the 3-day grace period: No penalty
+                        $iterationStatus = 'paid'; // No changes
+                    }
+                }
+
+                // After processing all payments for this schedule date, determine the overall status
+                if ($iterationStatus === 'paid' && $installmentProcesses->isEmpty()) {
+                    // If no payments were made for this date, mark as unpaid
+                    $iterationStatus = 'unpaid';
+                }
+
+                // Set the status for this customer based on the iteration
+                $status = $iterationStatus;
+            }
+
+            // Calculate overall balance
+            $overallBalance = $totalUnitPrice - $totalPaidAmount - $discount + $penalty;
+
+            // Attach the calculated remaining balance and totals to the customer object
             $customer->remaining_balance = number_format($remainingBalance, 2);
+            $customer->overall_balance = number_format($overallBalance, 2); // Add overall balance
             $customer->total_unit_price = number_format($totalUnitPrice, 2);
             $customer->total_paid_amount = number_format($totalPaidAmount, 2);
+            $customer->status = $status; // Attach the final status
         } else {
             // Set balance and unit price to 0 if no data is available
             $customer->remaining_balance = '0.00';
+            $customer->overall_balance = '0.00'; // No overall balance
             $customer->total_unit_price = '0.00';
             $customer->total_paid_amount = '0.00';
+            $customer->status = 'no plan'; // No installment plan
         }
     }
- 
-    // Return JSON response with customer data including remaining balance, total unit price, and total paid amount
+
+    // Return JSON response with customer data including remaining balance, total unit price, total paid amount, and overall balance
     return response()->json($customers);
 }
- 
+
+
  
  
  
